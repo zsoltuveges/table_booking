@@ -16,7 +16,7 @@
         </p><br>
     <div id="left">
         <h3>Magánszemély</h3>
-        <form action="">
+        <form action="{{ url_for('booking') }}" method="POST">
             <label for="name">Név</label><br>
             <input type="text" name="name" id="name"><br>
             <label for="email">Email</label><br>
@@ -36,13 +36,13 @@
     </div>
     <div id="right">
         <h3>Cég</h3>
-        <form action="">
-            <label for="name">Név</label><br>
-            <input type="text" name="name" id="name"><br>
-            <label for="email">Email</label><br>
-            <input type="text" name="email" id="email"><br>
-            <label for="phone_number">Telefonszám</label><br>
-            <input type="text" name="phone_number" id="phone_number"><br>
+        <form action="{{ url_for('booking') }}" method="POST">
+            <label for="comp_name">Név</label><br>
+            <input type="text" name="comp_name" id="comp_name"><br>
+            <label for="comp_email">Email</label><br>
+            <input type="text" name="comp_email" id="comp_email"><br>
+            <label for="comp_phone_number">Telefonszám</label><br>
+            <input type="text" name="comp_phone_number" id="comp_phone_number"><br>
             <label for="table_number">Asztalszám</label><br>
             <select name="table_number" id="table_number"><br>
                 <option value="1">1</option><p>db</p>
