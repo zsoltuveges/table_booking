@@ -1,0 +1,22 @@
+body {
+    background-color: green;
+}
+h1 {
+    text-align: center;
+}
+#container {
+    margin: 10pt auto;
+    width: 50%;
+}
+#left, #right {
+    border: 1px solid black;
+    width: 40%;
+    margin: 1px auto;
+    text-align: center;
+}
+#left {
+    float: left;
+}
+#right {
+    float: right;
+}
