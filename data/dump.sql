@@ -37,13 +37,13 @@ CREATE TABLE company (
     email text NOT NULL,
     phone_number text NOT NULL,
     booked_tables INT NOT NULL,
-    zip_code INT(4) NOT NULL,
+    zip_code NUMERIC(4) NOT NULL,
     city text NOT NULL,
     street_address text NOT NULL,
     street_type text NOT NULL,
     street_num INT NOT NULL,
     floor_door text,
-    vat_number INT(11) NOT NULL,
+    vat_number NUMERIC(11) NOT NULL,
     date TIMESTAMP NOT NULL
 );
 
