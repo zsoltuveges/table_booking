@@ -1,17 +1,23 @@
 body {
     background-color: green;
+    background: url("http://heavenwalls.com/wp-content/uploads/2017/11/Hollywood-Simply-Wallpaper-Just-Choose-And-Backgrounds-Spiderman-Widescreen-Of-Mobile-Phones-Hd-Pics.jpg");
 }
 h1 {
     text-align: center;
+    color: white;
 }
 #container {
-    margin: 10pt auto;
+    margin: 50pt auto;
     width: 50%;
+    border: 1px solid black;
+    text-align: center;
+    color: white;
 }
 #left, #right {
+    color: white;
     border: 1px solid black;
-    width: 40%;
-    margin: 1px auto;
+    width: 45%;
+    margin: 10px auto;
     text-align: center;
 }
 #left {
