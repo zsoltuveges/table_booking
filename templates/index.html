@@ -37,20 +37,80 @@
     <div id="right">
         <h3>Cég</h3>
         <form action="{{ url_for('booking') }}" method="POST">
-            <label for="comp_name">Név</label><br>
-            <input type="text" name="comp_name" id="comp_name"><br>
-            <label for="comp_email">Email</label><br>
-            <input type="text" name="comp_email" id="comp_email"><br>
-            <label for="comp_phone_number">Telefonszám</label><br>
-            <input type="text" name="comp_phone_number" id="comp_phone_number"><br>
-            <label for="booked_tables">Asztalszám</label><br>
-            <select name="booked_tables" id="booked_tables"><br>
-                <option value="1">1</option><p>db</p>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select> db<br><br>
+            <p>
+                <label for="company_name">Cégnév</label><br>
+                <input type="text" name="company_name" id="company_name">
+            </p>
+            <p>
+                <label for="email">Email</label><br>
+                <input type="text" name="comp_email" id="comp_email">
+            </p>
+            <p>
+                <label for="comp_phone_number">Telefonszám</label><br>
+                <input type="text" name="comp_phone_number" id="comp_phone_number">
+            </p>
+            <p>
+                <label for="booked_tables">Asztalszám</label>
+                <select name="booked_tables" id="booked_tables">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                db
+            </p>
+            <label>
+                Cégadatok
+            </label>
+            <p>
+                <label for="zip_code">
+                    Irányítószám
+                </label><br>
+                <input type="text" name="zip_code" required id="zip_code">
+            </p>
+            <p>
+                <label for="city">
+                    Város
+                </label><br>
+                <input type="text" name="city" required id="city">
+            </p>
+            <p>
+                <label for="street_address">
+                    Közterület neve
+                </label><br>
+                <input type="text" name="street_address" required id="street_address">
+            </p>
+            <p>
+                <label for="street_type">
+                    Közterület Jellege
+                </label><br>
+                <select name="booked_tables" id="booked_tables">
+                    <option value="street">utca</option>
+                    <option value="road">út</option>
+                    <option value="square">tér</option>
+                    <!--köztér típusok listája. Be kell gépelni:
+                    https://hu.wikipedia.org/wiki/K%C3%B6zter%C3%BClet -->
+                </select>
+            </p>
+            <p>
+                <label for="street_num">
+                    Közterület száma
+                </label><br>
+                <input type="number" required name="street_num" id="street_num" maxlength="4" minlength="4">
+            </p>
+            <p>
+                <label for="floor_door">
+                    Emelet/ajtó
+                </label><br>
+                <input type="text" name="floor_door" id="floor_door">
+            </p>
+            <p>
+                <label for="vat_number">
+                    Adószám
+                </label><br>
+                <input type="number" minlength="11" maxlength="11" name="vat_number" id="vat_number" required>
+            </p>
             <button type="submit">Foglalás</button>
         </form>
     </div>
