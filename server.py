@@ -19,6 +19,19 @@ def booking():
     return render_template('index.html')
 
 
+@app.route('/modify-delete-booking', methods=["POST"])
+def modify_delete_booking():
+    mod_del_target = request.form.to_dict()
+    booking_data = data_manager.return_booking_data(mod_del_target)
+    return render_template('handle_booking.html',
+                           booking_data=booking_data)
+
+
+@app.route('/save-edited-booking')
+def save_edited_booking():
+    data =
+
+
 if __name__ == '__main__':
     app.run(
         debug=True
