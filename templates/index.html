@@ -49,11 +49,9 @@
             <input type="text" name="comp_phone_number" id="comp_phone_number"><br>
             <label for="table_number">Asztalszám</label><br>
             <select name="table_number" id="table_number"><br>
-                <option value="1">1</option><p>db</p>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
+                {% for i in range(1, 6) %}
+                    <option value="{{i}}">{{i}}</option>
+                {% endfor %}
             </select> db<br><br>
             <button type="submit" class="btn btn-primary" >Foglalás</button>
         </form>

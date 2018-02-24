@@ -30,5 +30,15 @@ def return_booking_data(cursor, booking_data):
 
 
 @connection.connection_handler
-def add_to_company(cursor, new_booking):
-    pass
+def modify_delete_individual_booking(cursor, booking_data):
+    if "delete" in booking_data:
+        cursor.execute("""
+                        DELETE FROM individuals
+                        WHERE booking_id = %(booking_number)s AND email = %(email)s
+                        """, booking_data)
+    else:
+        cursor.execute("""
+                        UPDATE individuals
+                        SET name = %(name)s, email = %(email)s, phone_number = %(phone_number)s
+                        WHERE booking_id = %(booking_number)s AND email = %(email)s
+                        """, booking_data)

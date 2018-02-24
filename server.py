@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, redirect
 import data_manager
 
 app = Flask(__name__)
@@ -27,9 +27,14 @@ def modify_delete_booking():
                            booking_data=booking_data)
 
 
-@app.route('/save-edited-booking')
+@app.route('/save-edited-booking', methods=['POST'])
 def save_edited_booking():
-    data =
+    edited_data = request.form.to_dict()
+    if edited_data["name"]:
+        data_manager.modify_delete_individual_booking(edited_data)
+        return redirect(url_for('index'))
+    else:
+        pass
 
 
 if __name__ == '__main__':
