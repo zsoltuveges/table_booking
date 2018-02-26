@@ -26,9 +26,10 @@
         </select> db
         <input type="hidden" name="booking_number" value="{{booking_data.booking_id}}">
         <input type="hidden" name="id" value="{{booking_data.id}}">
-        <button type="button" name="modify" value="modify" id="modify_booking_button" >Módosítás</button>
-        <button type="button" name="delete" value="delete" id="delete_booking_button" class="btn btn-primary" data-toggle="modal" data-target="#delete_modal" >Törlés</button>
+        <button type="button" id="modify_booking_button" class="btn btn-primary" data-toggle="modal" data-target="#modify_modal" >Módosítás</button>
+        <button type="button" id="delete_booking_button" class="btn btn-primary" data-toggle="modal" data-target="#delete_modal" >Törlés</button>
 
+        <!--delete confirming modal-->
         <div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -47,12 +48,29 @@
             </div>
           </div>
         </div>
+
+        <div class="modal fade" id="modify_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Biztos módosítani szeretnéd a foglalásod?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégsem</button>
+                    <button type="submit" class="btn btn-primary" name="modify" value="modify" >Módosítás</button>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
     </form>
 {% else %}
 
 {% endif %}
-
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#delete_modal" data-whatever="@getbootstrap">Open modal for @getbootstrap</button>
 
 
 </body>
