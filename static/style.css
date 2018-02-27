@@ -26,3 +26,7 @@ h1 {
 #right {
     float: right;
 }
+#bookingConfirmation {
+    color: black;
+    text-align: left;
+}
