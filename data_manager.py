@@ -7,6 +7,23 @@ def booking_code_generator(new_booking):
 
 
 @connection.connection_handler
+def add_new_user_to_database(cursor, new_user):
+    cursor.execute("""
+                    INSERT INTO users (username, password)
+                    VALUES (%(username)s, %(password)s);
+                    """, new_user)
+
+
+@connection.connection_handler
+def get_user_data(cursor, login_data):
+    cursor.execute("""
+                    SELECT * FROM users
+                    WHERE username = %(username)s
+                    """, login_data)
+    return cursor.fetchone()
+
+
+@connection.connection_handler
 def add_to_individuals(cursor, new_booking):
     cursor.execute("""
                     INSERT INTO individuals (booking_id, name, email, phone_number, booked_tables, date_time)
