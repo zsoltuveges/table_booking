@@ -12,16 +12,21 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/noone-knows', methods=['GET', 'POST'])
-def registration():
-    if request.method == "POST":
+@app.route('/registration/<token>', methods=['GET', 'POST'])
+def registration(token):
+    if request.method == 'POST':
         new_registration = request.form.to_dict()
         if new_registration["password2"] == new_registration["password"]:
             hashed_password = hash.hash_password(new_registration["password"])
             new_registration["password"] = hashed_password
             data_manager.add_new_user_to_database(new_registration)
+            data_manager.delete_token(new_registration["token"])
             return render_template('login.html')
-    return render_template('register.html')
+    is_token_in_database = data_manager.is_token_in_database(token)
+    if is_token_in_database:
+        return render_template('register.html', token=token)
+    else:
+        return redirect(url_for('index'))
 
 
 @app.route('/admin', methods=['GET', 'POST'])

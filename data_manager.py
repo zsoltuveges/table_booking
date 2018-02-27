@@ -7,6 +7,26 @@ def booking_code_generator(new_booking):
 
 
 @connection.connection_handler
+def is_token_in_database(cursor, token):
+    cursor.execute("""
+                    SELECT * FROM tokens
+                    WHERE token = %(token)s
+                    """, {"token": token})
+    if cursor.fetchone():
+        return True
+    else:
+        return False
+
+
+@connection.connection_handler
+def delete_token(cursor, token):
+    cursor.execute("""
+                    DELETE FROM tokens
+                    WHERE token = %(token)s
+                    """, {"token": token})
+
+
+@connection.connection_handler
 def add_new_user_to_database(cursor, new_user):
     cursor.execute("""
                     INSERT INTO users (username, password)
