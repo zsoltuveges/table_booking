@@ -1,24 +1,29 @@
 body {
     background-color: green;
-    background: url("http://heavenwalls.com/wp-content/uploads/2017/11/Hollywood-Simply-Wallpaper-Just-Choose-And-Backgrounds-Spiderman-Widescreen-Of-Mobile-Phones-Hd-Pics.jpg");
+    background: url("https://awesomewallpaper.files.wordpress.com/2013/07/spiderman_by_joekerruk-d5ccywk.jpg");
+    background-attachment: fixed;
+    background-position: center;
 }
 h1 {
     text-align: center;
     color: white;
 }
 #container {
-    margin: 50pt auto;
-    width: 50%;
-    border: 1px solid black;
+    padding: 3%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 3%;
+    box-shadow: inset 0px 0px 15px 4px rgba(0,0,0,0.75);
     text-align: center;
     color: white;
+    background-color: #082d3a;
 }
 #left, #right {
     color: white;
     border: 1px solid black;
-    width: 45%;
-    margin: 10px auto;
+    border-radius: 10px;
     text-align: center;
+    background-color: #5e1010; !important;
 }
 #left {
     float: left;
@@ -27,6 +32,47 @@ h1 {
     float: right;
 }
 #bookingConfirmation {
-    color: black;
+    color: white;
     text-align: left;
+}
+.welcome-text {
+    padding-top: 5%;
+}
+.btn-edit {
+    background-color: #5e1010;
+    border-color: #5e1010;
+    color: white;
+    margin-bottom: 2%;
+}
+.btn-edit:hover, btn-edit:active {
+    background-color: #9e1818;
+}
+
+.btn-card {
+    background-color: white;
+    color: black;
+    border-color: #082d3a;
+}
+.btn-card:hover, .btn-card:active {
+    color: white;
+    background-color: #082d3a;
+    border-color: #082d3a;
+}
+input {
+    width: 80%;
+}
+.modal-content {
+    border-radius: 10px;
+}
+.modal-header {
+    background-color: #082d3a;
+    color: white;
+
+}
+.modal-body {
+    background-color: #5e1010;
+    color: white;
+}
+span {
+    color: white;
 }
