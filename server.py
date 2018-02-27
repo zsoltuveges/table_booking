@@ -11,12 +11,14 @@ def index():
 
 @app.route('/booking', methods=['GET', 'POST'])
 def booking():
-    new_booking = data_manager.booking_code_generator(request.form.to_dict())
-    if "comp_name" in new_booking:
-        data_manager.add_to_company(new_booking)
-    else:
-        data_manager.add_to_individuals(new_booking)
-    return render_template('index.html')
+    pass
+    #new_booking = data_manager.booking_code_generator(request.form.to_dict())
+    #if "comp_name" in new_booking:
+        #data_manager.add_to_company(new_booking)
+    #else:
+        #pass
+        #data_manager.add_to_individuals(new_booking)
+    #return render_template('index.html')
 
 
 @app.route('/modify-delete-booking', methods=["POST"])
@@ -35,6 +37,15 @@ def save_edited_booking():
         return redirect(url_for('index'))
     else:
         pass
+
+
+@app.route('/new-booking', methods=['POST'])
+def new_booking():
+    """Receives new booking info from script.js, and writes it to database"""
+    booking_data = request.form.to_dict()
+    booking_data_with_booking_id = data_manager.booking_code_generator(booking_data)
+    data_manager.add_to_individuals(booking_data_with_booking_id)
+
 
 
 if __name__ == '__main__':
