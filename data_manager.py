@@ -7,6 +7,16 @@ def booking_code_generator(new_booking):
 
 
 @connection.connection_handler
+def add_new_token_to_database(cursor):
+    new_token = util.generate_code(15)
+    cursor.execute("""
+                    INSERT INTO tokens (token)
+                    VALUES (%(token)s)
+                    """, {"token": new_token})
+    return new_token
+
+
+@connection.connection_handler
 def is_token_in_database(cursor, token):
     cursor.execute("""
                     SELECT * FROM tokens
