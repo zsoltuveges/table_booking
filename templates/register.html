@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="{{ url_for('static', filename='js/registration.js') }}" defer></script>
+    <title>Title</title>
+</head>
+<body>
+
+<form class="form-horizontal" action="/registration/{{token}}" method="POST">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Register</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="username">User Name</label>
+  <div class="col-md-2">
+  <input id="username" name="username" type="text" placeholder="User Name" class="form-control input-md" required="">
+
+  </div>
+</div>
+
+<!-- Password input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="password">Password</label>
+  <div class="col-md-2">
+    <input id="password" name="password" type="password" placeholder="Password" class="form-control input-md" required="">
+
+  </div>
+</div>
+
+<!-- Password input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="password2">Repeat Password</label>
+  <div class="col-md-2">
+    <input id="password2" name="password2" type="password" placeholder="Repeat Password" class="form-control input-md" required="">
+
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="submit"></label>
+  <div class="col-md-4">
+    <button id="submit" name="token" class="btn btn-primary" value="{{token}}">Submit</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+<div class="container">
+	<div class="row">
+	</div>
+</div>
+</body>
+</html>
