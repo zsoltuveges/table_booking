@@ -1,10 +1,34 @@
 from flask import Flask, render_template, request, url_for, redirect, session
+from flask_mail import Mail, Message
+import os
 import data_manager
 import hash
 import login as login_module
 
 
 app = Flask(__name__)
+
+app.config.update(
+    DEBUG=True,
+    # EMAIL SETTINGS
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=465,
+    MAIL_USE_SSL=True,
+    MAIL_USERNAME='kepregenyborze.asztalfoglalas@gmail.com',
+    MAIL_PASSWORD='petproject',
+    SECURITY_PASSWORD_SALT='jagjeiogjawoegjoawetjpoawjiegpoawjgojwegohawepiogawogj')
+
+mail = Mail(app)
+
+
+def send_bookig_code(booking_data):
+    msg = Message(
+        "Hello",
+        sender="kepregenyborze.asztalfoglalas@gmail.com",
+        recipients=[booking_data["email"]])
+    msg.body = "Kedves " + booking_data["name"] + "!\n" + "Köszönjük a foglalásod! A foglalási kódod: " + booking_data["booking_id"] + "\nEnnek segítségével módosíthatod vagy törölheted a foglalásod."
+    mail.send(msg)
+    return "Sent"
 
 
 @app.route('/')
@@ -82,6 +106,7 @@ def new_booking():
     booking_data = request.form.to_dict()
     booking_data_with_booking_id = data_manager.booking_code_generator(booking_data)
     data_manager.add_to_individuals(booking_data_with_booking_id)
+    send_bookig_code(booking_data_with_booking_id)
 
 
 if __name__ == '__main__':
