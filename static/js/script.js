@@ -21,3 +21,22 @@ dom = {
 };
 
 dom.getIndividualBooking();
+
+$(function() {
+
+    $('#individual-form').click(function(e) {
+		$("#left").delay(100).fadeIn(100);
+ 		$("#right").fadeOut(100);
+		$('#company-form').removeClass('active');
+		$(this).addClass('active');
+		e.preventDefault();
+	});
+	$('#company-form').click(function(e) {
+		$("#right").delay(100).fadeIn(100);
+ 		$("#left").fadeOut(100);
+		$('#individual-form').removeClass('active');
+		$(this).addClass('active');
+		e.preventDefault();
+	});
+
+});
