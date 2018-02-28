@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, url_for, redirect, session
 from flask_mail import Mail, Message
-import os
 import data_manager
 import hash
 import login as login_module
@@ -23,7 +22,7 @@ mail = Mail(app)
 
 def send_bookig_code(booking_data):
     msg = Message(
-        "Hello",
+        "Képregénybörze asztalfoglalás visszaigazoló",
         sender="kepregenyborze.asztalfoglalas@gmail.com",
         recipients=[booking_data["email"]])
     msg.body = "Kedves " + booking_data["name"] + "!\n" + "Köszönjük a foglalásod! A foglalási kódod: " + booking_data["booking_id"] + "\nEnnek segítségével módosíthatod vagy törölheted a foglalásod."
@@ -113,16 +112,17 @@ def new_booking():
 def send_invitation():
     email = request.form["invitation_email"]
     new_token = data_manager.add_new_token_to_database()
-    send_invitation_email(email, new_token)
+    url = "http://127.0.0.1:5000/registration/"
+    send_invitation_email(email, new_token, url)
     return redirect(url_for('admin_page'))
 
 
-def send_invitation_email(email, token):
+def send_invitation_email(email, token, url):
     msg = Message(
         "Képregénybörze asztalfoglaló app meghívó",
         sender="kepregenyborze.asztalfoglalas@gmail.com",
         recipients=[email])
-    msg.body = "Kedves " + email + "!\n" + "Az alábbi linkre kattintva tudsz regisztálni: http://127.0.0.1:5000/registration/" + token
+    msg.body = "Kedves " + email + "!\n" + "Az alábbi linkre kattintva tudsz regisztálni: " + url + token
     mail.send(msg)
     return "Sent"
 
