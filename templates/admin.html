@@ -7,5 +7,10 @@
 <body>
 <h1>Admin</h1>
 <a href="{{ url_for('logout') }}"><button>Logout</button></a>
+<form action="{{ url_for('send_invitation') }}" method="POST">
+    <label for="invitation_email">Email</label>
+    <input type="text" name="invitation_email" id="invitation_email">
+    <button type="submit">Meghívó küldése</button>
+</form>
 </body>
 </html>

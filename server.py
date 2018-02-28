@@ -109,6 +109,24 @@ def new_booking():
     send_bookig_code(booking_data_with_booking_id)
 
 
+@app.route('/send-invitation', methods=['GET', 'POST'])
+def send_invitation():
+    email = request.form["invitation_email"]
+    new_token = data_manager.add_new_token_to_database()
+    send_invitation_email(email, new_token)
+    return redirect(url_for('admin_page'))
+
+
+def send_invitation_email(email, token):
+    msg = Message(
+        "Képregénybörze asztalfoglaló app meghívó",
+        sender="kepregenyborze.asztalfoglalas@gmail.com",
+        recipients=[email])
+    msg.body = "Kedves " + email + "!\n" + "Az alábbi linkre kattintva tudsz regisztálni: http://127.0.0.1:5000/registration/" + token
+    mail.send(msg)
+    return "Sent"
+
+
 if __name__ == '__main__':
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
     app.run(
