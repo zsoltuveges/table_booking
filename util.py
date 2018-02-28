@@ -1,9 +1,13 @@
 import random
 
 
-def generate_code(new_booking):
+def generate_code(characters_of_code):
     source = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    characters = 6
-    code = "".join(random.sample(source, characters))
-    new_booking.update({"booking_id": code})
+    code = "".join(random.sample(source, characters_of_code))
+    return code
+
+
+def booking_id_added_to_new_booking(new_booking):
+    booking_id = generate_code(6)
+    new_booking.update({"booking_id": booking_id})
     return new_booking

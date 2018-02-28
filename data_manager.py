@@ -3,7 +3,7 @@ import util
 
 
 def booking_code_generator(new_booking):
-    return util.generate_code(new_booking)
+    return util.booking_id_added_to_new_booking(new_booking)
 
 
 @connection.connection_handler
