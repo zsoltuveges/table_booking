@@ -79,12 +79,16 @@ def return_booking_data(cursor, booking_data):
                     SELECT * FROM individuals
                     WHERE booking_id = %(booking_number)s AND email = %(booking_email)s;
                     """, booking_data)
-    if cursor.fetchone() == None:
+    data = cursor.fetchone()
+    if data:
+        return data
+    else:
         cursor.execute("""
-                        SELECT * FROM company
-                        WHERE booking_id = %(booking_number)s AND email = %(booking_email)s;
-                        """, booking_data)
-    return cursor.fetchone()
+                            SELECT * FROM company
+                            WHERE booking_id = %(booking_number)s AND email = %(booking_email)s;
+                            """, booking_data)
+        return cursor.fetchone()
+
 
 
 @connection.connection_handler
