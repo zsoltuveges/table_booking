@@ -74,7 +74,11 @@ def logout():
 @app.route('/admin-page')
 @login_module.login_required
 def admin_page():
-    return render_template('admin.html')
+    individual_data = data_manager.get_all_booking_from_individuals()
+    company_data = data_manager.get_all_booking_from_company()
+    return render_template('admin.html',
+                           individual_data=individual_data,
+                           comp_data=company_data)
 
 
 @app.route('/modify-delete-booking', methods=["POST"])

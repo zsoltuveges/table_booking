@@ -87,7 +87,7 @@
                                 {% for i in range(1, 6) %}
                                 <option value="{{i}}">{{i}}</option>
                                 {% endfor %}
-                            </select>
+                            </select><br><br>
                             <input type="hidden" name="booking_number" value="{{booking_data.booking_id}}">
                             <input type="hidden" name="id" value="{{booking_data.id}}">
                             <button type="button" id="modify_booking_button" class="btn btn-primary" data-toggle="modal" data-target="#modify_modal" >Módosítás</button>

@@ -121,3 +121,19 @@ def modify_delete_company_booking(cursor, booking_data):
                             street_num = %(street_num)s, floor_door = %(floor_door)s, vat_number = %(vat_number)s
                         WHERE booking_id = %(booking_number)s AND email = %(newCompanyEmail)s
                         """, booking_data)
+
+
+@connection.connection_handler
+def get_all_booking_from_individuals(cursor):
+    cursor.execute("""
+                    SELECT * FROM individuals
+                    """)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_all_booking_from_company(cursor):
+    cursor.execute("""
+                    SELECT * FROM company
+                    """)
+    return cursor.fetchall()
