@@ -26,7 +26,7 @@ SET default_with_oids = false;
 CREATE TABLE company (
     id integer DEFAULT nextval('company_id_seq'::regclass) NOT NULL,
     booking_id character varying NOT NULL,
-    company_name text NOT NULL,
+    name text NOT NULL,
     email text NOT NULL,
     phone_number text NOT NULL,
     booked_tables integer NOT NULL,
@@ -169,49 +169,23 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 -- Data for Name: company; Type: TABLE DATA; Schema: public; Owner: tamas2
 --
 
+INSERT INTO company VALUES (1, 'wSVnL3', 'comp', 'tompa22@gmail.com', '2', 1, 2, '2', '2', 'street', 2, '2', 2, '2018-03-01 11:53:25.577008');
+INSERT INTO company VALUES (2, 'SgK2oP', 'Bende cég', 'outdoorsport85@gmail.com', '1', 1, 1, '1', '1', 'street', 1, '1', 1, '2018-03-01 12:20:40.508339');
+INSERT INTO company VALUES (3, 'r1FxAZ', 'Bende cége', 'outdoorsport85@gmail.com', '1', 1, 1, '1', '', 'street', 1, '1', 1, '2018-03-01 12:30:12.212516');
+INSERT INTO company VALUES (4, '1wfzOs', '1', '1', '1', 1, 1, '1', '11', 'street', 1, '1', 1, '2018-03-01 12:33:23.194855');
+INSERT INTO company VALUES (5, 'A0t05U', '1', '1', '1', 1, 1, '1', '1', 'street', 1, '1', 1, '2018-03-01 12:34:52.000412');
+INSERT INTO company VALUES (6, 'obVjkg', 'Bende cégeeeeeeeeeeeeeeee', 'outdoorsport85@gmail.com', '1', 1, 1, '1', '1', 'street', 1, '1', 1, '2018-03-01 12:35:26.69004');
+INSERT INTO company VALUES (7, 'Pw2des', 'név', 'emailcím', '12345', 1, 7787, 'város', 'kossuth', 'street', 12, '2', 12151, '2018-03-01 15:57:34.962147');
+INSERT INTO company VALUES (8, 'gqGJYX', 'ww', 'ww', 'ww', 1, 2222, 'ww', 'ww', 'street', 22, '22', 222222, '2018-03-01 18:29:17.651494');
 
 
 --
 -- Data for Name: individuals; Type: TABLE DATA; Schema: public; Owner: tamas2
 --
 
-INSERT INTO individuals VALUES (12, '2FDJGw', 'aladár néni', 'q', '123', 1, '2018-02-26 10:01:29.285136');
-INSERT INTO individuals VALUES (14, 'NMgDPz', 'béla', 'q', '123', 1, '2018-02-26 10:16:01.02211');
-INSERT INTO individuals VALUES (15, 'ESZfP7', 'elek', 'q', '1', 1, '2018-02-26 10:16:09.420948');
-INSERT INTO individuals VALUES (16, 'TZ81EB', 'géza', 'q', '1', 1, '2018-02-26 10:18:28.149539');
-INSERT INTO individuals VALUES (17, 'fT00nb', 'géza', 'q', '1', 1, '2018-02-26 10:19:20.461898');
-INSERT INTO individuals VALUES (18, '09uVYX', 'ne', 'q', '1', 1, '2018-02-26 10:19:28.32107');
-INSERT INTO individuals VALUES (19, 'P0bRMW', 'ő', 'q', '1', 1, '2018-02-26 10:20:09.115252');
-INSERT INTO individuals VALUES (20, 'FKEz96', 'ő', 'q', '1', 1, '2018-02-26 10:20:20.015705');
-INSERT INTO individuals VALUES (21, 'x6R7H2', 'ő', 'q', '1', 1, '2018-02-26 10:21:19.941707');
-INSERT INTO individuals VALUES (22, 'BvyTPD', 'ő', 'q', '1', 1, '2018-02-26 10:23:15.972438');
-INSERT INTO individuals VALUES (23, 'O3KrBD', 'aranka', 'q', '1', 1, '2018-02-26 10:23:35.006716');
-INSERT INTO individuals VALUES (24, 'G2yFW8', 'aranka', 'q', '1', 1, '2018-02-26 10:23:47.384903');
-INSERT INTO individuals VALUES (25, '0HbB2u', 'gézáné', 'q', '1', 1, '2018-02-26 10:25:03.743229');
-INSERT INTO individuals VALUES (26, 'fHeIzs', 'gézáné', 'q', '1', 1, '2018-02-26 10:25:50.884453');
-INSERT INTO individuals VALUES (27, 'xbmhdR', 'tihamér', 'q', '1', 1, '2018-02-26 10:26:12.86105');
-INSERT INTO individuals VALUES (28, 'sUNxkh', 'tihamér', 'q', '1', 1, '2018-02-26 10:28:13.512312');
-INSERT INTO individuals VALUES (29, 'BNfJV6', 'béla bá', 'q', '1', 1, '2018-02-26 19:25:51.309421');
-INSERT INTO individuals VALUES (41, 's4cZwh', 'győzike', 'q', '1', 1, '2018-02-27 13:16:11.547248');
-INSERT INTO individuals VALUES (42, 'nqwg6Q', 'c', 'w', '1', 1, '2018-02-27 13:19:21.667377');
-INSERT INTO individuals VALUES (43, 'SgB8KC', 'valaki', 'w', '1', 1, '2018-02-27 13:20:15.894499');
-INSERT INTO individuals VALUES (44, '5JM1kS', '', '', '', 1, '2018-02-27 13:22:04.144438');
-INSERT INTO individuals VALUES (45, '0SbgrT', 'cucc', 'q', '1', 1, '2018-02-27 13:23:33.18622');
-INSERT INTO individuals VALUES (46, 'JYwCTl', 'w', 'w', '1', 1, '2018-02-27 13:24:07.489938');
-INSERT INTO individuals VALUES (47, 'gjQ0bs', 'q', 'q', '1', 1, '2018-02-27 13:24:53.840189');
-INSERT INTO individuals VALUES (48, '51exY8', 'w', 'w', '1', 1, '2018-02-27 13:25:06.304581');
-INSERT INTO individuals VALUES (49, '1pIg80', 'elek', 'em@ail.com', '1', 5, '2018-02-27 13:27:08.412834');
-INSERT INTO individuals VALUES (50, 'i3nyHr', '', '', '', 5, '2018-02-27 13:27:13.486525');
-INSERT INTO individuals VALUES (51, 'rhZXkC', 'bigyó', 'em@ail.com', '1', 3, '2018-02-27 13:28:15.917418');
-INSERT INTO individuals VALUES (52, 'L42fZF', '', '', '', 1, '2018-02-27 13:28:50.026101');
-INSERT INTO individuals VALUES (53, 'Yr2Us0', 'rererere', '1', '1', 1, '2018-02-27 17:09:10.069361');
-INSERT INTO individuals VALUES (54, 'aYQVrd', 'állat', 'q', '1', 1, '2018-02-27 22:04:34.791748');
-INSERT INTO individuals VALUES (56, 'lNqFwE', '', '', '', 1, '2018-02-27 22:09:21.507643');
-INSERT INTO individuals VALUES (57, '8gMXhz', 'fásy ádám mm', 'q', '1', 1, '2018-02-27 22:26:39.155599');
-INSERT INTO individuals VALUES (58, 'FBZmcx', 'én', 'tompa22@gmail.com', '1111', 1, '2018-02-28 13:33:17.782691');
-INSERT INTO individuals VALUES (59, 'fQEbs1', 'Tamás', 'tompa22@gmail.com', '11111', 1, '2018-02-28 13:34:51.787882');
-INSERT INTO individuals VALUES (60, 'Xrd5xl', 'Tamas Horvath', 'tompa22@gmail.com', '323232', 1, '2018-02-28 13:39:22.349042');
-INSERT INTO individuals VALUES (61, 'ingMDJ', 'Tamas Horvath', 'tompa22@gmail.com', '12', 1, '2018-02-28 13:43:39.120634');
+INSERT INTO individuals VALUES (67, 'oVQbRP', 'Elemér', 'em@ail.com', '1234', 1, '2018-03-01 17:36:16.117305');
+INSERT INTO individuals VALUES (68, 'MA75Jm', 'foglaló', 'email', '1111111', 1, '2018-03-01 18:28:17.621768');
+INSERT INTO individuals VALUES (69, 'zJwi2P', '', '', '', 1, '2018-03-01 18:39:10.840973');
 
 
 --
@@ -224,14 +198,16 @@ INSERT INTO individuals VALUES (61, 'ingMDJ', 'Tamas Horvath', 'tompa22@gmail.co
 -- Data for Name: tokens; Type: TABLE DATA; Schema: public; Owner: tamas2
 --
 
-INSERT INTO tokens VALUES ('111111', 4);
+INSERT INTO tokens VALUES ('nqPtG9M4eYTZNhm', 5);
+INSERT INTO tokens VALUES ('de0svZI2nLruqk9', 6);
+INSERT INTO tokens VALUES ('ec9bNWp2Mq1QEw6', 7);
 
 
 --
 -- Name: tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tamas2
 --
 
-SELECT pg_catalog.setval('tokens_id_seq', 4, true);
+SELECT pg_catalog.setval('tokens_id_seq', 7, true);
 
 
 --
@@ -243,13 +219,14 @@ INSERT INTO users VALUES (2, 'rezső', '$2b$12$zTNm7xUjmoUFOeKOijpA6.gtbWEA3WsY0
 INSERT INTO users VALUES (3, 'elemér', '$2b$12$xtHIOgMMgf6wJSfsghHOLecQemm3v7kVLtykhLIoTKrTGRroHVbM.');
 INSERT INTO users VALUES (4, 'use_this_token', '$2b$12$Ce.BuCrJbj5UjuwN0mdVeO5o7FNx6zEKJdLO/Nn7sPbATGvfgxNkm');
 INSERT INTO users VALUES (5, 'thisthenewshit', '$2b$12$VAAsQJvO7p8kGpFGa4ypPOOx0b6feWeVzQ5ZhQ5G1xx8NxE38oVti');
+INSERT INTO users VALUES (6, 'madafaka', '$2b$12$jgWaiS9ZS6uZsaTtxaCYMueKKsn0NOJ3vaKL6gSstDXOuhtPQA8Ma');
 
 
 --
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tamas2
 --
 
-SELECT pg_catalog.setval('users_id_seq', 5, true);
+SELECT pg_catalog.setval('users_id_seq', 6, true);
 
 
 --
