@@ -110,7 +110,7 @@ def modify_delete_company_booking(cursor, booking_data):
     if "delete" in booking_data:
         cursor.execute("""
                         DELETE FROM company
-                        WHERE booking_id = %(booking_number)s AND email = %(email)s
+                        WHERE booking_id = %(booking_number)s AND email = %(newCompanyEmail)s
                         """, booking_data)
     else:
         cursor.execute("""
