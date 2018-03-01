@@ -62,17 +62,28 @@ def add_to_individuals(cursor, new_booking):
 
 
 @connection.connection_handler
+def add_to_company(cursor, new_booking):
+    cursor.execute("""
+                        INSERT INTO company (booking_id, name, email, phone_number,
+                        booked_tables, zip_code, city, street_address, street_type, street_num,
+                        floor_door, vat_number, date_time)
+                        VALUES (%(booking_id)s, %(name)s, %(email)s, %(phoneNumber)s,
+                        %(tableNumber)s, %(zipCode)s, %(city)s, %(streetAddress)s, %(streetType)s,
+                        %(streetNumber)s, %(floorDoor)s, %(vatNumber)s, now());
+                        """, new_booking)
+
+
+@connection.connection_handler
 def return_booking_data(cursor, booking_data):
-    try:
-        cursor.execute("""
-                        SELECT * FROM individuals
-                        WHERE booking_id = %(booking_number)s AND email = %(booking_email)s;
-                        """, booking_data)
-    except:
+    cursor.execute("""
+                    SELECT * FROM individuals
+                    WHERE booking_id = %(booking_number)s AND email = %(booking_email)s;
+                    """, booking_data)
+    if cursor.fetchone() == None:
         cursor.execute("""
                         SELECT * FROM company
                         WHERE booking_id = %(booking_number)s AND email = %(booking_email)s;
-                        """)
+                        """, booking_data)
     return cursor.fetchone()
 
 

@@ -104,7 +104,10 @@ def new_booking():
     """Receives new booking info from script.js, and writes it to database"""
     booking_data = request.form.to_dict()
     booking_data_with_booking_id = data_manager.booking_code_generator(booking_data)
-    data_manager.add_to_individuals(booking_data_with_booking_id)
+    if "city" in booking_data:
+        data_manager.add_to_company(booking_data_with_booking_id)
+    else:
+        data_manager.add_to_individuals(booking_data_with_booking_id)
     send_bookig_code(booking_data_with_booking_id)
 
 
