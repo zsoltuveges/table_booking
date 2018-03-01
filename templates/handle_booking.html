@@ -13,80 +13,86 @@
     <form action="{{ url_for('save_edited_booking') }}" method="POST">
         {% if booking_data.zip_code %}
             <div id="container">
-                <div id="right" class="card mb-4 box-shadow" style="display: none">
-                    <div class="card-body">
-                    <label for="newCompanyName">Cégnév</label><br>
-                        <input type="text" name="newCompanyName" id="newCompanyName"
-                               class="form-control CompanyInput" value="{{booking_data.name}}"><br>
-                        <label for="newCompanyEmail">Email</label><br>
-                        <input type="text" name="newCompanyEmail" id="newCompanyEmail"
-                               class="form-control CompanyInput" value="{{booking_data.email}}"><br>
-                        <label for="newCompanyPhoneNumber">Telefonszám</label><br>
-                        <input type="text" name="newCompanyPhoneNumber" id="newCompanyPhoneNumber"
-                               class="form-control CompanyInput" value="{{booking_data.phone_number}}"><br>
-                        <h3 id="company_details">
-                            Cégadatok
-                        </h3>
-                        <p>
-                            <label for="zip_code">
-                                Irányítószám
-                            </label><br>
-                            <input type="text" name="zip_code" required id="zip_code"
-                                   class="form-control CompanyInput" value="{{booking_data.zip_code}}">
-                        </p>
-                        <p>
-                            <label for="city">
-                                Város
-                            </label><br>
-                            <input type="text" name="city" required id="city" class="form-control CompanyInput"
-                                    value="{{booking_data.city}}">
-                        </p>
-                        <p>
-                            <label for="street_address">
-                                Közterület neve
-                            </label><br>
-                            <input type="text" name="street_address" required id="street_address"
-                                   class="form-control CompanyInput" value="{{booking_data.street_address}}">
-                        </p>
-                        <p>
-                            <label for="street_type">
-                                Közterület Jellege
-                            </label><br>
-                            <select name="street_type" id="street_type">
-                                <option value="street">utca</option>
-                                <option value="road">út</option>
-                                <option value="square">tér</option>
-                                <!--köztér típusok listája. Be kell gépelni:
-                                https://hu.wikipedia.org/wiki/K%C3%B6zter%C3%BClet -->
+                <div class="card-deck mb-3 text-center">
+                    <div id="left" class="card mb-4">
+                        <div class="card-body">
+                        <label for="newCompanyName">Cégnév</label><br>
+                            <input type="text" name="newCompanyName" id="newCompanyName"
+                                   class="form-control CompanyInput" value="{{booking_data.name}}"><br>
+                            <label for="newCompanyEmail">Email</label><br>
+                            <input type="text" name="newCompanyEmail" id="newCompanyEmail"
+                                   class="form-control CompanyInput" value="{{booking_data.email}}"><br>
+                            <label for="newCompanyPhoneNumber">Telefonszám</label><br>
+                            <input type="text" name="newCompanyPhoneNumber" id="newCompanyPhoneNumber"
+                                   class="form-control CompanyInput" value="{{booking_data.phone_number}}"><br>
+                            <h3 id="company_details">
+                                Cégadatok
+                            </h3>
+                            <p>
+                                <label for="zip_code">
+                                    Irányítószám
+                                </label><br>
+                                <input type="text" name="zip_code" required id="zip_code"
+                                       class="form-control CompanyInput" value="{{booking_data.zip_code}}">
+                            </p>
+                            <p>
+                                <label for="city">
+                                    Város
+                                </label><br>
+                                <input type="text" name="city" required id="city" class="form-control CompanyInput"
+                                        value="{{booking_data.city}}">
+                            </p>
+                            <p>
+                                <label for="street_address">
+                                    Közterület neve
+                                </label><br>
+                                <input type="text" name="street_address" required id="street_address"
+                                       class="form-control CompanyInput" value="{{booking_data.street_address}}">
+                            </p>
+                            <p>
+                                <label for="street_type">
+                                    Közterület Jellege
+                                </label><br>
+                                <select name="street_type" id="street_type">
+                                    <option value="street">utca</option>
+                                    <option value="road">út</option>
+                                    <option value="square">tér</option>
+                                    <!--köztér típusok listája. Be kell gépelni:
+                                    https://hu.wikipedia.org/wiki/K%C3%B6zter%C3%BClet -->
+                                </select>
+                            </p>
+                            <p>
+                                <label for="street_num">
+                                    Közterület száma
+                                </label><br>
+                                <input type="number" required name="street_num" id="street_num" class="form-control CompanyInput"
+                                       maxlength="4" minlength="4" value="{{booking_data.street_num}}">
+                            </p>
+                            <p>
+                                <label for="floor_door">
+                                    Emelet/ajtó
+                                </label><br>
+                                <input type="text" name="floor_door" id="floor_door" class="form-control CompanyInput"
+                                        value="{{booking_data.floor_door}}">
+                            </p>
+                            <p>
+                                <label for="vat_number">
+                                    Adószám
+                                </label><br>
+                                <input type="number" minlength="11" maxlength="11" name="vat_number" id="vat_number"
+                                       class="form-control CompanyInput" value="{{booking_data.vat_number}}" required>
+                            </p>
+                            <label for="company_table_number">Asztalszám</label><br>
+                            <select name="company_table_number" id="company_table_number"><br>
+                                {% for i in range(1, 6) %}
+                                <option value="{{i}}">{{i}}</option>
+                                {% endfor %}
                             </select>
-                        </p>
-                        <p>
-                            <label for="street_num">
-                                Közterület száma
-                            </label><br>
-                            <input type="number" required name="street_num" id="street_num" class="form-control CompanyInput"
-                                   maxlength="4" minlength="4" value="{{booking_data.street_num}}">
-                        </p>
-                        <p>
-                            <label for="floor_door">
-                                Emelet/ajtó
-                            </label><br>
-                            <input type="text" name="floor_door" id="floor_door" class="form-control CompanyInput"
-                                    value="{{booking_data.floor_door}}">
-                        </p>
-                        <p>
-                            <label for="vat_number">
-                                Adószám
-                            </label><br>
-                            <input type="number" minlength="11" maxlength="11" name="vat_number" id="vat_number"
-                                   class="form-control CompanyInput" value="{{booking_data.vat_number}}" required>
-                        </p>
-                        <label for="company_table_number">Asztalszám</label><br>
-                        <select name="company_table_number" id="company_table_number"><br>
-                            {% for i in range(1, 6) %}
-                            <option value="{{i}}">{{i}}</option>
-                            {% endfor %}
-                        </select>
+                            <input type="hidden" name="booking_number" value="{{booking_data.booking_id}}">
+                            <input type="hidden" name="id" value="{{booking_data.id}}">
+                            <button type="button" id="modify_booking_button" class="btn btn-primary" data-toggle="modal" data-target="#modify_modal" >Módosítás</button>
+                            <button type="button" id="delete_booking_button" class="btn btn-primary" data-toggle="modal" data-target="#delete_modal" >Törlés</button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -92,11 +92,12 @@ def save_edited_booking():
     """Sends the edited booking to database for saving,
     or deleting the booking."""
     edited_data = request.form.to_dict()
-    if edited_data["name"]:
-        data_manager.modify_delete_individual_booking(edited_data)
+    if "city" in edited_data:
+        data_manager.modify_delete_company_booking(edited_data)
         return redirect(url_for('index'))
     else:
-        pass
+        data_manager.modify_delete_individual_booking(edited_data)
+        return redirect(url_for('index'))
 
 
 @app.route('/new-booking', methods=['POST'])

@@ -90,7 +90,6 @@ def return_booking_data(cursor, booking_data):
         return cursor.fetchone()
 
 
-
 @connection.connection_handler
 def modify_delete_individual_booking(cursor, booking_data):
     if "delete" in booking_data:
@@ -103,4 +102,22 @@ def modify_delete_individual_booking(cursor, booking_data):
                         UPDATE individuals
                         SET name = %(name)s, email = %(email)s, phone_number = %(phone_number)s
                         WHERE booking_id = %(booking_number)s AND email = %(email)s
+                        """, booking_data)
+
+
+@connection.connection_handler
+def modify_delete_company_booking(cursor, booking_data):
+    if "delete" in booking_data:
+        cursor.execute("""
+                        DELETE FROM company
+                        WHERE booking_id = %(booking_number)s AND email = %(email)s
+                        """, booking_data)
+    else:
+        cursor.execute("""
+                        UPDATE company
+                        SET name = %(newCompanyName)s, email = %(newCompanyEmail)s, phone_number = %(newCompanyPhoneNumber)s,
+                            booked_tables = %(company_table_number)s, zip_code = %(zip_code)s, city = %(city)s,
+                            street_address = %(street_address)s, street_type = %(street_type)s,
+                            street_num = %(street_num)s, floor_door = %(floor_door)s, vat_number = %(vat_number)s
+                        WHERE booking_id = %(booking_number)s AND email = %(newCompanyEmail)s
                         """, booking_data)
