@@ -100,7 +100,8 @@ def modify_delete_individual_booking(cursor, booking_data):
     else:
         cursor.execute("""
                         UPDATE individuals
-                        SET name = %(name)s, email = %(email)s, phone_number = %(phone_number)s
+                        SET name = %(name)s, email = %(email)s, phone_number = %(phone_number)s,
+                        booked_tables = %(table_number)s
                         WHERE booking_id = %(booking_number)s AND email = %(email)s
                         """, booking_data)
 

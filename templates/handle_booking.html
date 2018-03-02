@@ -54,9 +54,9 @@
                                     Közterület Jellege
                                 </label><br>
                                 <select name="street_type" id="street_type">
-                                    <option value="street">utca</option>
-                                    <option value="road">út</option>
-                                    <option value="square">tér</option>
+                                    <option value="utca">utca</option>
+                                    <option value="út">út</option>
+                                    <option value="tér">tér</option>
                                     <!--köztér típusok listája. Be kell gépelni:
                                     https://hu.wikipedia.org/wiki/K%C3%B6zter%C3%BClet -->
                                 </select>
@@ -90,8 +90,8 @@
                             </select><br><br>
                             <input type="hidden" name="booking_number" value="{{booking_data.booking_id}}">
                             <input type="hidden" name="id" value="{{booking_data.id}}">
-                            <button type="button" id="modify_booking_button" class="btn btn-primary" data-toggle="modal" data-target="#modify_modal" >Módosítás</button>
-                            <button type="button" id="delete_booking_button" class="btn btn-primary" data-toggle="modal" data-target="#delete_modal" >Törlés</button>
+                            <button type="button" id="modify_booking_button" class="btn btn-card" data-toggle="modal" data-target="#modify_modal" >Módosítás</button>
+                            <button type="button" id="delete_booking_button" class="btn btn-card" data-toggle="modal" data-target="#delete_modal" >Törlés</button>
                         </div>
                     </div>
                 </div>
@@ -115,8 +115,8 @@
                             </select> db <br><br>
                             <input type="hidden" name="booking_number" value="{{booking_data.booking_id}}">
                             <input type="hidden" name="id" value="{{booking_data.id}}">
-                            <button type="button" id="modify_booking_button" class="btn btn-primary" data-toggle="modal" data-target="#modify_modal" >Módosítás</button>
-                            <button type="button" id="delete_booking_button" class="btn btn-primary" data-toggle="modal" data-target="#delete_modal" >Törlés</button>
+                            <button type="button" id="modify_booking_button" class="btn btn-card" data-toggle="modal" data-target="#modify_modal" >Módosítás</button>
+                            <button type="button" id="delete_booking_button" class="btn btn-card" data-toggle="modal" data-target="#delete_modal" >Törlés</button>
                         </div>
                     </div>
                 </div>

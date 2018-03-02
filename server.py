@@ -138,5 +138,6 @@ def send_invitation_email(email, token, url):
 if __name__ == '__main__':
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
     app.run(
-        debug=True
+        debug=True,
+        port=5000
     )
