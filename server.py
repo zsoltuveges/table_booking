@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect, session
+from flask import Flask, render_template, request, url_for, redirect, session, jsonify
 from flask_mail import Mail, Message
 import data_manager
 import hash
@@ -74,7 +74,11 @@ def logout():
 @app.route('/admin-page')
 @login_module.login_required
 def admin_page():
-    return render_template('admin.html')
+    individual_data = data_manager.get_all_booking_from_individuals()
+    company_data = data_manager.get_all_booking_from_company()
+    return render_template('admin.html',
+                           individual_data=individual_data,
+                           comp_data=company_data)
 
 
 @app.route('/modify-delete-booking', methods=["POST"])
@@ -92,11 +96,12 @@ def save_edited_booking():
     """Sends the edited booking to database for saving,
     or deleting the booking."""
     edited_data = request.form.to_dict()
-    if edited_data["name"]:
-        data_manager.modify_delete_individual_booking(edited_data)
+    if "city" in edited_data:
+        data_manager.modify_delete_company_booking(edited_data)
         return redirect(url_for('index'))
     else:
-        pass
+        data_manager.modify_delete_individual_booking(edited_data)
+        return redirect(url_for('index'))
 
 
 @app.route('/new-booking', methods=['POST'])
@@ -104,7 +109,10 @@ def new_booking():
     """Receives new booking info from script.js, and writes it to database"""
     booking_data = request.form.to_dict()
     booking_data_with_booking_id = data_manager.booking_code_generator(booking_data)
-    data_manager.add_to_individuals(booking_data_with_booking_id)
+    if "city" in booking_data:
+        data_manager.add_to_company(booking_data_with_booking_id)
+    else:
+        data_manager.add_to_individuals(booking_data_with_booking_id)
     send_bookig_code(booking_data_with_booking_id)
 
 
@@ -127,8 +135,21 @@ def send_invitation_email(email, token, url):
     return "Sent"
 
 
+@app.route('/get-individual-bookings')
+def get_individual_bookings():
+    all_individual_booking_data = data_manager.get_all_booking_from_individuals()
+    return jsonify(all_individual_booking_data)
+
+
+@app.route('/get-company-bookings')
+def get_company_bookings():
+    all_company_booking_data = data_manager.get_all_booking_from_company()
+    return jsonify(all_company_booking_data)
+
+
 if __name__ == '__main__':
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
     app.run(
-        debug=True
+        debug=True,
+        port=5000
     )

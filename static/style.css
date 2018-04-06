@@ -5,6 +5,22 @@ body {
     background-position: center;
 }
 
+#admin_body {
+    background-image: none;
+}
+tr {
+    max-width: 100%;
+}
+#invitation {
+    float: left;
+    max-width: 25%;
+}
+.table_header {
+    background: lightslategrey;
+}
+.table_headers {
+    margin-top: 40px;
+}
 h1 {
     text-align: center;
     color: white;

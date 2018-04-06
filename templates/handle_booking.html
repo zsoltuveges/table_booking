@@ -6,28 +6,122 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <!--<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Foglalás módosítás/törlés</title>
 </head>
 <body>
-{% if booking_data.name %}
     <form action="{{ url_for('save_edited_booking') }}" method="POST">
-        <label for="name">Név</label>
-        <input type="text" name="name" id="name" value="{{booking_data.name}}">
-        <label for="email">Email</label>
-        <input type="text" name="email" id="email" value="{{booking_data.email}}">
-        <label for="phone_number">Telefonszám</label>
-        <input type="text" name="phone_number" id="phone_number" value="{{booking_data.phone_number}}">
-        <label for="table_number">Asztalszám</label>
-        <select name="table_number" id="table_number">
-            {% for i in range(1, 6) %}
-                <option value="{{i}}">{{i}}</option>
-            {% endfor %}
-        </select> db
-        <input type="hidden" name="booking_number" value="{{booking_data.booking_id}}">
-        <input type="hidden" name="id" value="{{booking_data.id}}">
-        <button type="button" id="modify_booking_button" class="btn btn-primary" data-toggle="modal" data-target="#modify_modal" >Módosítás</button>
-        <button type="button" id="delete_booking_button" class="btn btn-primary" data-toggle="modal" data-target="#delete_modal" >Törlés</button>
+        {% if booking_data.zip_code %}
+            <div id="container">
+                <div class="card-deck mb-3 text-center">
+                    <div id="left" class="card mb-4">
+                        <div class="card-body">
+                        <label for="newCompanyName">Cégnév</label><br>
+                            <input type="text" name="newCompanyName" id="newCompanyName"
+                                   class="form-control CompanyInput" value="{{booking_data.name}}"><br>
+                            <label for="newCompanyEmail">Email</label><br>
+                            <input type="text" name="newCompanyEmail" id="newCompanyEmail"
+                                   class="form-control CompanyInput" value="{{booking_data.email}}"><br>
+                            <label for="newCompanyPhoneNumber">Telefonszám</label><br>
+                            <input type="text" name="newCompanyPhoneNumber" id="newCompanyPhoneNumber"
+                                   class="form-control CompanyInput" value="{{booking_data.phone_number}}"><br>
+                            <h3 id="company_details">
+                                Cégadatok
+                            </h3>
+                            <p>
+                                <label for="zip_code">
+                                    Irányítószám
+                                </label><br>
+                                <input type="text" name="zip_code" required id="zip_code"
+                                       class="form-control CompanyInput" value="{{booking_data.zip_code}}">
+                            </p>
+                            <p>
+                                <label for="city">
+                                    Város
+                                </label><br>
+                                <input type="text" name="city" required id="city" class="form-control CompanyInput"
+                                        value="{{booking_data.city}}">
+                            </p>
+                            <p>
+                                <label for="street_address">
+                                    Közterület neve
+                                </label><br>
+                                <input type="text" name="street_address" required id="street_address"
+                                       class="form-control CompanyInput" value="{{booking_data.street_address}}">
+                            </p>
+                            <p>
+                                <label for="street_type">
+                                    Közterület Jellege
+                                </label><br>
+                                <select name="street_type" id="street_type">
+                                    <option value="utca">utca</option>
+                                    <option value="út">út</option>
+                                    <option value="tér">tér</option>
+                                    <!--köztér típusok listája. Be kell gépelni:
+                                    https://hu.wikipedia.org/wiki/K%C3%B6zter%C3%BClet -->
+                                </select>
+                            </p>
+                            <p>
+                                <label for="street_num">
+                                    Közterület száma
+                                </label><br>
+                                <input type="number" required name="street_num" id="street_num" class="form-control CompanyInput"
+                                       maxlength="4" minlength="4" value="{{booking_data.street_num}}">
+                            </p>
+                            <p>
+                                <label for="floor_door">
+                                    Emelet/ajtó
+                                </label><br>
+                                <input type="text" name="floor_door" id="floor_door" class="form-control CompanyInput"
+                                        value="{{booking_data.floor_door}}">
+                            </p>
+                            <p>
+                                <label for="vat_number">
+                                    Adószám
+                                </label><br>
+                                <input type="number" minlength="11" maxlength="11" name="vat_number" id="vat_number"
+                                       class="form-control CompanyInput" value="{{booking_data.vat_number}}" required>
+                            </p>
+                            <label for="company_table_number">Asztalszám</label><br>
+                            <select name="company_table_number" id="company_table_number"><br>
+                                {% for i in range(1, 6) %}
+                                <option value="{{i}}">{{i}}</option>
+                                {% endfor %}
+                            </select><br><br>
+                            <input type="hidden" name="booking_number" value="{{booking_data.booking_id}}">
+                            <input type="hidden" name="id" value="{{booking_data.id}}">
+                            <button type="button" id="modify_booking_button" class="btn btn-card" data-toggle="modal" data-target="#modify_modal" >Módosítás</button>
+                            <button type="button" id="delete_booking_button" class="btn btn-card" data-toggle="modal" data-target="#delete_modal" >Törlés</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div id="container">
+                <div class="card-deck mb-3 text-center">
+                    <div id="left" class="card mb-4">
+                        <div class="card-body">
+                            <label for="name">Név</label>
+                            <input type="text" name="name" id="name" class="form-control" value="{{booking_data.name}}">
+                            <label for="email">Email</label>
+                            <input type="text" name="email" id="email" class="form-control" value="{{booking_data.email}}" >
+                            <label for="phone_number">Telefonszám</label>
+                            <input type="text" name="phone_number" id="phone_number" class="form-control" value="{{booking_data.phone_number}}">
+                            <label for="table_number">Asztalszám</label><br>
+                            <select name="table_number" id="table_number">
+                                {% for i in range(1, 6) %}
+                                    <option value="{{i}}">{{i}}</option>
+                                {% endfor %}
+                            </select> db <br><br>
+                            <input type="hidden" name="booking_number" value="{{booking_data.booking_id}}">
+                            <input type="hidden" name="id" value="{{booking_data.id}}">
+                            <button type="button" id="modify_booking_button" class="btn btn-card" data-toggle="modal" data-target="#modify_modal" >Módosítás</button>
+                            <button type="button" id="delete_booking_button" class="btn btn-card" data-toggle="modal" data-target="#delete_modal" >Törlés</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
 
         <!--delete confirming modal-->
         <div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -49,6 +143,7 @@
           </div>
         </div>
 
+        <!--modify confirming modal-->
         <div class="modal fade" id="modify_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -68,9 +163,7 @@
           </div>
         </div>
     </form>
-{% else %}
 
-{% endif %}
 
 
 </body>

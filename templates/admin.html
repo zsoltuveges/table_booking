@@ -2,15 +2,91 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/admin.js') }}" defer></script>
     <title>Table booking</title>
 </head>
-<body>
-<h1>Admin</h1>
-<a href="{{ url_for('logout') }}"><button>Logout</button></a>
-<form action="{{ url_for('send_invitation') }}" method="POST">
-    <label for="invitation_email">Email</label>
-    <input type="text" name="invitation_email" id="invitation_email">
-    <button type="submit">Meghívó küldése</button>
-</form>
+<body id="admin_body">
+<a href="{{ url_for('logout') }}"><button class="btn-secondary">Logout</button></a><br>
+
+<h3 class="table_headers">Magán foglalások</h3>
+<table class="table table-sm" id="individual_table">
+    <thead>
+        <tr class="table_header">
+            <th scope="col">Név</th>
+            <th scope="col">Email</th>
+            <th scope="col">Telefonszám</th>
+            <th scope="col">Foglalt asztalok száma</th>
+            <th scope="col">Foglalás időpontja</th>
+        </tr>
+    </thead>
+    <!--{% for row in individual_data %}
+        <tr>
+            <td>{{row.name}}</td>
+            <td>{{row.email}}</td>
+            <td>{{row.phone_number}}</td>
+            <td>{{row.booked_tables}}</td>
+            <td>{{row.date_time}}</td>
+        </tr>
+    {% endfor %}-->
+</table>
+
+<h3 class="table_headers">Cég foglalások</h3>
+<table class="table table-sm">
+    <tr class="table_header">
+        <th scope="col">Cégnév</th>
+        <th scope="col">Email</th>
+        <th scope="col">Telefonszám</th>
+        <th scope="col">Foglalt asztalok száma</th>
+        <th scope="col">Irányítószám</th>
+        <th scope="col">Város</th>
+        <th scope="col">Cím</th>
+        <th scope="col">Közterület</th>
+        <th scope="col">Házszám</th>
+        <th scope="col">Emelet, ajtó</th>
+        <th scope="col">Adószám</th>
+        <th scope="col">Foglalás dátuma</th>
+    </tr>
+    {% for row in comp_data %}
+        <tr>
+            <td>{{row.name}}</td>
+            <td>{{row.email}}</td>
+            <td>{{row.phone_number}}</td>
+            <td>{{row.booked_tables}}</td>
+            <td>{{row.zip_code}}</td>
+            <td>{{row.city}}</td>
+            <td>{{row.street_address}}</td>
+            <td>{{row.street_type}}</td>
+            <td>{{row.street_num}}</td>
+            <td>{{row.floor_door}}</td>
+            <td>{{row.vat_number}}</td>
+            <td>{{row.date_time}}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+<div id="invitation">
+    <form action="{{ url_for('send_invitation') }}" method="POST">
+        <label for="invitation_email">Email</label>
+        <input type="text" name="invitation_email" id="invitation_email">
+        <button type="submit" class="btn-secondary">Meghívó küldése</button>
+    </form>
+</div>
 </body>
 </html>
+
+

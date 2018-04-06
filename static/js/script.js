@@ -1,4 +1,6 @@
 dom = {
+    _allIndieBooking: "",
+    _allCompanyBookings: "",
     getIndividualBooking: function() {
         let addNewIndividualBookingButton = document.getElementById('submitIndividualBooking');
         addNewIndividualBookingButton.addEventListener('click', function() {
@@ -17,10 +19,48 @@ dom = {
                 input.value = ""
             }
         });
+    },
+    getCompanyBooking: function() {
+        let addNewCompanyBookingButton = document.getElementById('submitCompanyBooking');
+        addNewCompanyBookingButton.addEventListener('click', function() {
+            let newName = document.getElementById('newCompanyName').value;
+            let newEmail = document.getElementById('newCompanyEmail').value;
+            let newPhoneNumber = document.getElementById('newCompanyPhoneNumber').value;
+
+            let zipCode = document.getElementById('zip_code').value;
+            let city = document.getElementById('city').value;
+            let streetAddress = document.getElementById('street_address').value;
+            let streetType = document.getElementById('street_type').value;
+            let streetNumber = document.getElementById('street_num').value;
+            let floorDoor = document.getElementById('floor_door').value;
+            let vatNumber = document.getElementById('vat_number').value;
+
+            let newNumberOfCompanyTables = document.getElementById('company_table_number').value;
+            $.post('/new-booking', {
+                name: newName,
+                email: newEmail,
+                phoneNumber: newPhoneNumber,
+                zipCode: zipCode,
+                city: city,
+                streetAddress: streetAddress,
+                streetType: streetType,
+                streetNumber: streetNumber,
+                floorDoor: floorDoor,
+                vatNumber: vatNumber,
+                tableNumber: newNumberOfCompanyTables
+            });
+            let allCompanyInput = document.getElementsByClassName('CompanyInput');
+            for (let input of allCompanyInput) {
+                input.value = ""
+            }
+        });
     }
 };
 
 dom.getIndividualBooking();
+dom.getCompanyBooking();
+dom.getAllIndividualBookingsFromDatabase();
+dom.getAllCompanyBookingsFromDatabase();
 
 $(function() {
 
