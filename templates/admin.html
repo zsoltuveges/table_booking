@@ -17,22 +17,24 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/admin.js') }}" defer></script>
     <title>Table booking</title>
 </head>
 <body id="admin_body">
 <a href="{{ url_for('logout') }}"><button class="btn-secondary">Logout</button></a><br>
 
 <h3 class="table_headers">Magán foglalások</h3>
-<table class="table table-sm">
-    <tr class="table_header">
-        <th scope="col">Név</th>
-        <th scope="col">Email</th>
-        <th scope="col">Telefonszám</th>
-        <th scope="col">Foglalt asztalok száma</th>
-        <th scope="col">Foglalás időpontja</th>
-    </tr>
-    {% for row in individual_data %}
+<table class="table table-sm" id="individual_table">
+    <thead>
+        <tr class="table_header">
+            <th scope="col">Név</th>
+            <th scope="col">Email</th>
+            <th scope="col">Telefonszám</th>
+            <th scope="col">Foglalt asztalok száma</th>
+            <th scope="col">Foglalás időpontja</th>
+        </tr>
+    </thead>
+    <!--{% for row in individual_data %}
         <tr>
             <td>{{row.name}}</td>
             <td>{{row.email}}</td>
@@ -40,7 +42,7 @@
             <td>{{row.booked_tables}}</td>
             <td>{{row.date_time}}</td>
         </tr>
-    {% endfor %}
+    {% endfor %}-->
 </table>
 
 <h3 class="table_headers">Cég foglalások</h3>
@@ -84,6 +86,7 @@
         <button type="submit" class="btn-secondary">Meghívó küldése</button>
     </form>
 </div>
-
 </body>
 </html>
+
+

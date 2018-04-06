@@ -1,4 +1,6 @@
 dom = {
+    _allIndieBooking: "",
+    _allCompanyBookings: "",
     getIndividualBooking: function() {
         let addNewIndividualBookingButton = document.getElementById('submitIndividualBooking');
         addNewIndividualBookingButton.addEventListener('click', function() {
@@ -57,6 +59,8 @@ dom = {
 
 dom.getIndividualBooking();
 dom.getCompanyBooking();
+dom.getAllIndividualBookingsFromDatabase();
+dom.getAllCompanyBookingsFromDatabase();
 
 $(function() {
 

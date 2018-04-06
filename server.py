@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect, session
+from flask import Flask, render_template, request, url_for, redirect, session, jsonify
 from flask_mail import Mail, Message
 import data_manager
 import hash
@@ -133,6 +133,18 @@ def send_invitation_email(email, token, url):
     msg.body = "Kedves " + email + "!\n" + "Az alábbi linkre kattintva tudsz regisztálni: " + url + token
     mail.send(msg)
     return "Sent"
+
+
+@app.route('/get-individual-bookings')
+def get_individual_bookings():
+    all_individual_booking_data = data_manager.get_all_booking_from_individuals()
+    return jsonify(all_individual_booking_data)
+
+
+@app.route('/get-company-bookings')
+def get_company_bookings():
+    all_company_booking_data = data_manager.get_all_booking_from_company()
+    return jsonify(all_company_booking_data)
 
 
 if __name__ == '__main__':
