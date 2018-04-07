@@ -5,7 +5,6 @@ import hash
 import login as login_module
 import util
 
-
 app = Flask(__name__)
 
 app.config.update(
@@ -117,6 +116,7 @@ def new_booking():
     else:
         data_manager.add_to_individuals(booking_data_with_booking_id)
     send_bookig_code(booking_data_with_booking_id)
+    return "Done"
 
 
 @app.route('/send-invitation', methods=['GET', 'POST'])
@@ -148,6 +148,13 @@ def get_individual_bookings():
 def get_company_bookings():
     all_company_booking_data = data_manager.get_all_booking_from_company()
     return jsonify(all_company_booking_data)
+
+
+@app.route('/order/<orderby>/<direction>')
+def order_admin_page(orderby, direction):
+    sorted_individual_datas = data_manager.order_by_column(orderby, direction)
+    return jsonify(sorted_individual_datas)
+
 
 
 if __name__ == '__main__':
