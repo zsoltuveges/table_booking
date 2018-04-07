@@ -2,10 +2,8 @@ dom = {
     _allIndieBooking: "",
     _allCompanyBookings: "",
     init: function () {
-        this.getIndividualBooking();
-        this.getCompanyBooking();
-        this.getAllIndividualBookingsFromDatabase();
-        this.getAllCompanyBookingsFromDatabase();
+        dom.getIndividualBooking();
+        dom.getCompanyBooking();
     },
     getIndividualBooking: function() {
         let addNewIndividualBookingButton = document.getElementById('submitIndividualBooking');
