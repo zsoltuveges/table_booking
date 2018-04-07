@@ -63,6 +63,8 @@ dom = {
     }
 };
 
+dom.init();
+
 $(function() {
 
     $('#individual-form').click(function(e) {

@@ -24,8 +24,7 @@ def send_bookig_code(booking_data):
         "Képregénybörze asztalfoglalás visszaigazoló",
         sender="kepregenyborze.asztalfoglalas@gmail.com",
         recipients=[booking_data["email"]])
-    msg.body = "Kedves " + booking_data["name"] + "!\n" + "Köszönjük a foglalásod! A foglalási kódod: " + booking_data[
-        "booking_id"] + "\nEnnek segítségével módosíthatod vagy törölheted a foglalásod."
+    msg.body = "Kedves " + booking_data["name"] + "!\n" + "Köszönjük a foglalásod! A foglalási kódod: " + booking_data["booking_id"] + "\nEnnek segítségével módosíthatod vagy törölheted a foglalásod."
     mail.send(msg)
     return "Sent"
 
