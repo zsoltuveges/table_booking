@@ -138,3 +138,13 @@ def get_all_booking_from_company(cursor):
                     SELECT * FROM company
                     """)
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def order_by_column(cursor, orderby, direction):
+    cursor.execute("""
+                    SELECT * FROM individuals
+                    ORDER BY {} {}
+                    """.format(orderby, direction))
+
+    return cursor.fetchall()

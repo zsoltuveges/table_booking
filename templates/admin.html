@@ -27,13 +27,16 @@
 <table class="table table-sm" id="individual_table">
     <thead>
         <tr class="table_header">
-            <th scope="col">Név</th>
-            <th scope="col">Email</th>
-            <th scope="col">Telefonszám</th>
-            <th scope="col">Foglalt asztalok száma</th>
-            <th scope="col">Foglalás időpontja</th>
+            <th id="indi_name" data-name="name" scope="col">Név</th>
+            <th id="indi_email" scope="col">Email</th>
+            <th id="indi_phone" scope="col">Telefonszám</th>
+            <th id="indi_table"  data-name="booked_tables" scope="col">Foglalt asztalok száma</th>
+            <th id="indi_time" data-name="date_time" scope="col">Foglalás időpontja</th>
         </tr>
     </thead>
+    <tbody id="indi_body">
+
+    </tbody>
     <!--{% for row in individual_data %}
         <tr>
             <td>{{row.name}}</td>

@@ -4,7 +4,6 @@ import data_manager
 import hash
 import login as login_module
 
-
 app = Flask(__name__)
 
 app.config.update(
@@ -25,7 +24,8 @@ def send_bookig_code(booking_data):
         "Képregénybörze asztalfoglalás visszaigazoló",
         sender="kepregenyborze.asztalfoglalas@gmail.com",
         recipients=[booking_data["email"]])
-    msg.body = "Kedves " + booking_data["name"] + "!\n" + "Köszönjük a foglalásod! A foglalási kódod: " + booking_data["booking_id"] + "\nEnnek segítségével módosíthatod vagy törölheted a foglalásod."
+    msg.body = "Kedves " + booking_data["name"] + "!\n" + "Köszönjük a foglalásod! A foglalási kódod: " + booking_data[
+        "booking_id"] + "\nEnnek segítségével módosíthatod vagy törölheted a foglalásod."
     mail.send(msg)
     return "Sent"
 
@@ -146,6 +146,13 @@ def get_individual_bookings():
 def get_company_bookings():
     all_company_booking_data = data_manager.get_all_booking_from_company()
     return jsonify(all_company_booking_data)
+
+
+@app.route('/order/<orderby>/<direction>')
+def order_admin_page(orderby, direction):
+    sorted_individual_datas = data_manager.order_by_column(orderby, direction)
+    return jsonify(sorted_individual_datas)
+
 
 
 if __name__ == '__main__':
