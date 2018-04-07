@@ -3,6 +3,7 @@ from flask_mail import Mail, Message
 import data_manager
 import hash
 import login as login_module
+import util
 
 app = Flask(__name__)
 
@@ -17,6 +18,7 @@ app.config.update(
     SECURITY_PASSWORD_SALT='jagjeiogjawoegjoawetjpoawjiegpoawjgojwegohawepiogawogj')
 
 mail = Mail(app)
+PUBLIC_SPACE_NAMES = util.read_public_spaces_from_file()
 
 
 def send_bookig_code(booking_data):
@@ -31,7 +33,7 @@ def send_bookig_code(booking_data):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', public_space_names=PUBLIC_SPACE_NAMES)
 
 
 @app.route('/registration/<token>', methods=['GET', 'POST'])
@@ -87,7 +89,8 @@ def modify_delete_booking():
     mod_del_target = request.form.to_dict()
     booking_data = data_manager.return_booking_data(mod_del_target)
     return render_template('handle_booking.html',
-                           booking_data=booking_data)
+                           booking_data=booking_data,
+                           public_space_names=PUBLIC_SPACE_NAMES)
 
 
 @app.route('/save-edited-booking', methods=['POST'])
