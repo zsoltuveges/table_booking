@@ -46,37 +46,26 @@
 </table>
 
 <h3 class="table_headers">Cég foglalások</h3>
-<table class="table table-sm">
-    <tr class="table_header">
-        <th scope="col">Cégnév</th>
-        <th scope="col">Email</th>
-        <th scope="col">Telefonszám</th>
-        <th scope="col">Foglalt asztalok száma</th>
-        <th scope="col">Irányítószám</th>
-        <th scope="col">Város</th>
-        <th scope="col">Cím</th>
-        <th scope="col">Közterület</th>
-        <th scope="col">Házszám</th>
-        <th scope="col">Emelet, ajtó</th>
-        <th scope="col">Adószám</th>
-        <th scope="col">Foglalás dátuma</th>
-    </tr>
-    {% for row in comp_data %}
-        <tr>
-            <td>{{row.name}}</td>
-            <td>{{row.email}}</td>
-            <td>{{row.phone_number}}</td>
-            <td>{{row.booked_tables}}</td>
-            <td>{{row.zip_code}}</td>
-            <td>{{row.city}}</td>
-            <td>{{row.street_address}}</td>
-            <td>{{row.street_type}}</td>
-            <td>{{row.street_num}}</td>
-            <td>{{row.floor_door}}</td>
-            <td>{{row.vat_number}}</td>
-            <td>{{row.date_time}}</td>
+<table class="table table-sm" id="company_table">
+    <thead>
+        <tr class="table_header">
+            <th scope="col">Cégnév</th>
+            <th scope="col">Email</th>
+            <th scope="col">Telefonszám</th>
+            <th scope="col">Foglalt asztalok száma</th>
+            <th scope="col">Irányítószám</th>
+            <th scope="col">Város</th>
+            <th scope="col">Cím</th>
+            <th scope="col">Közterület</th>
+            <th scope="col">Házszám</th>
+            <th scope="col">Emelet, ajtó</th>
+            <th scope="col">Adószám</th>
+            <th scope="col">Foglalás dátuma</th>
         </tr>
-    {% endfor %}
+    </thead>
+    <tbody id="company_body">
+
+    </tbody>
 </table>
 
 <div id="invitation">
