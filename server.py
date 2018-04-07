@@ -114,6 +114,7 @@ def new_booking():
     else:
         data_manager.add_to_individuals(booking_data_with_booking_id)
     send_bookig_code(booking_data_with_booking_id)
+    return "Done"
 
 
 @app.route('/send-invitation', methods=['GET', 'POST'])
