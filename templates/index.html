@@ -130,11 +130,9 @@
                         Közterület Jellege
                     </label><br>
                     <select name="street_type" id="street_type">
-                        <option value="utca">utca</option>
-                        <option value="út">út</option>
-                        <option value="tér">tér</option>
-                        <!--köztér típusok listája. Be kell gépelni:
-                        https://hu.wikipedia.org/wiki/K%C3%B6zter%C3%BClet -->
+                        {% for name in public_space_names %}
+                            <option value="{{ name }}">{{ name }}</option>
+                       {% endfor %}
                     </select>
                 </p>
                 <p>
