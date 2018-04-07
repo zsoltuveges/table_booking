@@ -98,6 +98,12 @@ h1 {
     border-color: #082d3a;
 }
 
+.btn-card-blue {
+    color: white;
+    background-color: #082d3a;
+    border-color: #082d3a;
+}
+
 input {
     width: 80%;
 }
