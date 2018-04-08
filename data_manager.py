@@ -148,3 +148,24 @@ def order_by_column(cursor, orderby, direction, category):
                     """.format(category, orderby, direction))
 
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_booking_code_for_resend(cursor, email):
+    cursor.execute("""
+                    SELECT * FROM individuals
+                    WHERE email = %(email)s
+                    """, {"email": email})
+    booking_code = cursor.fetchone()
+    if booking_code:
+        return booking_code
+    else:
+        cursor.execute("""
+                        SELECT * FROM company
+                        WHERE email = %(email)s
+                        """, {"email": email})
+        booking_code = cursor.fetchone()
+        if booking_code:
+            return booking_code
+        else:
+            return None
