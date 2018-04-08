@@ -141,10 +141,10 @@ def get_all_booking_from_company(cursor):
 
 
 @connection.connection_handler
-def order_by_column(cursor, orderby, direction):
+def order_by_column(cursor, orderby, direction, category):
     cursor.execute("""
-                    SELECT * FROM individuals
+                    SELECT * FROM {}
                     ORDER BY {} {}
-                    """.format(orderby, direction))
+                    """.format(category, orderby, direction))
 
     return cursor.fetchall()

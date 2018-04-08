@@ -151,9 +151,9 @@ def get_company_bookings():
     return jsonify(all_company_booking_data)
 
 
-@app.route('/order/<orderby>/<direction>')
-def order_admin_page(orderby, direction):
-    sorted_individual_datas = data_manager.order_by_column(orderby, direction)
+@app.route('/order/<orderby>/<direction>/<category>')
+def order_admin_page(orderby, direction, category):
+    sorted_individual_datas = data_manager.order_by_column(orderby, direction, category)
     return jsonify(sorted_individual_datas)
 
 
