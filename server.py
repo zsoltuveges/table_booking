@@ -58,11 +58,13 @@ def login():
     if request.method == 'POST':
         login_data = request.form.to_dict()
         user_data_from_database = data_manager.get_user_data(login_data)
-        is_correct_password = hash.verify_password(login_data["password"], user_data_from_database["password"])
-        if is_correct_password:
-            session["username"] = login_data["username"]
-            session["user_id"] = user_data_from_database["id"]
-            return redirect(url_for('admin_page', admin_name=session["username"]))
+        if user_data_from_database != None:
+            is_correct_password = hash.verify_password(login_data["password"], user_data_from_database["password"])
+            if is_correct_password:
+                session["username"] = login_data["username"]
+                session["user_id"] = user_data_from_database["id"]
+                return redirect(url_for('admin_page'))
+        return render_template('login.html', failed_login=True)
     return render_template('login.html')
 
 
