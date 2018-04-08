@@ -8,18 +8,9 @@ body {
 #admin_body {
     background-image: none;
 }
-tr {
-    max-width: 100%;
-}
 #invitation {
     float: left;
     max-width: 25%;
-}
-.table_header {
-    background: lightslategrey;
-}
-.table_headers {
-    margin-top: 40px;
 }
 h1 {
     text-align: center;
@@ -126,3 +117,15 @@ input {
 span {
     color: white;
 }
+
+.table-body {
+    border: 1px solid #dedede;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px #eeeeee;
+}
+
+.round {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+

@@ -6,6 +6,7 @@ admin = {
         this.getAllCompanyBookingsFromDatabase();
         this.getAllIndividualBookingsFromDatabase();
         this.sortIndiBookings();
+        this.addingEventListenerToMenuDropDown();
     },
     getAllIndividualBookingsFromDatabase: function () {
         $.getJSON('/get-individual-bookings', function (response) {
@@ -93,6 +94,13 @@ admin = {
                 });
             })
         }
+    },
+
+    addingEventListenerToMenuDropDown: function () {
+        let menuInvite = document.getElementById("menu-invite");
+        menuInvite.style.cursor = "pointer";
+        let menuSaveBookings = document.getElementById("menu-save-bookings");
+        menuSaveBookings.style.cursor = "not-allowed";
     }
 };
 
