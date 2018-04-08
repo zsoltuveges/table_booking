@@ -74,14 +74,15 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/admin-page')
+@app.route('/admin-page/<admin_name>')
 @login_module.login_required
-def admin_page():
+def admin_page(admin_name):
     individual_data = data_manager.get_all_booking_from_individuals()
     company_data = data_manager.get_all_booking_from_company()
     return render_template('admin.html',
                            individual_data=individual_data,
-                           comp_data=company_data)
+                           comp_data=company_data,
+                           admin_name=admin_name)
 
 
 @app.route('/modify-delete-booking', methods=["POST"])
@@ -127,7 +128,7 @@ def send_invitation():
     new_token = data_manager.add_new_token_to_database()
     url = "http://127.0.0.1:5000/registration/"
     send_invitation_email(email, new_token, url)
-    return redirect(url_for('admin_page'))
+    return redirect(url_for('admin_page', admin_name=session["username"]))
 
 
 def send_invitation_email(email, token, url):
@@ -152,9 +153,9 @@ def get_company_bookings():
     return jsonify(all_company_booking_data)
 
 
-@app.route('/order/<orderby>/<direction>')
-def order_admin_page(orderby, direction):
-    sorted_individual_datas = data_manager.order_by_column(orderby, direction)
+@app.route('/order/<orderby>/<direction>/<category>')
+def order_admin_page(orderby, direction, category):
+    sorted_individual_datas = data_manager.order_by_column(orderby, direction, category)
     return jsonify(sorted_individual_datas)
 
 
