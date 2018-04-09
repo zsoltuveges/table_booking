@@ -48,9 +48,24 @@ def resend_booking_code():
         return redirect(url_for('index'))
 
 
+@app.route('/set-max-tables', methods=['POST'])
+def set_max_tables():
+    max_tables = request.form.to_dict()
+    data_manager.set_max_tables(max_tables)
+    return redirect(url_for('admin_page', admin_name=session["username"]))
+
+
+@app.route('/get-max-tables-data')
+def get_max_tables_data():
+    max_tables_data = data_manager.get_max_tables()
+    return jsonify(max_tables_data)
+
+
 @app.route('/')
 def index():
-    return render_template('index.html', public_space_names=PUBLIC_SPACE_NAMES)
+    number_of_remaining_tables = data_manager.get_max_tables()["remaining_tables"]
+    return render_template('index.html', public_space_names=PUBLIC_SPACE_NAMES,
+                                         number_of_remaining_tables=number_of_remaining_tables)
 
 
 @app.route('/registration/<token>', methods=['GET', 'POST'])
@@ -174,7 +189,6 @@ def get_company_bookings():
 def order_admin_page(orderby, direction, category):
     sorted_individual_datas = data_manager.order_by_column(orderby, direction, category)
     return jsonify(sorted_individual_datas)
-
 
 
 if __name__ == '__main__':

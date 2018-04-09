@@ -1,9 +1,11 @@
 dom = {
     _allIndieBooking: "",
     _allCompanyBookings: "",
+    _numberOfRemainingTables: "",
     init: function () {
         dom.getIndividualBooking();
         dom.getCompanyBooking();
+        dom.displayNumberOfRemainingTables();
     },
     getIndividualBooking: function() {
         let addNewIndividualBookingButton = document.getElementById('submitIndividualBooking');
@@ -57,6 +59,30 @@ dom = {
             for (let input of allCompanyInput) {
                 input.value = ""
             }
+        });
+    },
+
+    displayNumberOfRemainingTables: function() {
+        let remainingTablesDiv = document.getElementById("numberOfRemainingTablesDiv");
+        dom.getMaxTableData();
+        let bookingButton = document.getElementsByClassName("submitButton");
+        for (let button of bookingButton) {
+            button.addEventListener('click', function() {
+                remainingTablesDiv.innerHTML = '';
+                dom.getMaxTableData();
+            })
+        }
+    },
+
+    getMaxTableData: function() {
+        let remainingTablesDiv = document.getElementById("numberOfRemainingTablesDiv");
+        let paragraph = document.createElement("p");
+        fetch('/get-max-tables-data')
+            .then(response => response.json())
+            .then(function(result) {
+                let tempItem = document.createTextNode(result["remaining_tables"]);
+                paragraph.appendChild(tempItem);
+                remainingTablesDiv.appendChild(paragraph);
         });
     }
 };

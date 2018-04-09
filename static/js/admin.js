@@ -5,10 +5,13 @@ admin = {
     _companyOrderDirection: "",
     _searchedIndiBooking: [],
     _searchedCompBooking: [],
+    _maxTablesData: {},
 
     init: function () {
         this.getAllCompanyBookingsFromDatabase();
         this.getAllIndividualBookingsFromDatabase();
+        this.getMaxAndRemainingTables();
+        this.setMaxTables();
         this.sortIndiBookings();
         this.sortCompanyBookings();
         this.addingEventListenerToMenuDropDown();
@@ -177,6 +180,42 @@ admin = {
             admin.getAllCompanyBookingsFromDatabase();
             admin.displayAllIndividualBookings();
             admin.displayAllCompanyBookings();
+        })
+    },
+
+    getMaxAndRemainingTables: function() {
+        $.getJSON('/get-max-tables-data', function(response) {
+            admin._maxTablesData = response;
+            admin.displayMaxTablesData();
+        });
+        return admin._maxTablesData;
+    },
+
+    displayMaxTablesData: function() {
+        let tableBody = document.getElementById("maxTablesTableBody");
+        if (tableBody.hasChildNodes()) {
+            tableBody.removeChild(tableBody.firstChild);
+        }
+        let tableRow = document.createElement("tr");
+        let columns = ["max_tables", "remaining_tables"];
+        for (let i = 0; i < columns.length; i++) {
+            let tableData = document.createElement("td");
+            let tempItem = document.createTextNode(admin._maxTablesData[columns[i]]);
+            tableData.appendChild(tempItem);
+            tableRow.appendChild(tableData);
+        }
+        tableBody.appendChild(tableRow);
+    },
+
+    setMaxTables: function() {
+        let maxTablesButton = document.getElementById("maxTablesButton");
+        maxTablesButton.addEventListener('click', function() {
+            let maxNumberOfTables = document.getElementById("maxNumberOfTables").value;
+                $.post('/set-max-tables', {
+                    maxTables: maxNumberOfTables
+                });
+            document.getElementById("maxNumberOfTables").value = "";
+            admin.getMaxAndRemainingTables();
         })
     }
 };
