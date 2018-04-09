@@ -25,6 +25,9 @@
     <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#modifyDeleteModal" data-whatever="@mdo">
         Foglalás módosítása/törlése
     </button>
+    <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#resendBookingCode">
+        Foglalási kód újraküldése
+    </button>
     <p>
         Amennyiben asztalt szeretnél foglalni a kövekező börzére, azt alább megteheted.
         Kérlek válaszd a megfelelő oldalt. Töltsd ki az adatokat, majd kattints a "Foglalás" gombra.
@@ -166,30 +169,7 @@
                     Foglalás
                 </button>
 
-                <!--booking confirmation modal-->
-                <div class="modal fade" id="booking_confirmation_modal_comp" tabindex="-1" role="dialog"
-                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="bookingConfirmation">Foglalásod rögzítettük.
-                                    Néhány percen belül kapni fogsz egy emailt, benne a foglalási kódoddal.
-                                    Ennek segítségével módosíthatod vagy törölheted a foglalásod.</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="modal-footer">
-                                    <button type="reset" class="btn btn-card" data-dismiss="modal"
-                                            aria-label="Close">
-                                        Ok
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
             </div>
         </div>
@@ -228,6 +208,34 @@
     </div>
 </div>
 
+<!--resend booking code modal-->
+<div class="modal fade" id="resendBookingCode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="resendBookingCodeModalLabel">Foglalási kód újraküldése</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Kérlek add meg az email címed amit a foglaláshoz használtál. Amennyiben az email címed szerepel
+                    az adatbátisunkban, vagyis rendelkezel érvényes foglalással, újra elküldjük a foglalási kódodat.</p>
+                <form action="{{ url_for('resend_booking_code') }}" method="POST">
+                    <div class="form-group">
+                        <label for="booking_email" class="form-control-label">Email:</label>
+                        <input class="form-control" id="resend_code_booking_email" name="resend_code_booking_email">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-card" data-dismiss="modal">Bezár</button>
+                        <button type="submit" class="btn btn-card">Tovább</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

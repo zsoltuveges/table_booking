@@ -4,18 +4,19 @@ import data_manager
 import hash
 import login as login_module
 import util
+import os
 
 app = Flask(__name__)
 
 app.config.update(
     DEBUG=True,
     # EMAIL SETTINGS
-    MAIL_SERVER='smtp.gmail.com',
-    MAIL_PORT=465,
-    MAIL_USE_SSL=True,
-    MAIL_USERNAME='kepregenyborze.asztalfoglalas@gmail.com',
-    MAIL_PASSWORD='petproject',
-    SECURITY_PASSWORD_SALT='jagjeiogjawoegjoawetjpoawjiegpoawjgojwegohawepiogawogj')
+    MAIL_SERVER=os.environ.get('MAIL_SERVER'),
+    MAIL_PORT=os.environ.get('MAIL_PORT'),
+    MAIL_USE_SSL=os.environ.get('MAIL_USE_SSL'),
+    MAIL_USERNAME=os.environ.get('MAIL_USERNAME'),
+    MAIL_PASSWORD=os.environ.get('MAIL_PASSWORD'),
+    SECURITY_PASSWORD_SALT=os.environ.get('MAIL_PASSWORD_SALT'))
 
 mail = Mail(app)
 PUBLIC_SPACE_NAMES = util.read_public_spaces_from_file()
@@ -29,6 +30,22 @@ def send_bookig_code(booking_data):
     msg.body = "Kedves " + booking_data["name"] + "!\n" + "Köszönjük a foglalásod! A foglalási kódod: " + booking_data["booking_id"] + "\nEnnek segítségével módosíthatod vagy törölheted a foglalásod."
     mail.send(msg)
     return "Sent"
+
+
+@app.route('/resend-booking-code', methods=['GET', 'POST'])
+def resend_booking_code():
+    booking_email = request.form.to_dict()["resend_code_booking_email"]
+    booking_data = data_manager.get_booking_code_for_resend(booking_email)
+    if booking_data:
+        msg = Message(
+            "Képregénybörze asztalfoglalás foglalási kód újraküldés",
+            sender="kepregenyborze.asztalfoglalas@gmail.com",
+            recipients=[booking_data["email"]])
+        msg.body = "Kedves " + booking_data["name"] + "!\n" + "A foglalási kódod: " + \
+                   booking_data["booking_id"] + \
+                   "\nKérlek őrizd meg a kódot, ennek segítségével módosíthatod vagy törölheted a foglalásod."
+        mail.send(msg)
+        return redirect(url_for('index'))
 
 
 @app.route('/')
@@ -63,7 +80,7 @@ def login():
             if is_correct_password:
                 session["username"] = login_data["username"]
                 session["user_id"] = user_data_from_database["id"]
-                return redirect(url_for('admin_page'))
+                return redirect(url_for('admin_page', admin_name=session["username"]))
         return render_template('login.html', failed_login=True)
     return render_template('login.html')
 
