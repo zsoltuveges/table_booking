@@ -55,6 +55,11 @@
         </a>
     </div>
 </nav>
+<div id="search">
+    <input type="text" id="searchInput">
+    <button id="searchButton">Keresés</button>
+    <button id="show_all">Mutass mindent</button>
+</div>
 <div class="container-fluid">
     <div class="table-body p-0">
         <div class="bg-light round">
@@ -124,6 +129,7 @@
                 <form action="{{ url_for('send_invitation') }}" method="POST">
                     <label for="invitation_email">Email</label>
                     <input type="text" name="invitation_email" id="invitation_email">
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezár</button>

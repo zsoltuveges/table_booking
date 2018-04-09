@@ -3,6 +3,8 @@ admin = {
     _allCompanyBookings: "",
     _indiOrderDirection: "",
     _companyOrderDirection: "",
+    _searchedIndiBooking: [],
+    _searchedCompBooking: [],
 
     init: function () {
         this.getAllCompanyBookingsFromDatabase();
@@ -10,6 +12,8 @@ admin = {
         this.sortIndiBookings();
         this.sortCompanyBookings();
         this.addingEventListenerToMenuDropDown();
+        this.search();
+        this.showAllData();
     },
     getAllIndividualBookingsFromDatabase: function () {
         $.getJSON('/get-individual-bookings', function (response) {
@@ -127,6 +131,53 @@ admin = {
         menuInvite.style.cursor = "pointer";
         let menuSaveBookings = document.getElementById("menu-save-bookings");
         menuSaveBookings.style.cursor = "not-allowed";
+    },
+
+    search: function() {
+        admin._searchedIndiBooking = [];
+        admin._searchedCompBooking = [];
+        admin.getAllIndividualBookingsFromDatabase();
+        admin.getAllCompanyBookingsFromDatabase();
+        let searchButton = document.getElementById("searchButton");
+        let indiColumns = ["name", "email"];
+        let compColumns = ["name", "email", "city", "street_address", "street_type"];
+        searchButton.addEventListener('click', function() {
+            let searchedInfo = document.getElementById("searchInput").value;
+            document.getElementById("searchInput").value = "";
+            for (let i = 0; i < admin._allIndieBooking.length; i++) {
+                for (let column of indiColumns) {
+                    if (admin._allIndieBooking[i][column].toLowerCase().includes(searchedInfo.toLowerCase())) {
+                        admin._searchedIndiBooking.push(admin._allIndieBooking[i]);
+                        break;
+                    }
+                }
+            }
+            admin._allIndieBooking = admin._searchedIndiBooking;
+            admin._searchedIndiBooking = [];
+            admin.displayAllIndividualBookings();
+            for (let i = 0; i < admin._allCompanyBookings.length; i++) {
+                for (let column of compColumns) {
+                    if (admin._allCompanyBookings[i][column].toLowerCase().includes(searchedInfo.toLowerCase())) {
+                        admin._searchedCompBooking.push(admin._allCompanyBookings[i]);
+                        break;
+                    }
+                }
+            }
+            admin._allCompanyBookings = admin._searchedCompBooking;
+            admin._searchedCompBooking = [];
+            admin.displayAllCompanyBookings();
+
+        })
+    },
+
+    showAllData: function() {
+        let showAllButton = document.getElementById("show_all");
+        showAllButton.addEventListener('click', function() {
+            admin.getAllIndividualBookingsFromDatabase();
+            admin.getAllCompanyBookingsFromDatabase();
+            admin.displayAllIndividualBookings();
+            admin.displayAllCompanyBookings();
+        })
     }
 };
 
