@@ -63,27 +63,21 @@ dom = {
     },
 
     displayNumberOfRemainingTables: function() {
-        let remainingTablesDiv = document.getElementById("numberOfRemainingTablesDiv");
-        dom.getMaxTableData();
-        let bookingButton = document.getElementsByClassName("submitButton");
-        for (let button of bookingButton) {
+        let bookingButtons = document.getElementsByClassName("submitButton");
+        for (let button of bookingButtons) {
             button.addEventListener('click', function() {
-                remainingTablesDiv.innerHTML = '';
-                dom.getMaxTableData();
+                let remainingTablesDiv = document.getElementById("numberOfRemainingTablesDiv");
+                remainingTablesDiv.innerHTML = null;
+                let paragraph = document.createElement("p");
+                fetch('/get-max-tables-data')
+                .then(response => response.json())
+                .then(function(result) {
+                    let tempItem = document.createTextNode(result["remaining_tables"]);
+                    paragraph.appendChild(tempItem);
+                    remainingTablesDiv.appendChild(paragraph);
+                })
             })
         }
-    },
-
-    getMaxTableData: function() {
-        let remainingTablesDiv = document.getElementById("numberOfRemainingTablesDiv");
-        let paragraph = document.createElement("p");
-        fetch('/get-max-tables-data')
-            .then(response => response.json())
-            .then(function(result) {
-                let tempItem = document.createTextNode(result["remaining_tables"]);
-                paragraph.appendChild(tempItem);
-                remainingTablesDiv.appendChild(paragraph);
-        });
     }
 };
 

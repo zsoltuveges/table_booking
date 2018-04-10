@@ -64,8 +64,9 @@ def get_max_tables_data():
 @app.route('/')
 def index():
     number_of_remaining_tables = data_manager.get_max_tables()["remaining_tables"]
-    return render_template('index.html', public_space_names=PUBLIC_SPACE_NAMES,
-                                         number_of_remaining_tables=number_of_remaining_tables)
+    return render_template('index.html',
+                           public_space_names=PUBLIC_SPACE_NAMES,
+                           number_of_remaining_tables=number_of_remaining_tables)
 
 
 @app.route('/registration/<token>', methods=['GET', 'POST'])
@@ -148,6 +149,7 @@ def new_booking():
     booking_data_with_booking_id = data_manager.booking_code_generator(booking_data)
     if "city" in booking_data:
         data_manager.add_to_company(booking_data_with_booking_id)
+        print("eljut ide????????????????")
     else:
         data_manager.add_to_individuals(booking_data_with_booking_id)
     send_bookig_code(booking_data_with_booking_id)

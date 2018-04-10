@@ -33,8 +33,13 @@ admin = {
             //tableRow.className = "residents-info";
             let columns = ["name", "email", "phone_number", "booked_tables", "date_time"];
             for (let i = 0; i < columns.length; i++) {
-                var tableData = document.createElement("td");
-                var tempItem = document.createTextNode(admin._allIndieBooking[row][columns[i]]);
+                let tableData = document.createElement("td");
+                let tempItem;
+                if (columns[i] === "date_time") {
+                    tempItem = document.createTextNode(admin._allIndieBooking[row][columns[i]]);
+                } else {
+                    tempItem = document.createTextNode(admin._allIndieBooking[row][columns[i]]);
+                }
                 tableData.appendChild(tempItem);
                 tableRow.appendChild(tableData);
             }

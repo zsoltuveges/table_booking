@@ -74,7 +74,7 @@ def add_to_individuals(cursor, new_booking):
 
 @connection.connection_handler
 def add_to_company(cursor, new_booking):
-    new_booking_number_of_tables = int(new_booking["table_number"])
+    new_booking_number_of_tables = int(new_booking["tableNumber"])
     cursor.execute("""
                         SELECT remaining_tables FROM table_number
                         """)
@@ -199,6 +199,20 @@ def set_max_tables(cursor, max_tables):
                     UPDATE table_number
                     SET max_tables = %(maxTables)s
                     """, max_tables)
+    number_of_booked_tables = 0
+    cursor.execute("""
+                    SELECT SUM(booked_tables) as sum_of_tables FROM individuals
+                    """)
+    number_of_booked_tables += cursor.fetchone()["sum_of_tables"]
+    cursor.execute("""
+                    SELECT SUM(booked_tables) as sum_of_tables FROM company
+                    """)
+    number_of_booked_tables += cursor.fetchone()["sum_of_tables"]
+    remaining_tables = int(max_tables["maxTables"]) - number_of_booked_tables
+    cursor.execute("""
+                    UPDATE table_number
+                    SET remaining_tables = %(remaining_tables)s
+                    """, {"remaining_tables": remaining_tables})
 
 
 @connection.connection_handler
