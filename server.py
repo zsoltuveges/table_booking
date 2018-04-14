@@ -52,7 +52,7 @@ def resend_booking_code():
 def set_max_tables():
     max_tables = request.form.to_dict()
     data_manager.set_max_tables(max_tables)
-    return redirect(url_for('admin_page', admin_name=session["username"]))
+    return "Done"
 
 
 @app.route('/get-max-tables-data')
@@ -110,23 +110,24 @@ def logout():
 @app.route('/admin-page/<admin_name>')
 @login_module.login_required
 def admin_page(admin_name):
-    individual_data = data_manager.get_all_booking_from_individuals()
-    company_data = data_manager.get_all_booking_from_company()
     return render_template('admin.html',
-                           individual_data=individual_data,
-                           comp_data=company_data,
                            admin_name=admin_name)
 
 
-@app.route('/modify-delete-booking', methods=["POST"])
+@app.route('/modify-delete-booking', methods=["GET", "POST"])
 def modify_delete_booking():
     """Collects the data of the previous booking from database,
     and displays it for modification"""
     mod_del_target = request.form.to_dict()
     booking_data = data_manager.return_booking_data(mod_del_target)
     return render_template('handle_booking.html',
-                           booking_data=booking_data,
-                           public_space_names=PUBLIC_SPACE_NAMES)
+                           booking_data=booking_data)
+
+
+@app.route('/mod-del-admin')
+def mod_del_admin():
+    data = request.form.to_dict()
+    return
 
 
 @app.route('/save-edited-booking', methods=['POST'])
@@ -149,7 +150,6 @@ def new_booking():
     booking_data_with_booking_id = data_manager.booking_code_generator(booking_data)
     if "city" in booking_data:
         data_manager.add_to_company(booking_data_with_booking_id)
-        print("eljut ide????????????????")
     else:
         data_manager.add_to_individuals(booking_data_with_booking_id)
     send_bookig_code(booking_data_with_booking_id)

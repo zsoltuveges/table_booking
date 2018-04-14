@@ -30,24 +30,32 @@ admin = {
         tableBody.innerHTML = "";
         for (let row = 0; row < admin._allIndieBooking.length; row++) {
             var tableRow = document.createElement("tr");
-            //tableRow.className = "residents-info";
             let columns = ["name", "email", "phone_number", "booked_tables", "date_time"];
             for (let i = 0; i < columns.length; i++) {
                 let tableData = document.createElement("td");
                 let tempItem;
                 if (columns[i] === "date_time") {
                     tempItem = document.createTextNode(admin._allIndieBooking[row][columns[i]]);
+                    tableData.appendChild(tempItem);
+                } else if (columns[i] === "booked_tables") {
+                    let button = document.createElement("button");
+                    button.addEventListener('click', function() {
+                        $.post('/modify-delete-booking', admin._allIndieBooking[row])
+
+                    });
+                    let buttonContent = document.createTextNode(admin._allIndieBooking[row][columns[i]]);
+                    button.appendChild(buttonContent);
+                    tableData.appendChild(button);
                 } else {
                     tempItem = document.createTextNode(admin._allIndieBooking[row][columns[i]]);
+                    tableData.appendChild(tempItem);
                 }
-                tableData.appendChild(tempItem);
                 tableRow.appendChild(tableData);
             }
             tableBody.appendChild(tableRow);
         }
         let individualTable = document.getElementById("individual_table");
         individualTable.appendChild(tableBody);
-
     },
 
     getAllCompanyBookingsFromDatabase: function () {
@@ -62,7 +70,6 @@ admin = {
         tableBody.innerHTML = "";
         for (let row = 0; row < admin._allCompanyBookings.length; row++) {
             var tableRow = document.createElement("tr");
-            //tableRow.className = "residents-info";
             let columns = [
                 "name",
                 "email",
@@ -79,8 +86,15 @@ admin = {
             ];
             for (let i = 0; i < columns.length; i++) {
                 var tableData = document.createElement("td");
-                var tempItem = document.createTextNode(admin._allCompanyBookings[row][columns[i]]);
-                tableData.appendChild(tempItem);
+                if (columns[i] === "booked_tables") {
+                    let button = document.createElement("button");
+                    let buttonContent = document.createTextNode(admin._allCompanyBookings[row][columns[i]]);
+                    button.appendChild(buttonContent);
+                    tableData.appendChild(button);
+                } else {
+                    let tempItem = document.createTextNode(admin._allCompanyBookings[row][columns[i]]);
+                    tableData.appendChild(tempItem);
+                }
                 tableRow.appendChild(tableData);
             }
             tableBody.appendChild(tableRow);
@@ -98,9 +112,9 @@ admin = {
             column.style.cursor = "pointer";
             let orderBy = column.dataset.name;
             column.addEventListener('click', function () {
-                if (admin._indiOrderDirection == "" || admin._indiOrderDirection == "DESC") {
+                if (admin._indiOrderDirection === "" || admin._indiOrderDirection === "DESC") {
                     admin._indiOrderDirection = "ASC";
-                } else if (admin._indiOrderDirection == "ASC") {
+                } else if (admin._indiOrderDirection === "ASC") {
                     admin._indiOrderDirection = "DESC"
                 }
                 let jsonURL = '/order/' + orderBy + '/' + admin._indiOrderDirection + '/' + category;
@@ -120,9 +134,9 @@ admin = {
             column.style.cursor = "pointer";
             let orderBy = column.dataset.name;
             column.addEventListener('click', function () {
-                if (admin._companyOrderDirection == "" || admin._companyOrderDirection == "DESC") {
+                if (admin._companyOrderDirection === "" || admin._companyOrderDirection === "DESC") {
                     admin._companyOrderDirection = "ASC";
-                } else if (admin._companyOrderDirection == "ASC") {
+                } else if (admin._companyOrderDirection === "ASC") {
                     admin._companyOrderDirection = "DESC"
                 }
                 let jsonURL = '/order/' + orderBy + '/' + admin._companyOrderDirection + '/' + category;
