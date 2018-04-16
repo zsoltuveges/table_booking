@@ -17,6 +17,7 @@ admin = {
         this.addingEventListenerToMenuDropDown();
         this.search();
         this.showAllData();
+        this.deleteModifyButtons();
     },
     getAllIndividualBookingsFromDatabase: function () {
         $.getJSON('/get-individual-bookings', function (response) {
@@ -39,10 +40,22 @@ admin = {
                     tableData.appendChild(tempItem);
                 } else if (columns[i] === "booked_tables") {
                     let button = document.createElement("button");
+                    button.setAttribute("data-toggle", "modal");
+                    button.setAttribute("data-target", "#admin-modification-modal");
                     button.addEventListener('click', function() {
-                        $.post('/modify-delete-booking', admin._allIndieBooking[row])
-
+                        let nameModify = document.getElementById("name");
+                        nameModify.value = admin._allIndieBooking[row].name;
+                        let phoneModify = document.getElementById("phone_number");
+                        phoneModify.value = admin._allIndieBooking[row].phone_number;
+                        let emailModify = document.getElementById("email");
+                        emailModify.value = admin._allIndieBooking[row].email;
+                        let tableNumbersModify = document.getElementById("table_number");
+                        tableNumbersModify.value = admin._allIndieBooking[row].booked_tables;
+                        let bookingId = document.getElementById("booking_id");
+                        bookingId.value = admin._allIndieBooking[row].id;
+                        admin.setModifyDeleteButtonsVisibility();
                     });
+
                     let buttonContent = document.createTextNode(admin._allIndieBooking[row][columns[i]]);
                     button.appendChild(buttonContent);
                     tableData.appendChild(button);
@@ -108,7 +121,7 @@ admin = {
         let orderingColumns = [];
         let category = "individuals";
         orderingColumns.push(document.getElementById("indi_name"), document.getElementById("indi_table"), document.getElementById("indi_time"));
-        for (column of orderingColumns) {
+        for (let column of orderingColumns) {
             column.style.cursor = "pointer";
             let orderBy = column.dataset.name;
             column.addEventListener('click', function () {
@@ -130,7 +143,7 @@ admin = {
         let orderingColumns = [];
         let category = "company";
         orderingColumns.push(document.getElementById("company_name"), document.getElementById("comp_table"), document.getElementById("company_time"));
-        for (column of orderingColumns) {
+        for (let column of orderingColumns) {
             column.style.cursor = "pointer";
             let orderBy = column.dataset.name;
             column.addEventListener('click', function () {
@@ -235,6 +248,60 @@ admin = {
                 });
             document.getElementById("maxNumberOfTables").value = "";
             admin.getMaxAndRemainingTables();
+        })
+    },
+
+    deleteModifyButtons: function() {
+        let confirmDeleteButton = document.getElementById("confirm_delete_button");
+        let confirmModifyButton = document.getElementById("confirm_modify_button");
+        confirmDeleteButton.addEventListener('click', function() {
+            let bookingId = document.getElementById("booking_id").value;
+            $.post('/mod-del-by-admin', {
+                id: bookingId,
+                delete_booking: "delete"
+            });
+            admin.getAllIndividualBookingsFromDatabase();
+        });
+        confirmModifyButton.addEventListener('click', function() {
+            let bookingId = document.getElementById("booking_id").value;
+            let name = document.getElementById("name").value;
+            let phoneNumber = document.getElementById("phone_number").value;
+            let email = document.getElementById("email").value;
+            let tableNumber = document.getElementById("table_number").value;
+            $.post('/mod-del-by-admin', {
+                id: bookingId,
+                name: name,
+                phoneNumber: phoneNumber,
+                email: email,
+                tableNumber: tableNumber
+            });
+            admin.getAllIndividualBookingsFromDatabase();
+        });
+
+    },
+    setModifyDeleteButtonsVisibility: function() {
+        let deleteButton = document.getElementById("delete_booking_button");
+        let modifyButton = document.getElementById("modify_booking_button");
+        let confirmModifyButton = document.getElementById("confirm_modify_button");
+        let confirmDeleteButton = document.getElementById("confirm_delete_button");
+        let modDelModalCloseButton = document.getElementById("mod-del-modal-close-button");
+        modifyButton.addEventListener('click', function() {
+            modifyButton.style.visibility = 'hidden';
+            confirmModifyButton.style.visibility = "visible";
+            confirmDeleteButton.style.visibility = "hidden";
+            deleteButton.style.visibility = "visible";
+        });
+        deleteButton.addEventListener('click', function() {
+            deleteButton.style.visibility = "hidden";
+            confirmDeleteButton.style.visibility = "visible";
+            confirmModifyButton.style.visibility = "hidden";
+            modifyButton.style.visibility = "visible";
+        });
+        modDelModalCloseButton.addEventListener('click', function() {
+            modifyButton.style.visibility = 'visible';
+            confirmModifyButton.style.visibility = "hidden";
+            confirmDeleteButton.style.visibility = "hidden";
+            deleteButton.style.visibility = "visible";
         })
     }
 };

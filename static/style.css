@@ -131,3 +131,9 @@ span {
 #search, #setMaxTables {
     max-width: 260px;
 }
+#modify_booking_button, #delete_booking_button {
+    visibility: visible;
+}
+#confirm_modify_button, #confirm_delete_button {
+    visibility: hidden;
+}

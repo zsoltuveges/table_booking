@@ -114,6 +114,12 @@ def admin_page(admin_name):
                            admin_name=admin_name)
 
 
+@app.route('/mod-del-by-admin', methods=['POST'])
+def mod_del_by_admin():
+    data = request.form.to_dict()
+    data_manager.mod_del_by_admin(data)
+
+
 @app.route('/modify-delete-booking', methods=["GET", "POST"])
 def modify_delete_booking():
     """Collects the data of the previous booking from database,
@@ -122,12 +128,6 @@ def modify_delete_booking():
     booking_data = data_manager.return_booking_data(mod_del_target)
     return render_template('handle_booking.html',
                            booking_data=booking_data)
-
-
-@app.route('/mod-del-admin')
-def mod_del_admin():
-    data = request.form.to_dict()
-    return
 
 
 @app.route('/save-edited-booking', methods=['POST'])

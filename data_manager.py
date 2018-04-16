@@ -113,6 +113,22 @@ def return_booking_data(cursor, booking_data):
 
 
 @connection.connection_handler
+def mod_del_by_admin(cursor, booking_data):
+    if "delete_booking" in booking_data:
+        cursor.execute("""
+                        DELETE FROM individuals
+                        WHERE id = %(id)s
+                        """, booking_data)
+    else:
+        cursor.execute("""
+                        UPDATE individuals
+                        SET name = %(name)s, phone_number = %(phoneNumber)s, email = %(email)s, 
+                        booked_tables = %(tableNumber)s
+                        WHERE id = %(id)s
+                        """, booking_data)
+
+
+@connection.connection_handler
 def modify_delete_individual_booking(cursor, booking_data):
     if "delete" in booking_data:
         cursor.execute("""
