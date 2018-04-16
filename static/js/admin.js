@@ -1,26 +1,27 @@
 admin = {
-    _allIndieBooking: "",
+    _allIndiBookings: "",
     _allCompanyBookings: "",
     _indiOrderDirection: "",
     _companyOrderDirection: "",
     _searchedIndiBooking: [],
     _searchedCompBooking: [],
+    _backupIndiBookings: "",
+    _backupCompanyBookings: "",
     _maxTablesData: {},
 
     init: function () {
-        this.getAllCompanyBookingsFromDatabase();
-        this.getAllIndividualBookingsFromDatabase();
+        this.showAllData();
         this.getMaxAndRemainingTables();
         this.setMaxTables();
         this.sortIndiBookings();
         this.sortCompanyBookings();
         this.addingEventListenerToMenuDropDown();
         this.search();
-        this.showAllData();
     },
     getAllIndividualBookingsFromDatabase: function () {
         $.getJSON('/get-individual-bookings', function (response) {
-            admin._allIndieBooking = response;
+            admin._allIndiBookings = response;
+            admin._backupIndiBookings = response;
             admin.displayAllIndividualBookings();
         })
     },
@@ -28,7 +29,7 @@ admin = {
     displayAllIndividualBookings: function () {
         let tableBody = document.getElementById("indi_body");
         tableBody.innerHTML = "";
-        for (let row = 0; row < admin._allIndieBooking.length; row++) {
+        for (let row = 0; row < admin._allIndiBookings.length; row++) {
             var tableRow = document.createElement("tr");
             //tableRow.className = "residents-info";
             let columns = ["name", "email", "phone_number", "booked_tables", "date_time"];
@@ -36,9 +37,9 @@ admin = {
                 let tableData = document.createElement("td");
                 let tempItem;
                 if (columns[i] === "date_time") {
-                    tempItem = document.createTextNode(admin._allIndieBooking[row][columns[i]]);
+                    tempItem = document.createTextNode(admin._allIndiBookings[row][columns[i]]);
                 } else {
-                    tempItem = document.createTextNode(admin._allIndieBooking[row][columns[i]]);
+                    tempItem = document.createTextNode(admin._allIndiBookings[row][columns[i]]);
                 }
                 tableData.appendChild(tempItem);
                 tableRow.appendChild(tableData);
@@ -53,6 +54,7 @@ admin = {
     getAllCompanyBookingsFromDatabase: function () {
         $.getJSON('/get-company-bookings', function (response) {
             admin._allCompanyBookings = response;
+            admin._backupCompanyBookings = response;
             admin.displayAllCompanyBookings();
         })
     },
@@ -105,7 +107,7 @@ admin = {
                 }
                 let jsonURL = '/order/' + orderBy + '/' + admin._indiOrderDirection + '/' + category;
                 $.getJSON(jsonURL, function (response) {
-                    admin._allIndieBooking = response;
+                    admin._allIndiBookings = response;
                     admin.displayAllIndividualBookings();
                 });
             })
@@ -141,27 +143,31 @@ admin = {
         menuSaveBookings.style.cursor = "not-allowed";
     },
 
-    search: function() {
-        admin._searchedIndiBooking = [];
-        admin._searchedCompBooking = [];
-        admin.getAllIndividualBookingsFromDatabase();
-        admin.getAllCompanyBookingsFromDatabase();
-        let searchButton = document.getElementById("searchButton");
+    search: function () {
+        let searchArea = document.getElementById("searchInput");
         let indiColumns = ["name", "email"];
         let compColumns = ["name", "email", "city", "street_address", "street_type"];
-        searchButton.addEventListener('click', function() {
+        searchArea.addEventListener('keyup', function () {
+            admin._searchedIndiBooking = [];
+            admin._searchedCompBooking = [];
             let searchedInfo = document.getElementById("searchInput").value;
-            document.getElementById("searchInput").value = "";
-            for (let i = 0; i < admin._allIndieBooking.length; i++) {
+            if (searchedInfo === "") {
+                admin.showAllData();
+                return;
+            }
+            if (event.key === "Backspace") {
+                admin._allIndiBookings = admin._backupIndiBookings;
+                admin._allCompanyBookings = admin._backupCompanyBookings;
+            }
+            for (let i = 0; i < admin._allIndiBookings.length; i++) {
                 for (let column of indiColumns) {
-                    if (admin._allIndieBooking[i][column].toLowerCase().includes(searchedInfo.toLowerCase())) {
-                        admin._searchedIndiBooking.push(admin._allIndieBooking[i]);
+                    if (admin._allIndiBookings[i][column].toLowerCase().includes(searchedInfo.toLowerCase())) {
+                        admin._searchedIndiBooking.push(admin._allIndiBookings[i]);
                         break;
                     }
                 }
             }
-            admin._allIndieBooking = admin._searchedIndiBooking;
-            admin._searchedIndiBooking = [];
+            admin._allIndiBookings = admin._searchedIndiBooking;
             admin.displayAllIndividualBookings();
             for (let i = 0; i < admin._allCompanyBookings.length; i++) {
                 for (let column of compColumns) {
@@ -172,31 +178,25 @@ admin = {
                 }
             }
             admin._allCompanyBookings = admin._searchedCompBooking;
-            admin._searchedCompBooking = [];
             admin.displayAllCompanyBookings();
 
         })
     },
 
-    showAllData: function() {
-        let showAllButton = document.getElementById("show_all");
-        showAllButton.addEventListener('click', function() {
-            admin.getAllIndividualBookingsFromDatabase();
-            admin.getAllCompanyBookingsFromDatabase();
-            admin.displayAllIndividualBookings();
-            admin.displayAllCompanyBookings();
-        })
+    showAllData: function () {
+        admin.getAllIndividualBookingsFromDatabase();
+        admin.getAllCompanyBookingsFromDatabase();
     },
 
-    getMaxAndRemainingTables: function() {
-        $.getJSON('/get-max-tables-data', function(response) {
+    getMaxAndRemainingTables: function () {
+        $.getJSON('/get-max-tables-data', function (response) {
             admin._maxTablesData = response;
             admin.displayMaxTablesData();
         });
         return admin._maxTablesData;
     },
 
-    displayMaxTablesData: function() {
+    displayMaxTablesData: function () {
         let tableBody = document.getElementById("maxTablesTableBody");
         if (tableBody.hasChildNodes()) {
             tableBody.removeChild(tableBody.firstChild);
@@ -212,13 +212,13 @@ admin = {
         tableBody.appendChild(tableRow);
     },
 
-    setMaxTables: function() {
+    setMaxTables: function () {
         let maxTablesButton = document.getElementById("maxTablesButton");
-        maxTablesButton.addEventListener('click', function() {
+        maxTablesButton.addEventListener('click', function () {
             let maxNumberOfTables = document.getElementById("maxNumberOfTables").value;
-                $.post('/set-max-tables', {
-                    maxTables: maxNumberOfTables
-                });
+            $.post('/set-max-tables', {
+                maxTables: maxNumberOfTables
+            });
             document.getElementById("maxNumberOfTables").value = "";
             admin.getMaxAndRemainingTables();
         })
