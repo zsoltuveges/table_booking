@@ -1,3 +1,4 @@
+@import "//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css";
 body {
     background-color: green;
     background: url("https://awesomewallpaper.files.wordpress.com/2013/07/spiderman_by_joekerruk-d5ccywk.jpg");
@@ -8,10 +9,12 @@ body {
 #admin_body {
     background-image: none;
 }
+
 #invitation {
     float: left;
     max-width: 25%;
 }
+
 h1 {
     text-align: center;
     color: white;
@@ -23,6 +26,7 @@ h1 {
         margin-right: 3% !important;
     }
 }
+
 @media (max-width: 992px) {
     #container {
         margin-left: 10% !important;
@@ -128,6 +132,11 @@ span {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
+
 #search, #setMaxTables {
     max-width: 260px;
+}
+
+.form-control {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, fontAwesome;
 }
