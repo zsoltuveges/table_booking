@@ -197,19 +197,8 @@ admin = {
     },
 
     displayMaxTablesData: function () {
-        let tableBody = document.getElementById("maxTablesTableBody");
-        if (tableBody.hasChildNodes()) {
-            tableBody.removeChild(tableBody.firstChild);
-        }
-        let tableRow = document.createElement("tr");
-        let columns = ["max_tables", "remaining_tables"];
-        for (let i = 0; i < columns.length; i++) {
-            let tableData = document.createElement("td");
-            let tempItem = document.createTextNode(admin._maxTablesData[columns[i]]);
-            tableData.appendChild(tempItem);
-            tableRow.appendChild(tableData);
-        }
-        tableBody.appendChild(tableRow);
+        document.getElementById("max-table-badge").innerHTML = admin._maxTablesData["max_tables"];
+        document.getElementById("empty-table-badge").innerHTML = admin._maxTablesData["remaining_tables"];
     },
 
     setMaxTables: function () {

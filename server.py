@@ -149,7 +149,6 @@ def new_booking():
     booking_data_with_booking_id = data_manager.booking_code_generator(booking_data)
     if "city" in booking_data:
         data_manager.add_to_company(booking_data_with_booking_id)
-        print("eljut ide????????????????")
     else:
         data_manager.add_to_individuals(booking_data_with_booking_id)
     send_bookig_code(booking_data_with_booking_id)
@@ -191,6 +190,12 @@ def get_company_bookings():
 def order_admin_page(orderby, direction, category):
     sorted_individual_datas = data_manager.order_by_column(orderby, direction, category)
     return jsonify(sorted_individual_datas)
+
+
+@app.route('/admin/booking-settings')
+def booking_settings():
+    admin_name = session["username"]
+    return render_template('admin_booking_settings.html', admin_name=admin_name)
 
 
 if __name__ == '__main__':

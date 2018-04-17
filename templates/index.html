@@ -19,7 +19,7 @@
     <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
     <title>Booking</title>
 </head>
-<body>
+<body class="index-body">
 <h1 class="welcome-text">Képregénybörze asztalfoglaló</h1>
 <div id="container">
     <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#modifyDeleteModal" data-whatever="@mdo">
@@ -53,13 +53,13 @@
             </div>
             <div class="card-body">
                 <label for="newIndividualName">Név</label><br>
-                <input type="text" name="name" id="newIndividualName" class="individualInput form-control" required><br>
+                <input type="text" name="name" id="newIndividualName" class="individualInput form-control mx-auto" required><br>
                 <label for="newIndividualEmail">Email</label><br>
-                <input type="text" name="email" id="newIndividualEmail" class="individualInput form-control"
+                <input type="text" name="email" id="newIndividualEmail" class="individualInput form-control mx-auto"
                        required><br>
                 <label for="newIndividualPhoneNumber">Telefonszám</label><br>
                 <input type="text" name="phone_number" id="newIndividualPhoneNumber"
-                       class="individualInput form-control"
+                       class="individualInput form-control mx-auto"
                        required><br>
                 <label for="newIndividualTableNumber">Asztalszám</label><br>
                 <select name="table_number" id="newIndividualTableNumber"><br>
@@ -83,11 +83,11 @@
             </div>
             <div class="card-body">
                 <label for="newCompanyName">Cégnév</label><br>
-                <input type="text" name="newCompanyName" id="newCompanyName" class="form-control CompanyInput"><br>
+                <input type="text" name="newCompanyName" id="newCompanyName" class="form-control CompanyInput mx-auto"><br>
                 <label for="newCompanyEmail">Email</label><br>
-                <input type="text" name="newCompanyEmail" id="newCompanyEmail" class="form-control CompanyInput"><br>
+                <input type="text" name="newCompanyEmail" id="newCompanyEmail" class="form-control CompanyInput mx-auto"><br>
                 <label for="newCompanyPhoneNumber">Telefonszám</label><br>
-                <input type="text" name="newCompanyPhoneNumber" id="newCompanyPhoneNumber" class="form-control CompanyInput"><br>
+                <input type="text" name="newCompanyPhoneNumber" id="newCompanyPhoneNumber" class="form-control CompanyInput mx-auto"><br>
                 <h3 id="company_details">
                     Cégadatok
                 </h3>
@@ -95,19 +95,19 @@
                     <label for="zip_code">
                         Irányítószám
                     </label><br>
-                    <input type="text" name="zip_code" required id="zip_code" class="form-control CompanyInput" >
+                    <input type="text" name="zip_code" required id="zip_code" class="form-control CompanyInput mx-auto" >
                 </p>
                 <p>
                     <label for="city">
                         Város
                     </label><br>
-                    <input type="text" name="city" required id="city" class="form-control CompanyInput">
+                    <input type="text" name="city" required id="city" class="form-control CompanyInput mx-auto">
                 </p>
                 <p>
                     <label for="street_address">
                         Közterület neve
                     </label><br>
-                    <input type="text" name="street_address" required id="street_address" class="form-control CompanyInput">
+                    <input type="text" name="street_address" required id="street_address" class="form-control mx-auto CompanyInput">
                 </p>
                 <p>
                     <label for="street_type">
@@ -123,19 +123,19 @@
                     <label for="street_num">
                         Közterület száma
                     </label><br>
-                    <input type="number" required name="street_num" id="street_num" class="form-control CompanyInput" maxlength="4" minlength="4">
+                    <input type="number" required name="street_num" id="street_num" class="form-control CompanyInput mx-auto" maxlength="4" minlength="4">
                 </p>
                 <p>
                     <label for="floor_door">
                         Emelet/ajtó
                     </label><br>
-                    <input type="text" name="floor_door" id="floor_door" class="form-control CompanyInput">
+                    <input type="text" name="floor_door" id="floor_door" class="form-control CompanyInput mx-auto">
                 </p>
                 <p>
                     <label for="vat_number">
                         Adószám
                     </label><br>
-                    <input type="number" name="vat_number" id="vat_number" class="form-control CompanyInput" required>
+                    <input type="number" name="vat_number" id="vat_number" class="form-control CompanyInput mx-auto" required>
                 </p>
 
 

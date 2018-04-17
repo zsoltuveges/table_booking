@@ -23,7 +23,7 @@
           defer>
     <title>Table booking</title>
 </head>
-<body id="admin_body">
+<body id="admin-body">
 {# Navbar modal #}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
     <a class="navbar-brand" href="{{ url_for('admin_page', admin_name = admin_name ) }}">Admin</a>
@@ -61,23 +61,6 @@
         </a>
     </div>
 </nav>
-<div id="setMaxTables">
-    <input type="text" id="maxNumberOfTables">
-    <button id="maxTablesButton">Maximális asztalszám beállítása</button>
-</div>
-<div>
-    <table>
-        <thead>
-        <tr>
-            <td>Maximálisan foglalható asztalok száma</td>
-            <td>Üres asztalok száma</td>
-        </tr>
-        </thead>
-        <tbody id="maxTablesTableBody">
-
-        </tbody>
-    </table>
-</div>
 <div class="container-fluid">
     <div class="table-body p-0">
         <div class="bg-light round">
