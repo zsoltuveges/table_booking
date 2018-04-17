@@ -1,65 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    {# Bootstrap #}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-    {# Custom CSS #}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    {# jQuery #}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    {# Font Awesome #}
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css"
-          integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous"
-          defer>
-    {# Custom JS #}
-    <script src="{{ url_for('static', filename='js/admin.js') }}" defer></script>
-    <title>Beállítások</title>
-</head>
-<body id="admin-body">
-{# Navbar modal #}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
-    <a class="navbar-brand" href="{{ url_for('admin_page', admin_name = admin_name ) }}">Admin</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    Menü
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a href="{{ url_for('admin_page', admin_name = admin_name ) }}" id="menu-bookings"
-                       class="dropdown-item btn-light">Foglalások</a>
-                    <span id="menu-invite" class="dropdown-item btn-light" data-toggle="modal"
-                          data-target="#invitationModal">Meghívás</span>
-                    <div class="dropdown-divider"></div>
-                    <span id="menu-save-bookings" class="dropdown-item disabled">Foglalások mentése</span>
-                </div>
-            </li>
-        </ul>
-        <span class="navbar-text mr-3">
-            Üdv, {{ admin_name }}!
-        </span>
-        <i class="fas fa-user-circle fa-2x mr-4 text-light"></i>
-        <a href="{{ url_for('logout') }}">
-            <button class="btn btn-outline-danger my-2 my-sm-0"><i class="fas fa-power-off"></i></button>
-        </a>
-    </div>
-</nav>
+{% extends 'admin_layout.html' %}
+{% block content %}
 <div class="container">
     <h1 class="display-4">Beállítások <i class="fas fa-cogs"></i></h1>
     <hr>
@@ -78,5 +18,4 @@
     </div>
     <hr>
 </div>
-</body>
-</html>
+{% endblock %}
