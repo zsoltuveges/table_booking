@@ -117,7 +117,11 @@ def admin_page(admin_name):
 @app.route('/mod-del-by-admin', methods=['POST'])
 def mod_del_by_admin():
     data = request.form.to_dict()
-    data_manager.mod_del_by_admin(data)
+    if "company" in data:
+        data_manager.mod_del_comp_by_admin(data)
+    else:
+        data_manager.mod_del_indi_by_admin(data)
+    return "Done"
 
 
 @app.route('/modify-delete-booking', methods=["GET", "POST"])
