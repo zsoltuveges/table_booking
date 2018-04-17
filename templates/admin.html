@@ -18,7 +18,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='js/admin.js') }}" defer></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous" defer>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css"
+          integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous"
+          defer>
     <title>Table booking</title>
 </head>
 <body id="admin_body">
@@ -40,12 +42,16 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a href="{{ url_for('admin_page', admin_name = admin_name ) }}" id="menu-bookings"
                        class="dropdown-item btn-light">Foglalások</a>
-                    <span id="menu-invite" class="dropdown-item btn-light" data-toggle="modal" data-target="#invitationModal">Meghívás</span>
+                    <span id="menu-invite" class="dropdown-item btn-light" data-toggle="modal"
+                          data-target="#invitationModal">Meghívás</span>
                     <div class="dropdown-divider"></div>
                     <span id="menu-save-bookings" class="dropdown-item disabled">Foglalások mentése</span>
                 </div>
             </li>
         </ul>
+        <div class="form-inline my-2 my-lg-0">
+            <input id="searchInput" class="form-control mr-sm-4" type="search" placeholder="&#xf002; Keresés" aria-label="Search">
+        </div>
         <span class="navbar-text mr-3">
             Üdv, {{ admin_name }}!
         </span>
@@ -55,6 +61,23 @@
         </a>
     </div>
 </nav>
+<div id="setMaxTables">
+    <input type="text" id="maxNumberOfTables">
+    <button id="maxTablesButton">Maximális asztalszám beállítása</button>
+</div>
+<div>
+    <table>
+        <thead>
+        <tr>
+            <td>Maximálisan foglalható asztalok száma</td>
+            <td>Üres asztalok száma</td>
+        </tr>
+        </thead>
+        <tbody id="maxTablesTableBody">
+
+        </tbody>
+    </table>
+</div>
 <div class="container-fluid">
     <div class="table-body p-0">
         <div class="bg-light round">
@@ -67,8 +90,10 @@
                     <th id="indi_name" data-name="name" scope="col">Név <i class="fas fa-sort float-sm-right"></i></th>
                     <th id="indi_email" scope="col">Email</th>
                     <th id="indi_phone" scope="col">Telefonszám</th>
-                    <th id="indi_table" data-name="booked_tables" scope="col">Foglalt asztalok száma <i class="fas fa-sort float-sm-right"></i></th>
-                    <th id="indi_time" data-name="date_time" scope="col">Foglalás időpontja <i class="fas fa-sort float-sm-right"></i></th>
+                    <th id="indi_table" data-name="booked_tables" scope="col">Foglalt asztalok száma <i
+                            class="fas fa-sort float-sm-right"></i></th>
+                    <th id="indi_time" data-name="date_time" scope="col">Foglalás időpontja <i
+                            class="fas fa-sort float-sm-right"></i></th>
                 </tr>
                 </thead>
                 <tbody id="indi_body">
@@ -85,10 +110,12 @@
             <table class="table table-sm" id="company_table">
                 <thead>
                 <tr class="table_header">
-                    <th id="company_name" data-name="name" scope="col">Cégnév <i class="fas fa-sort float-sm-right"></i></th>
+                    <th id="company_name" data-name="name" scope="col">Cégnév <i class="fas fa-sort float-sm-right"></i>
+                    </th>
                     <th scope="col">Email</th>
                     <th scope="col">Telefonszám</th>
-                    <th id="comp_table" data-name="booked_tables" scope="col">Foglalt asztalok száma <i class="fas fa-sort float-sm-right"></i></th>
+                    <th id="comp_table" data-name="booked_tables" scope="col">Foglalt asztalok száma <i
+                            class="fas fa-sort float-sm-right"></i></th>
                     <th scope="col">Irányítószám</th>
                     <th scope="col">Város</th>
                     <th scope="col">Cím</th>
@@ -96,7 +123,8 @@
                     <th scope="col">Házszám</th>
                     <th scope="col">Emelet, ajtó</th>
                     <th scope="col">Adószám</th>
-                    <th id="company_time" data-name="date_time" scope="col">Foglalás dátuma <i class="fas fa-sort float-sm-right"></i></th>
+                    <th id="company_time" data-name="date_time" scope="col">Foglalás dátuma <i
+                            class="fas fa-sort float-sm-right"></i></th>
                 </tr>
                 </thead>
                 <tbody id="company_body">
@@ -124,6 +152,7 @@
                 <form action="{{ url_for('send_invitation') }}" method="POST">
                     <label for="invitation_email">Email</label>
                     <input type="text" name="invitation_email" id="invitation_email">
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezár</button>

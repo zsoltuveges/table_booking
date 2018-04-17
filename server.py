@@ -48,9 +48,25 @@ def resend_booking_code():
         return redirect(url_for('index'))
 
 
+@app.route('/set-max-tables', methods=['POST'])
+def set_max_tables():
+    max_tables = request.form.to_dict()
+    data_manager.set_max_tables(max_tables)
+    return redirect(url_for('admin_page', admin_name=session["username"]))
+
+
+@app.route('/get-max-tables-data')
+def get_max_tables_data():
+    max_tables_data = data_manager.get_max_tables()
+    return jsonify(max_tables_data)
+
+
 @app.route('/')
 def index():
-    return render_template('index.html', public_space_names=PUBLIC_SPACE_NAMES)
+    number_of_remaining_tables = data_manager.get_max_tables()["remaining_tables"]
+    return render_template('index.html',
+                           public_space_names=PUBLIC_SPACE_NAMES,
+                           number_of_remaining_tables=number_of_remaining_tables)
 
 
 @app.route('/registration/<token>', methods=['GET', 'POST'])
@@ -133,6 +149,7 @@ def new_booking():
     booking_data_with_booking_id = data_manager.booking_code_generator(booking_data)
     if "city" in booking_data:
         data_manager.add_to_company(booking_data_with_booking_id)
+        print("eljut ide????????????????")
     else:
         data_manager.add_to_individuals(booking_data_with_booking_id)
     send_bookig_code(booking_data_with_booking_id)
@@ -174,7 +191,6 @@ def get_company_bookings():
 def order_admin_page(orderby, direction, category):
     sorted_individual_datas = data_manager.order_by_column(orderby, direction, category)
     return jsonify(sorted_individual_datas)
-
 
 
 if __name__ == '__main__':

@@ -55,22 +55,44 @@ def get_user_data(cursor, login_data):
 
 @connection.connection_handler
 def add_to_individuals(cursor, new_booking):
+    new_booking_number_of_tables = int(new_booking["table_number"])
     cursor.execute("""
-                    INSERT INTO individuals (booking_id, name, email, phone_number, booked_tables, date_time)
-                    VALUES (%(booking_id)s, %(name)s, %(email)s, %(phone_number)s, %(table_number)s, now());
-                    """, new_booking)
+                    SELECT remaining_tables FROM table_number
+                    """)
+    remaining_tables = cursor.fetchone()["remaining_tables"]
+    if remaining_tables >= new_booking_number_of_tables:
+        cursor.execute("""
+                        INSERT INTO individuals (booking_id, name, email, phone_number, booked_tables, date_time)
+                        VALUES (%(booking_id)s, %(name)s, %(email)s, %(phone_number)s, %(table_number)s, now());
+                        """, new_booking)
+        new_remaining_tables = remaining_tables - new_booking_number_of_tables
+        cursor.execute("""
+                        UPDATE table_number
+                        SET remaining_tables = %(new_remaining_tables)s
+                        """, {"new_remaining_tables": new_remaining_tables})
 
 
 @connection.connection_handler
 def add_to_company(cursor, new_booking):
+    new_booking_number_of_tables = int(new_booking["tableNumber"])
     cursor.execute("""
-                        INSERT INTO company (booking_id, name, email, phone_number,
-                        booked_tables, zip_code, city, street_address, street_type, street_num,
-                        floor_door, vat_number, date_time)
-                        VALUES (%(booking_id)s, %(name)s, %(email)s, %(phoneNumber)s,
-                        %(tableNumber)s, %(zipCode)s, %(city)s, %(streetAddress)s, %(streetType)s,
-                        %(streetNumber)s, %(floorDoor)s, %(vatNumber)s, now());
-                        """, new_booking)
+                        SELECT remaining_tables FROM table_number
+                        """)
+    remaining_tables = cursor.fetchone()["remaining_tables"]
+    if remaining_tables >= new_booking_number_of_tables:
+        cursor.execute("""
+                            INSERT INTO company (booking_id, name, email, phone_number,
+                            booked_tables, zip_code, city, street_address, street_type, street_num,
+                            floor_door, vat_number, date_time)
+                            VALUES (%(booking_id)s, %(name)s, %(email)s, %(phoneNumber)s,
+                            %(tableNumber)s, %(zipCode)s, %(city)s, %(streetAddress)s, %(streetType)s,
+                            %(streetNumber)s, %(floorDoor)s, %(vatNumber)s, now());
+                            """, new_booking)
+        new_remaining_tables = remaining_tables - new_booking_number_of_tables
+        cursor.execute("""
+                                UPDATE table_number
+                                SET remaining_tables = %(new_remaining_tables)s
+                                """, {"new_remaining_tables": new_remaining_tables})
 
 
 @connection.connection_handler
@@ -169,3 +191,33 @@ def get_booking_code_for_resend(cursor, email):
             return booking_code
         else:
             return None
+
+
+@connection.connection_handler
+def set_max_tables(cursor, max_tables):
+    cursor.execute("""
+                    UPDATE table_number
+                    SET max_tables = %(maxTables)s
+                    """, max_tables)
+    number_of_booked_tables = 0
+    cursor.execute("""
+                    SELECT SUM(booked_tables) as sum_of_tables FROM individuals
+                    """)
+    number_of_booked_tables += cursor.fetchone()["sum_of_tables"]
+    cursor.execute("""
+                    SELECT SUM(booked_tables) as sum_of_tables FROM company
+                    """)
+    number_of_booked_tables += cursor.fetchone()["sum_of_tables"]
+    remaining_tables = int(max_tables["maxTables"]) - number_of_booked_tables
+    cursor.execute("""
+                    UPDATE table_number
+                    SET remaining_tables = %(remaining_tables)s
+                    """, {"remaining_tables": remaining_tables})
+
+
+@connection.connection_handler
+def get_max_tables(cursor):
+    cursor.execute("""
+                    SELECT * FROM table_number
+                    """)
+    return cursor.fetchone()
