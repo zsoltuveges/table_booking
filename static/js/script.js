@@ -1,7 +1,4 @@
 dom = {
-    _allIndieBooking: "",
-    _allCompanyBookings: "",
-    _numberOfRemainingTables: "",
     init: function () {
         dom.getIndividualBooking();
         dom.getCompanyBooking();

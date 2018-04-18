@@ -17,7 +17,6 @@ admin = {
         this.sortCompanyBookings();
         this.addingEventListenerToMenuButtons();
         this.search();
-        this.showAllData();
         this.deleteModifyIndiButtons();
         this.deleteModifyCompButtons();
     },
@@ -34,14 +33,14 @@ admin = {
         try {
             let tableBody = document.getElementById("indi_body");
             tableBody.innerHTML = "";
-            for (let row = 0; row < admin._allIndieBooking.length; row++) {
+            for (let row = 0; row < admin._allIndiBookings.length; row++) {
                 var tableRow = document.createElement("tr");
                 let columns = ["name", "email", "phone_number", "booked_tables", "date_time"];
                 for (let i = 0; i < columns.length; i++) {
                     let tableData = document.createElement("td");
                     let tempItem;
                     if (columns[i] === "date_time") {
-                        tempItem = document.createTextNode(admin._allIndieBooking[row][columns[i]]);
+                        tempItem = document.createTextNode(admin._allIndiBookings[row][columns[i]]);
                         tableData.appendChild(tempItem);
                     } else if (columns[i] === "booked_tables") {
                         let button = document.createElement("button");
@@ -49,26 +48,27 @@ admin = {
                         button.setAttribute("data-target", "#admin-modification-modal");
                         button.addEventListener('click', function () {
                             let nameModify = document.getElementById("name");
-                            nameModify.value = admin._allIndieBooking[row].name;
+                            nameModify.value = admin._allIndiBookings[row].name;
                             let phoneModify = document.getElementById("phone_number");
-                            phoneModify.value = admin._allIndieBooking[row].phone_number;
+                            phoneModify.value = admin._allIndiBookings[row].phone_number;
                             let emailModify = document.getElementById("email");
-                            emailModify.value = admin._allIndieBooking[row].email;
+                            emailModify.value = admin._allIndiBookings[row].email;
                             let tableNumbersModify = document.getElementById("table_number");
-                            tableNumbersModify.value = admin._allIndieBooking[row].booked_tables;
+                            tableNumbersModify.value = admin._allIndiBookings[row].booked_tables;
                             let bookingId = document.getElementById("booking_id");
-                            bookingId.value = admin._allIndieBooking[row].id;
+                            bookingId.value = admin._allIndiBookings[row].id;
                             admin.setModifyDeleteIndiButtonsVisibility();
                         });
 
-                        let buttonContent = document.createTextNode(admin._allIndieBooking[row][columns[i]]);
+                        let buttonContent = document.createTextNode(admin._allIndiBookings[row][columns[i]]);
                         button.appendChild(buttonContent);
                         tableData.appendChild(button);
                     } else {
-                        tempItem = document.createTextNode(admin._allIndieBooking[row][columns[i]]);
+                        tempItem = document.createTextNode(admin._allIndiBookings[row][columns[i]]);
                         tableData.appendChild(tempItem);
                     }
                     tableRow.appendChild(tableData);
+                    tableBody.appendChild(tableRow);
                 }
             }
             let individualTable = document.getElementById("individual_table");
@@ -149,6 +149,7 @@ admin = {
                         tableData.appendChild(tempItem);
                     }
                     tableRow.appendChild(tableData);
+                    tableBody.appendChild(tableRow);
                 }
                 let companyTable = document.getElementById("company_table");
                 companyTable.appendChild(tableBody);
