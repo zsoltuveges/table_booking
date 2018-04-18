@@ -20,141 +20,153 @@
     <title>Booking</title>
 </head>
 <body class="index-body">
-<h1 class="welcome-text">Képregénybörze asztalfoglaló</h1>
+<h1 class="welcome-text">Képregénybörze asztalfoglalás</h1>
 <div id="container">
-    <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#modifyDeleteModal" data-whatever="@mdo">
+    <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#modifyDeleteModal"
+            data-whatever="@mdo">
         Foglalás módosítása/törlése
     </button>
     <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#resendBookingCode">
         Foglalási kód újraküldése
     </button>
-    <p>
-        Amennyiben asztalt szeretnél foglalni a kövekező börzére, azt alább megteheted.
-        Kérlek válaszd a megfelelő oldalt. Töltsd ki az adatokat, majd kattints a "Foglalás" gombra.
-    </p><br>
-    <p>Foglalható asztalok száma:</p>
-    <div id="numberOfRemainingTablesDiv">
-        <p>{{number_of_remaining_tables}}</p>
-    </div>
-    <div class="col-md-6 col-md-offset-3">
-        <div class="panel-heading">
-            <div class="row">
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <a href="#" class="btn btn-edit active" id="individual-form">Magánszemély</a>
-                    <a href="#" class="btn btn-edit" id="company-form">Cég</a>
+    <div id="indexTableBookingFormBody">
+        <p>
+            Amennyiben asztalt szeretnél foglalni a kövekező börzére, azt alább megteheted.
+            Kérlek válaszd a megfelelő oldalt. Töltsd ki az adatokat, majd kattints a "Foglalás" gombra.
+        </p><br>
+        <p>Foglalható asztalok száma:</p>
+        <div id="numberOfRemainingTablesDiv">
+            <p id="numberOfRemainingTables">{{ number_of_remaining_tables }}</p>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <a href="#" class="btn btn-edit active" id="individual-form">Magánszemély</a>
+                        <a href="#" class="btn btn-edit" id="company-form">Cég</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-deck mb-3 text-center">
+            <div id="left" class="card mb-4">
+                <div class="card-header">
+                    <h3>Magánszemély</h3>
+                </div>
+                <div class="card-body">
+                    <label for="newIndividualName">Név</label><br>
+                    <input type="text" name="name" id="newIndividualName" class="individualInput form-control mx-auto"
+                           required><br>
+                    <label for="newIndividualEmail">Email</label><br>
+                    <input type="text" name="email" id="newIndividualEmail" class="individualInput form-control mx-auto"
+                           required><br>
+                    <label for="newIndividualPhoneNumber">Telefonszám</label><br>
+                    <input type="text" name="phone_number" id="newIndividualPhoneNumber"
+                           class="individualInput form-control mx-auto"
+                           required><br>
+                    <label for="newIndividualTableNumber">Asztalszám</label><br>
+                    <select name="table_number" id="newIndividualTableNumber"><br>
+                        <option value="1">1</option>
+                        <p>db</p>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select> <label>db</label><br><br>
+                    <button type="button" id="submitIndividualBooking" class="btn btn-card submitButton"
+                            data-toggle="modal"
+                            data-target="#booking_confirmation_modal">Foglalás
+                    </button>
+
+
+                </div>
+            </div>
+            <div id="right" class="card mb-4 box-shadow" style="display: none">
+                <div class="card-header">
+                    <h3>Cég</h3>
+                </div>
+                <div class="card-body">
+                    <label for="newCompanyName">Cégnév</label><br>
+                    <input type="text" name="newCompanyName" id="newCompanyName"
+                           class="form-control CompanyInput mx-auto"><br>
+                    <label for="newCompanyEmail">Email</label><br>
+                    <input type="text" name="newCompanyEmail" id="newCompanyEmail"
+                           class="form-control CompanyInput mx-auto"><br>
+                    <label for="newCompanyPhoneNumber">Telefonszám</label><br>
+                    <input type="text" name="newCompanyPhoneNumber" id="newCompanyPhoneNumber"
+                           class="form-control CompanyInput mx-auto"><br>
+                    <h3 id="company_details">
+                        Cégadatok
+                    </h3>
+                    <p>
+                        <label for="zip_code">
+                            Irányítószám
+                        </label><br>
+                        <input type="text" name="zip_code" required id="zip_code"
+                               class="form-control CompanyInput mx-auto">
+                    </p>
+                    <p>
+                        <label for="city">
+                            Város
+                        </label><br>
+                        <input type="text" name="city" required id="city" class="form-control CompanyInput mx-auto">
+                    </p>
+                    <p>
+                        <label for="street_address">
+                            Közterület neve
+                        </label><br>
+                        <input type="text" name="street_address" required id="street_address"
+                               class="form-control mx-auto CompanyInput">
+                    </p>
+                    <p>
+                        <label for="street_type">
+                            Közterület Jellege
+                        </label><br>
+                        <select name="street_type" id="street_type">
+                            {% for name in public_space_names %}
+                                <option value="{{ name }}">{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                    </p>
+                    <p>
+                        <label for="street_num">
+                            Közterület száma
+                        </label><br>
+                        <input type="number" required name="street_num" id="street_num"
+                               class="form-control CompanyInput mx-auto" maxlength="4" minlength="4">
+                    </p>
+                    <p>
+                        <label for="floor_door">
+                            Emelet/ajtó
+                        </label><br>
+                        <input type="text" name="floor_door" id="floor_door" class="form-control CompanyInput mx-auto">
+                    </p>
+                    <p>
+                        <label for="vat_number">
+                            Adószám
+                        </label><br>
+                        <input type="number" name="vat_number" id="vat_number" class="form-control CompanyInput mx-auto"
+                               required>
+                    </p>
+
+
+                    <label for="company_table_number">Asztalszám</label><br>
+                    <select name="company_table_number" id="company_table_number"><br>
+                        {% for i in range(1, 6) %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select> db<br><br>
+                    <button type="submit" class="btn btn-card submitButton" data-toggle="modal"
+                            data-target="#booking_confirmation_modal" id="submitCompanyBooking">
+                        Foglalás
+                    </button>
+
                 </div>
             </div>
         </div>
     </div>
-    <div class="card-deck mb-3 text-center">
-        <div id="left" class="card mb-4">
-            <div class="card-header">
-                <h3>Magánszemély</h3>
-            </div>
-            <div class="card-body">
-                <label for="newIndividualName">Név</label><br>
-                <input type="text" name="name" id="newIndividualName" class="individualInput form-control mx-auto" required><br>
-                <label for="newIndividualEmail">Email</label><br>
-                <input type="text" name="email" id="newIndividualEmail" class="individualInput form-control mx-auto"
-                       required><br>
-                <label for="newIndividualPhoneNumber">Telefonszám</label><br>
-                <input type="text" name="phone_number" id="newIndividualPhoneNumber"
-                       class="individualInput form-control mx-auto"
-                       required><br>
-                <label for="newIndividualTableNumber">Asztalszám</label><br>
-                <select name="table_number" id="newIndividualTableNumber"><br>
-                    <option value="1">1</option>
-                    <p>db</p>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select> <label>db</label><br><br>
-                <button type="button" id="submitIndividualBooking" class="btn btn-card submitButton" data-toggle="modal"
-                        data-target="#booking_confirmation_modal">Foglalás
-                </button>
-
-
-            </div>
-        </div>
-        <div id="right" class="card mb-4 box-shadow" style="display: none">
-            <div class="card-header">
-                <h3>Cég</h3>
-            </div>
-            <div class="card-body">
-                <label for="newCompanyName">Cégnév</label><br>
-                <input type="text" name="newCompanyName" id="newCompanyName" class="form-control CompanyInput mx-auto"><br>
-                <label for="newCompanyEmail">Email</label><br>
-                <input type="text" name="newCompanyEmail" id="newCompanyEmail" class="form-control CompanyInput mx-auto"><br>
-                <label for="newCompanyPhoneNumber">Telefonszám</label><br>
-                <input type="text" name="newCompanyPhoneNumber" id="newCompanyPhoneNumber" class="form-control CompanyInput mx-auto"><br>
-                <h3 id="company_details">
-                    Cégadatok
-                </h3>
-                <p>
-                    <label for="zip_code">
-                        Irányítószám
-                    </label><br>
-                    <input type="text" name="zip_code" required id="zip_code" class="form-control CompanyInput mx-auto" >
-                </p>
-                <p>
-                    <label for="city">
-                        Város
-                    </label><br>
-                    <input type="text" name="city" required id="city" class="form-control CompanyInput mx-auto">
-                </p>
-                <p>
-                    <label for="street_address">
-                        Közterület neve
-                    </label><br>
-                    <input type="text" name="street_address" required id="street_address" class="form-control mx-auto CompanyInput">
-                </p>
-                <p>
-                    <label for="street_type">
-                        Közterület Jellege
-                    </label><br>
-                    <select name="street_type" id="street_type">
-                        {% for name in public_space_names %}
-                            <option value="{{ name }}">{{ name }}</option>
-                       {% endfor %}
-                    </select>
-                </p>
-                <p>
-                    <label for="street_num">
-                        Közterület száma
-                    </label><br>
-                    <input type="number" required name="street_num" id="street_num" class="form-control CompanyInput mx-auto" maxlength="4" minlength="4">
-                </p>
-                <p>
-                    <label for="floor_door">
-                        Emelet/ajtó
-                    </label><br>
-                    <input type="text" name="floor_door" id="floor_door" class="form-control CompanyInput mx-auto">
-                </p>
-                <p>
-                    <label for="vat_number">
-                        Adószám
-                    </label><br>
-                    <input type="number" name="vat_number" id="vat_number" class="form-control CompanyInput mx-auto" required>
-                </p>
-
-
-                <label for="company_table_number">Asztalszám</label><br>
-                <select name="company_table_number" id="company_table_number"><br>
-                    {% for i in range(1, 6) %}
-                    <option value="{{i}}">{{i}}</option>
-                    {% endfor %}
-                </select> db<br><br>
-                <button type="submit" class="btn btn-card submitButton" data-toggle="modal"
-                        data-target="#booking_confirmation_modal" id="submitCompanyBooking">
-                    Foglalás
-                </button>
-
-            </div>
-            </div>
-        </div>
-    </div>
-    </div>
+</div>
+</div>
 
 
 <!--modify, delete modal-->
