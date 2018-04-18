@@ -15,7 +15,7 @@ admin = {
         this.setMaxTables();
         this.sortIndiBookings();
         this.sortCompanyBookings();
-        this.addingEventListenerToMenuDropDown();
+        this.addingEventListenerToMenuButtons();
         this.search();
     },
     getAllIndividualBookingsFromDatabase: function () {
@@ -150,7 +150,11 @@ admin = {
         }
     },
 
-    addingEventListenerToMenuDropDown: function () {
+    addingEventListenerToMenuButtons: function () {
+        $(document).ready(function () {
+            $('li.active').removeClass('active');
+            $('a[href="' + location.pathname + '"]').closest('li').addClass('active');
+        });
         let menuInvite = document.getElementById("menu-invite");
         menuInvite.style.cursor = "pointer";
         let menuSaveBookings = document.getElementById("menu-save-bookings");

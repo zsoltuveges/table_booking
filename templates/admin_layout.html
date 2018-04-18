@@ -33,21 +33,20 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    Menü
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a href="{{ url_for('admin_page', admin_name = admin_name ) }}" id="menu-bookings"
-                       class="dropdown-item btn-light">Foglalások</a>
-                    <span id="menu-invite" class="dropdown-item btn-light" data-toggle="modal"
-                          data-target="#invitationModal">Meghívás</span>
-                    <a href="{{ url_for('booking_settings', admin_name = admin_name ) }}" id="booking-settings"
-                       class="dropdown-item btn-light">Beállítások</a>
-                    <div class="dropdown-divider"></div>
-                    <span id="menu-save-bookings" class="dropdown-item disabled">Foglalások mentése</span>
-                </div>
+            <li class="nav-item">
+                <a href="{{ url_for('admin_page', admin_name = admin_name ) }}" id="menu-bookings"
+                   class="nav-link">Foglalások</a>
+            </li>
+            <li class="nav-item">
+                <span id="menu-invite" class="nav-link" data-toggle="modal"
+                      data-target="#invitationModal">Meghívás</span>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url_for('booking_settings') }}" id="booking-settings"
+                   class="nav-link">Beállítások</a>
+            </li>
+            <li class="nav-item">
+                <span id="menu-save-bookings" class="nav-link disabled">Foglalások mentése</span>
             </li>
         </ul>
         <div class="form-inline my-2 my-lg-0">
