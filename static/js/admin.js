@@ -15,7 +15,7 @@ admin = {
         this.setMaxTables();
         this.sortIndiBookings();
         this.sortCompanyBookings();
-        this.addingEventListenerToMenuDropDown();
+        this.addingEventListenerToMenuButtons();
         this.search();
     },
     getAllIndividualBookingsFromDatabase: function () {
@@ -27,28 +27,31 @@ admin = {
     },
 
     displayAllIndividualBookings: function () {
-        let tableBody = document.getElementById("indi_body");
-        tableBody.innerHTML = "";
-        for (let row = 0; row < admin._allIndiBookings.length; row++) {
-            var tableRow = document.createElement("tr");
-            //tableRow.className = "residents-info";
-            let columns = ["name", "email", "phone_number", "booked_tables", "date_time"];
-            for (let i = 0; i < columns.length; i++) {
-                let tableData = document.createElement("td");
-                let tempItem;
-                if (columns[i] === "date_time") {
-                    tempItem = document.createTextNode(admin._allIndiBookings[row][columns[i]]);
-                } else {
-                    tempItem = document.createTextNode(admin._allIndiBookings[row][columns[i]]);
+        try {
+            let tableBody = document.getElementById("indi_body");
+            tableBody.innerHTML = "";
+            for (let row = 0; row < admin._allIndiBookings.length; row++) {
+                var tableRow = document.createElement("tr");
+                //tableRow.className = "residents-info";
+                let columns = ["name", "email", "phone_number", "booked_tables", "date_time"];
+                for (let i = 0; i < columns.length; i++) {
+                    let tableData = document.createElement("td");
+                    let tempItem;
+                    if (columns[i] === "date_time") {
+                        tempItem = document.createTextNode(admin._allIndiBookings[row][columns[i]]);
+                    } else {
+                        tempItem = document.createTextNode(admin._allIndiBookings[row][columns[i]]);
+                    }
+                    tableData.appendChild(tempItem);
+                    tableRow.appendChild(tableData);
                 }
-                tableData.appendChild(tempItem);
-                tableRow.appendChild(tableData);
+                tableBody.appendChild(tableRow);
             }
-            tableBody.appendChild(tableRow);
+            let individualTable = document.getElementById("individual_table");
+            individualTable.appendChild(tableBody);
+        } catch (err) {
+            return;
         }
-        let individualTable = document.getElementById("individual_table");
-        individualTable.appendChild(tableBody);
-
     },
 
     getAllCompanyBookingsFromDatabase: function () {
@@ -60,83 +63,98 @@ admin = {
     },
 
     displayAllCompanyBookings: function () {
-        let tableBody = document.getElementById("company_body");
-        tableBody.innerHTML = "";
-        for (let row = 0; row < admin._allCompanyBookings.length; row++) {
-            var tableRow = document.createElement("tr");
-            //tableRow.className = "residents-info";
-            let columns = [
-                "name",
-                "email",
-                "phone_number",
-                "booked_tables",
-                "zip_code",
-                "city",
-                "street_address",
-                "street_type",
-                "street_num",
-                "floor_door",
-                "vat_number",
-                "date_time"
-            ];
-            for (let i = 0; i < columns.length; i++) {
-                var tableData = document.createElement("td");
-                var tempItem = document.createTextNode(admin._allCompanyBookings[row][columns[i]]);
-                tableData.appendChild(tempItem);
-                tableRow.appendChild(tableData);
+        try {
+            let tableBody = document.getElementById("company_body");
+            tableBody.innerHTML = "";
+            for (let row = 0; row < admin._allCompanyBookings.length; row++) {
+                var tableRow = document.createElement("tr");
+                //tableRow.className = "residents-info";
+                let columns = [
+                    "name",
+                    "email",
+                    "phone_number",
+                    "booked_tables",
+                    "zip_code",
+                    "city",
+                    "street_address",
+                    "street_type",
+                    "street_num",
+                    "floor_door",
+                    "vat_number",
+                    "date_time"
+                ];
+                for (let i = 0; i < columns.length; i++) {
+                    var tableData = document.createElement("td");
+                    var tempItem = document.createTextNode(admin._allCompanyBookings[row][columns[i]]);
+                    tableData.appendChild(tempItem);
+                    tableRow.appendChild(tableData);
+                }
+                tableBody.appendChild(tableRow);
             }
-            tableBody.appendChild(tableRow);
+            let companyTable = document.getElementById("company_table");
+            companyTable.appendChild(tableBody);
+        } catch (err) {
+            return;
         }
-        let companyTable = document.getElementById("company_table");
-        companyTable.appendChild(tableBody);
-
     },
 
     sortIndiBookings: function () {
-        let orderingColumns = [];
-        let category = "individuals";
-        orderingColumns.push(document.getElementById("indi_name"), document.getElementById("indi_table"), document.getElementById("indi_time"));
-        for (column of orderingColumns) {
-            column.style.cursor = "pointer";
-            let orderBy = column.dataset.name;
-            column.addEventListener('click', function () {
-                if (admin._indiOrderDirection == "" || admin._indiOrderDirection == "DESC") {
-                    admin._indiOrderDirection = "ASC";
-                } else if (admin._indiOrderDirection == "ASC") {
-                    admin._indiOrderDirection = "DESC"
-                }
-                let jsonURL = '/order/' + orderBy + '/' + admin._indiOrderDirection + '/' + category;
-                $.getJSON(jsonURL, function (response) {
-                    admin._allIndiBookings = response;
-                    admin.displayAllIndividualBookings();
-                });
-            })
+        try {
+            let orderingColumns = [];
+            let category = "individuals";
+            orderingColumns.push(document.getElementById("indi_name"), document.getElementById("indi_table"), document.getElementById("indi_time"));
+            for (column of orderingColumns) {
+                column.style.cursor = "pointer";
+                let orderBy = column.dataset.name;
+                column.addEventListener('click', function () {
+                    if (admin._indiOrderDirection == "" || admin._indiOrderDirection == "DESC") {
+                        admin._indiOrderDirection = "ASC";
+                    } else if (admin._indiOrderDirection == "ASC") {
+                        admin._indiOrderDirection = "DESC"
+                    }
+                    let jsonURL = '/order/' + orderBy + '/' + admin._indiOrderDirection + '/' + category;
+                    $.getJSON(jsonURL, function (response) {
+                        admin._allIndiBookings = response;
+                        admin.displayAllIndividualBookings();
+                    });
+                })
+            }
+        } catch (err) {
+            return
         }
     },
 
     sortCompanyBookings: function () {
-        let orderingColumns = [];
-        let category = "company";
-        orderingColumns.push(document.getElementById("company_name"), document.getElementById("comp_table"), document.getElementById("company_time"));
-        for (column of orderingColumns) {
-            column.style.cursor = "pointer";
-            let orderBy = column.dataset.name;
-            column.addEventListener('click', function () {
-                if (admin._companyOrderDirection == "" || admin._companyOrderDirection == "DESC") {
-                    admin._companyOrderDirection = "ASC";
-                } else if (admin._companyOrderDirection == "ASC") {
-                    admin._companyOrderDirection = "DESC"
-                }
-                let jsonURL = '/order/' + orderBy + '/' + admin._companyOrderDirection + '/' + category;
-                $.getJSON(jsonURL, function (response) {
-                    admin._allCompanyBookings = response;
-                    admin.displayAllCompanyBookings();
-                });
-            })
+        try {
+            let orderingColumns = [];
+            let category = "company";
+            orderingColumns.push(document.getElementById("company_name"), document.getElementById("comp_table"), document.getElementById("company_time"));
+            for (column of orderingColumns) {
+                column.style.cursor = "pointer";
+                let orderBy = column.dataset.name;
+                column.addEventListener('click', function () {
+                    if (admin._companyOrderDirection == "" || admin._companyOrderDirection == "DESC") {
+                        admin._companyOrderDirection = "ASC";
+                    } else if (admin._companyOrderDirection == "ASC") {
+                        admin._companyOrderDirection = "DESC"
+                    }
+                    let jsonURL = '/order/' + orderBy + '/' + admin._companyOrderDirection + '/' + category;
+                    $.getJSON(jsonURL, function (response) {
+                        admin._allCompanyBookings = response;
+                        admin.displayAllCompanyBookings();
+                    });
+                })
+            }
+        } catch (err) {
+            return;
         }
     },
 
-    addingEventListenerToMenuDropDown: function () {
+    addingEventListenerToMenuButtons: function () {
+        $(document).ready(function () {
+            $('li.active').removeClass('active');
+            $('a[href="' + location.pathname + '"]').closest('li').addClass('active');
+        });
         let menuInvite = document.getElementById("menu-invite");
         menuInvite.style.cursor = "pointer";
         let menuSaveBookings = document.getElementById("menu-save-bookings");
@@ -197,31 +215,28 @@ admin = {
     },
 
     displayMaxTablesData: function () {
-        let tableBody = document.getElementById("maxTablesTableBody");
-        if (tableBody.hasChildNodes()) {
-            tableBody.removeChild(tableBody.firstChild);
+        try {
+            document.getElementById("max-table-badge").innerHTML = admin._maxTablesData["max_tables"];
+            document.getElementById("empty-table-badge").innerHTML = admin._maxTablesData["remaining_tables"];
+        } catch (err) {
+            return;
         }
-        let tableRow = document.createElement("tr");
-        let columns = ["max_tables", "remaining_tables"];
-        for (let i = 0; i < columns.length; i++) {
-            let tableData = document.createElement("td");
-            let tempItem = document.createTextNode(admin._maxTablesData[columns[i]]);
-            tableData.appendChild(tempItem);
-            tableRow.appendChild(tableData);
-        }
-        tableBody.appendChild(tableRow);
     },
 
     setMaxTables: function () {
         let maxTablesButton = document.getElementById("maxTablesButton");
-        maxTablesButton.addEventListener('click', function () {
-            let maxNumberOfTables = document.getElementById("maxNumberOfTables").value;
-            $.post('/set-max-tables', {
-                maxTables: maxNumberOfTables
-            });
-            document.getElementById("maxNumberOfTables").value = "";
-            admin.getMaxAndRemainingTables();
-        })
+        try {
+            maxTablesButton.addEventListener('click', function () {
+                let maxNumberOfTables = document.getElementById("maxNumberOfTables").value;
+                $.post('/set-max-tables', {
+                    maxTables: maxNumberOfTables
+                });
+                document.getElementById("maxNumberOfTables").value = "";
+                admin.getMaxAndRemainingTables();
+            })
+        } catch (err) {
+            return;
+        }
     }
 };
 
