@@ -110,7 +110,9 @@ def logout():
 @app.route('/admin-page/<admin_name>')
 @login_module.login_required
 def admin_page(admin_name):
+    search = True
     return render_template('admin.html',
+                           search=search,
                            admin_name=admin_name)
 
 
