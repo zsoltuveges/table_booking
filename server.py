@@ -52,7 +52,7 @@ def resend_booking_code():
 def set_max_tables():
     max_tables = request.form.to_dict()
     data_manager.set_max_tables(max_tables)
-    return redirect(url_for('admin_page', admin_name=session["username"]))
+    return "Done"
 
 
 @app.route('/get-max-tables-data')
@@ -110,23 +110,28 @@ def logout():
 @app.route('/admin-page/<admin_name>')
 @login_module.login_required
 def admin_page(admin_name):
-    individual_data = data_manager.get_all_booking_from_individuals()
-    company_data = data_manager.get_all_booking_from_company()
     return render_template('admin.html',
-                           individual_data=individual_data,
-                           comp_data=company_data,
                            admin_name=admin_name)
 
 
-@app.route('/modify-delete-booking', methods=["POST"])
+@app.route('/mod-del-by-admin', methods=['POST'])
+def mod_del_by_admin():
+    data = request.form.to_dict()
+    if "company" in data:
+        data_manager.mod_del_comp_by_admin(data)
+    else:
+        data_manager.mod_del_indi_by_admin(data)
+    return "Done"
+
+
+@app.route('/modify-delete-booking', methods=["GET", "POST"])
 def modify_delete_booking():
     """Collects the data of the previous booking from database,
     and displays it for modification"""
     mod_del_target = request.form.to_dict()
     booking_data = data_manager.return_booking_data(mod_del_target)
     return render_template('handle_booking.html',
-                           booking_data=booking_data,
-                           public_space_names=PUBLIC_SPACE_NAMES)
+                           booking_data=booking_data)
 
 
 @app.route('/save-edited-booking', methods=['POST'])

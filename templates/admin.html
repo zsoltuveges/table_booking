@@ -56,6 +56,157 @@
         </div>
     </div>
 </div>
+
+<!-- Invitation modal -->
+<div class="modal fade" id="invitationModal" tabindex="-1" role="dialog" aria-labelledby="invitationModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title" id="invitationModalLabel">Admin meghívó küldése</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body bg-light text-dark">
+                <p>Add meg az email címét annak az embernek akit szeretnél meghívni adminnak</p>
+                <br>
+                <form action="{{ url_for('send_invitation') }}" method="POST">
+                    <label for="invitation_email">Email</label>
+                    <input type="text" name="invitation_email" id="invitation_email">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezár</button>
+                <button type="submit" class="btn btn-info">Meghívó küldése</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modify, delete Individual booking modal -->
+<div class="modal fade " id="admin-modification-modal" tabindex="-1" role="dialog"
+     data-dismiss="modal" aria-labelledby="exampleModalLabel" data-backdrop="static"
+     data-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title">Foglalás módosítása/törlése</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        id="mod-del-modal-close-button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body bg-light text-dark">
+                <form action="{{ url_for('modify_delete_booking') }}" method="POST">
+                    <div class="form-group">
+                        <label for="name" class="form-control-label">Név:</label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone_number" class="form-control-label">Telefonszám:</label>
+                        <input class="form-control" id="phone_number" name="phone_number">
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="form-control-label">Email:</label>
+                        <input class="form-control" id="email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="table_number" class="form-control-label">Asztalszám:</label>
+                        <select name="table_number" id="table_number">
+                            {% for i in range(1, 16) %}
+                                <option value="{{i}}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <input type="hidden" id="booking_id">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="modify_booking_button" class="btn btn-info" data-toggle="modal">Módosít</button>
+                        <button type="button" id="confirm_modify_button" data-dismiss="modal" class="btn btn-danger" data-toggle="modal">Biztos módosítod?</button>
+                        <button type="button" id="delete_booking_button" class="btn btn-info" data-toggle="modal">Töröl</button>
+                        <button type="button" id="confirm_delete_button" data-dismiss="modal" class="btn btn-danger" data-toggle="modal">Biztos törlöd?</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modify, delete Individual booking modal -->
+<div class="modal fade " id="admin-comp-modification-modal" tabindex="-1" role="dialog"
+     data-dismiss="modal" aria-labelledby="exampleModalLabel" data-backdrop="static"
+     data-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title">Foglalás módosítása/törlése</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        id="mod-del-modal-close-button_comp">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body bg-light text-dark">
+                <form action="{{ url_for('modify_delete_booking') }}" method="POST">
+                    <div class="form-group">
+                        <label for="comp_name" class="form-control-label">Név:</label>
+                        <input type="text" class="form-control" id="comp_name" name="comp_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="comp_phone_number" class="form-control-label">Telefonszám:</label>
+                        <input class="form-control" id="comp_phone_number" name="comp_phone_number">
+                    </div>
+                    <div class="form-group">
+                        <label for="comp_email" class="form-control-label">Email:</label>
+                        <input class="form-control" id="comp_email" name="comp_email">
+                    </div>
+                    <div class="form-group">
+                        <label for="comp_city" class="form-control-label">Város:</label>
+                        <input class="form-control" id="comp_city" name="comp_city">
+                    </div>
+                    <div class="form-group">
+                        <label for="comp_street_address" class="form-control-label">Közterület neve:</label>
+                        <input class="form-control" id="comp_street_address" name="comp_street_address">
+                    </div>
+                    <div class="form-group">
+                        <label for="comp_street_num" class="form-control-label">Közterület száma:</label>
+                        <input class="form-control" id="comp_street_num" name="comp_street_num">
+                    </div>
+                    <div class="form-group">
+                        <label for="comp_floor_door" class="form-control-label">Emelet, ajtó:</label>
+                        <input class="form-control" id="comp_floor_door" name="comp_floor_door">
+                    </div>
+                    <div class="form-group">
+                        <label for="comp_zip_code" class="form-control-label">Irányítószám:</label>
+                        <input class="form-control" id="comp_zip_code" name="comp_zip_code">
+                    </div>
+                    <div class="form-group">
+                        <label for="comp_vat_number" class="form-control-label">Adószám:</label>
+                        <input class="form-control" id="comp_vat_number" name="comp_vat_number">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="comp_table_number" class="form-control-label">Asztalszám:</label>
+                        <select name="comp_table_number" id="comp_table_number">
+                            {% for i in range(1, 16) %}
+                                <option value="{{i}}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <input type="hidden" id="comp_booking_id">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="modify_comp_booking_button" class="btn btn-info" data-toggle="modal">Módosít</button>
+                        <button type="button" id="confirm_comp_modify_button" data-dismiss="modal" class="btn btn-danger" data-toggle="modal">Biztos módosítod?</button>
+                        <button type="button" id="delete_comp_booking_button" class="btn btn-info" data-toggle="modal">Töröl</button>
+                        <button type="button" id="confirm_comp_delete_button" data-dismiss="modal" class="btn btn-danger" data-toggle="modal">Biztos törlöd?</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
-
-

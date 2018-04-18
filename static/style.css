@@ -138,6 +138,14 @@ span {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif, fontAwesome;
 }
 
+#modify_booking_button, #delete_booking_button, #modify_comp_booking_button, #delete_comp_booking_button {
+    visibility: visible;
+}
+#confirm_modify_button, #confirm_delete_button, #confirm_comp_modify_button, #confirm_comp_delete_button {
+    visibility: hidden;
+}
+
 #max-table-badge, #empty-table-badge {
     font-size: 1.4em;
 }
+

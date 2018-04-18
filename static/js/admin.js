@@ -17,7 +17,11 @@ admin = {
         this.sortCompanyBookings();
         this.addingEventListenerToMenuButtons();
         this.search();
+        this.showAllData();
+        this.deleteModifyIndiButtons();
+        this.deleteModifyCompButtons();
     },
+  
     getAllIndividualBookingsFromDatabase: function () {
         $.getJSON('/get-individual-bookings', function (response) {
             admin._allIndiBookings = response;
@@ -27,31 +31,52 @@ admin = {
     },
 
     displayAllIndividualBookings: function () {
-        try {
-            let tableBody = document.getElementById("indi_body");
-            tableBody.innerHTML = "";
-            for (let row = 0; row < admin._allIndiBookings.length; row++) {
-                var tableRow = document.createElement("tr");
-                //tableRow.className = "residents-info";
-                let columns = ["name", "email", "phone_number", "booked_tables", "date_time"];
-                for (let i = 0; i < columns.length; i++) {
-                    let tableData = document.createElement("td");
-                    let tempItem;
-                    if (columns[i] === "date_time") {
-                        tempItem = document.createTextNode(admin._allIndiBookings[row][columns[i]]);
-                    } else {
-                        tempItem = document.createTextNode(admin._allIndiBookings[row][columns[i]]);
-                    }
+      try {
+        let tableBody = document.getElementById("indi_body");
+        tableBody.innerHTML = "";
+        for (let row = 0; row < admin._allIndieBooking.length; row++) {
+            var tableRow = document.createElement("tr");
+            let columns = ["name", "email", "phone_number", "booked_tables", "date_time"];
+            for (let i = 0; i < columns.length; i++) {
+                let tableData = document.createElement("td");
+                let tempItem;
+                if (columns[i] === "date_time") {
+                    tempItem = document.createTextNode(admin._allIndieBooking[row][columns[i]]);
                     tableData.appendChild(tempItem);
-                    tableRow.appendChild(tableData);
+                } else if (columns[i] === "booked_tables") {
+                    let button = document.createElement("button");
+                    button.setAttribute("data-toggle", "modal");
+                    button.setAttribute("data-target", "#admin-modification-modal");
+                    button.addEventListener('click', function() {
+                        let nameModify = document.getElementById("name");
+                        nameModify.value = admin._allIndieBooking[row].name;
+                        let phoneModify = document.getElementById("phone_number");
+                        phoneModify.value = admin._allIndieBooking[row].phone_number;
+                        let emailModify = document.getElementById("email");
+                        emailModify.value = admin._allIndieBooking[row].email;
+                        let tableNumbersModify = document.getElementById("table_number");
+                        tableNumbersModify.value = admin._allIndieBooking[row].booked_tables;
+                        let bookingId = document.getElementById("booking_id");
+                        bookingId.value = admin._allIndieBooking[row].id;
+                        admin.setModifyDeleteIndiButtonsVisibility();
+                    });
+
+                    let buttonContent = document.createTextNode(admin._allIndieBooking[row][columns[i]]);
+                    button.appendChild(buttonContent);
+                    tableData.appendChild(button);
+                } else {
+                    tempItem = document.createTextNode(admin._allIndieBooking[row][columns[i]]);
+                    tableData.appendChild(tempItem);
                 }
-                tableBody.appendChild(tableRow);
+                tableRow.appendChild(tableData);
             }
             let individualTable = document.getElementById("individual_table");
             individualTable.appendChild(tableBody);
         } catch (err) {
             return;
         }
+        let individualTable = document.getElementById("individual_table");
+        individualTable.appendChild(tableBody);
     },
 
     getAllCompanyBookingsFromDatabase: function () {
@@ -63,33 +88,68 @@ admin = {
     },
 
     displayAllCompanyBookings: function () {
-        try {
-            let tableBody = document.getElementById("company_body");
-            tableBody.innerHTML = "";
-            for (let row = 0; row < admin._allCompanyBookings.length; row++) {
-                var tableRow = document.createElement("tr");
-                //tableRow.className = "residents-info";
-                let columns = [
-                    "name",
-                    "email",
-                    "phone_number",
-                    "booked_tables",
-                    "zip_code",
-                    "city",
-                    "street_address",
-                    "street_type",
-                    "street_num",
-                    "floor_door",
-                    "vat_number",
-                    "date_time"
-                ];
-                for (let i = 0; i < columns.length; i++) {
-                    var tableData = document.createElement("td");
-                    var tempItem = document.createTextNode(admin._allCompanyBookings[row][columns[i]]);
+      try {
+        let tableBody = document.getElementById("company_body");
+        tableBody.innerHTML = "";
+        for (let row = 0; row < admin._allCompanyBookings.length; row++) {
+            var tableRow = document.createElement("tr");
+            let columns = [
+                "name",
+                "email",
+                "phone_number",
+                "booked_tables",
+                "zip_code",
+                "city",
+                "street_address",
+                "street_type",
+                "street_num",
+                "floor_door",
+                "vat_number",
+                "date_time"
+            ];
+            for (let i = 0; i < columns.length; i++) {
+                var tableData = document.createElement("td");
+                if (columns[i] === "date_time") {
+                    tempItem = document.createTextNode(admin._allCompanyBookings[row][columns[i]]);
                     tableData.appendChild(tempItem);
-                    tableRow.appendChild(tableData);
+                } else if (columns[i] === "booked_tables") {
+                    let button = document.createElement("button");
+                    button.setAttribute("data-toggle", "modal");
+                    button.setAttribute("data-target", "#admin-comp-modification-modal");
+                    button.addEventListener('click', function() {
+                        let nameModify = document.getElementById("comp_name");
+                        nameModify.value = admin._allCompanyBookings[row].name;
+                        let phoneModify = document.getElementById("comp_phone_number");
+                        phoneModify.value = admin._allCompanyBookings[row].phone_number;
+                        let emailModify = document.getElementById("comp_email");
+                        emailModify.value = admin._allCompanyBookings[row].email;
+                        let tableNumbersModify = document.getElementById("comp_table_number");
+                        tableNumbersModify.value = admin._allCompanyBookings[row].booked_tables;
+                        let zipCodeModify = document.getElementById("comp_zip_code");
+                        zipCodeModify.value = admin._allCompanyBookings[row].zip_code;
+                        let cityModify = document.getElementById("comp_city");
+                        cityModify.value = admin._allCompanyBookings[row].city;
+                        let addressModify = document.getElementById("comp_street_address");
+                        addressModify.value = admin._allCompanyBookings[row].street_address;
+                        let streetNumModify = document.getElementById("comp_street_num");
+                        streetNumModify.value = admin._allCompanyBookings[row].street_num;
+                        let floorDoorModify = document.getElementById("comp_floor_door");
+                        floorDoorModify.value = admin._allCompanyBookings[row].floor_door;
+                        let vatNumberModify = document.getElementById("comp_vat_number");
+                        vatNumberModify.value = admin._allCompanyBookings[row].vat_number;
+                        let bookingId = document.getElementById("comp_booking_id");
+                        bookingId.value = admin._allCompanyBookings[row].id;
+                        admin.setModifyDeleteCompButtonsVisibility();
+                    });
+
+                    let buttonContent = document.createTextNode(admin._allCompanyBookings[row][columns[i]]);
+                    button.appendChild(buttonContent);
+                    tableData.appendChild(button);
+                } else {
+                    tempItem = document.createTextNode(admin._allCompanyBookings[row][columns[i]]);
+                    tableData.appendChild(tempItem);
                 }
-                tableBody.appendChild(tableRow);
+                tableRow.appendChild(tableData);
             }
             let companyTable = document.getElementById("company_table");
             companyTable.appendChild(tableBody);
@@ -231,12 +291,136 @@ admin = {
                 $.post('/set-max-tables', {
                     maxTables: maxNumberOfTables
                 });
-                document.getElementById("maxNumberOfTables").value = "";
-                admin.getMaxAndRemainingTables();
+            document.getElementById("maxNumberOfTables").value = "";
+            admin.getMaxAndRemainingTables();
             })
         } catch (err) {
             return;
         }
+    },
+
+    deleteModifyIndiButtons: function() {
+        let confirmDeleteButton = document.getElementById("confirm_delete_button");
+        let confirmModifyButton = document.getElementById("confirm_modify_button");
+        confirmDeleteButton.addEventListener('click', function () {
+            let bookingId = document.getElementById("booking_id").value;
+            $.post('/mod-del-by-admin', {
+                id: bookingId,
+                delete_booking: "delete"
+            });
+            admin.getAllIndividualBookingsFromDatabase();
+        });
+        confirmModifyButton.addEventListener('click', function () {
+            let bookingId = document.getElementById("booking_id").value;
+            let name = document.getElementById("name").value;
+            let phoneNumber = document.getElementById("phone_number").value;
+            let email = document.getElementById("email").value;
+            let tableNumber = document.getElementById("table_number").value;
+            $.post('/mod-del-by-admin', {
+                id: bookingId,
+                name: name,
+                phoneNumber: phoneNumber,
+                email: email,
+                tableNumber: tableNumber
+            });
+            admin.getAllIndividualBookingsFromDatabase();
+        });
+    },
+
+    deleteModifyCompButtons: function() {
+        let confirmDeleteButton = document.getElementById("confirm_comp_delete_button");
+        let confirmModifyButton = document.getElementById("confirm_comp_modify_button");
+        confirmDeleteButton.addEventListener('click', function() {
+            let bookingId = document.getElementById("comp_booking_id").value;
+            $.post('/mod-del-by-admin', {
+                id: bookingId,
+                delete_booking: "delete",
+                company: "company"
+            });
+            admin.getAllCompanyBookingsFromDatabase();
+        });
+        confirmModifyButton.addEventListener('click', function() {
+            let bookingId = document.getElementById("comp_booking_id").value;
+            let name = document.getElementById("comp_name").value;
+            let phoneNumber = document.getElementById("comp_phone_number").value;
+            let email = document.getElementById("comp_email").value;
+            let tableNumber = document.getElementById("comp_table_number").value;
+            let city = document.getElementById("comp_city").value;
+            let streetAddress = document.getElementById("comp_street_address").value;
+            let streetNum = document.getElementById("comp_street_num").value;
+            let floorDoor = document.getElementById("comp_floor_door").value;
+            let vatNumber = document.getElementById("comp_vat_number").value;
+            let zipCode = document.getElementById("comp_zip_code").value;
+            $.post('/mod-del-by-admin', {
+                id: bookingId,
+                name: name,
+                phoneNumber: phoneNumber,
+                email: email,
+                tableNumber: tableNumber,
+                city: city,
+                streetAddress: streetAddress,
+                streetNum: streetNum,
+                floorDoor: floorDoor,
+                vatNumber: vatNumber,
+                zipCode: zipCode,
+                company: "company"
+            });
+            admin.getAllCompanyBookingsFromDatabase();
+        });
+    },
+
+    setModifyDeleteIndiButtonsVisibility: function() {
+        let deleteButton = document.getElementById("delete_booking_button");
+        let modifyButton = document.getElementById("modify_booking_button");
+        let confirmModifyButton = document.getElementById("confirm_modify_button");
+        let confirmDeleteButton = document.getElementById("confirm_delete_button");
+        let modDelModalCloseButton = document.getElementById("mod-del-modal-close-button");
+        modifyButton.addEventListener('click', function() {
+            modifyButton.style.visibility = 'hidden';
+            confirmModifyButton.style.visibility = "visible";
+            confirmDeleteButton.style.visibility = "hidden";
+            deleteButton.style.visibility = "visible";
+        });
+        deleteButton.addEventListener('click', function() {
+            deleteButton.style.visibility = "hidden";
+            confirmDeleteButton.style.visibility = "visible";
+            confirmModifyButton.style.visibility = "hidden";
+            modifyButton.style.visibility = "visible";
+        });
+        modDelModalCloseButton.addEventListener('click', function() {
+            modifyButton.style.visibility = 'visible';
+            confirmModifyButton.style.visibility = "hidden";
+            confirmDeleteButton.style.visibility = "hidden";
+            deleteButton.style.visibility = "visible";
+        })
+    },
+    setModifyDeleteCompButtonsVisibility: function() {
+        let compDeleteButton = document.getElementById("delete_comp_booking_button");
+        let compModifyButton = document.getElementById("modify_comp_booking_button");
+        let compConfirmModifyButton = document.getElementById("confirm_comp_modify_button");
+        let compConfirmDeleteButton = document.getElementById("confirm_comp_delete_button");
+        let modDelModalCloseButton = document.getElementById("mod-del-modal-close-button_comp");
+
+        compModifyButton.addEventListener('click', function() {
+            compModifyButton.style.visibility = 'hidden';
+            compConfirmModifyButton.style.visibility = "visible";
+            compConfirmDeleteButton.style.visibility = "hidden";
+            compDeleteButton.style.visibility = "visible";
+        });
+
+        compDeleteButton.addEventListener('click', function() {
+            compDeleteButton.style.visibility = "hidden";
+            compConfirmDeleteButton.style.visibility = "visible";
+            compConfirmModifyButton.style.visibility = "hidden";
+            compModifyButton.style.visibility = "visible";
+        });
+
+        modDelModalCloseButton.addEventListener('click', function() {
+            compModifyButton.style.visibility = 'visible';
+            compConfirmModifyButton.style.visibility = "hidden";
+            compConfirmDeleteButton.style.visibility = "hidden";
+            compDeleteButton.style.visibility = "visible";
+        })
     }
 };
 
