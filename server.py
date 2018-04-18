@@ -197,6 +197,12 @@ def order_admin_page(orderby, direction, category):
     return jsonify(sorted_individual_datas)
 
 
+@app.route('/admin/booking-settings')
+def booking_settings():
+    admin_name = session["username"]
+    return render_template('admin_booking_settings.html', admin_name=admin_name)
+
+
 if __name__ == '__main__':
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
     app.run(

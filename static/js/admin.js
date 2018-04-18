@@ -1,33 +1,37 @@
 admin = {
-    _allIndieBooking: "",
+    _allIndiBookings: "",
     _allCompanyBookings: "",
     _indiOrderDirection: "",
     _companyOrderDirection: "",
     _searchedIndiBooking: [],
     _searchedCompBooking: [],
+    _backupIndiBookings: "",
+    _backupCompanyBookings: "",
     _maxTablesData: {},
 
     init: function () {
-        this.getAllCompanyBookingsFromDatabase();
-        this.getAllIndividualBookingsFromDatabase();
+        this.showAllData();
         this.getMaxAndRemainingTables();
         this.setMaxTables();
         this.sortIndiBookings();
         this.sortCompanyBookings();
-        this.addingEventListenerToMenuDropDown();
+        this.addingEventListenerToMenuButtons();
         this.search();
         this.showAllData();
         this.deleteModifyIndiButtons();
         this.deleteModifyCompButtons();
     },
+  
     getAllIndividualBookingsFromDatabase: function () {
         $.getJSON('/get-individual-bookings', function (response) {
-            admin._allIndieBooking = response;
+            admin._allIndiBookings = response;
+            admin._backupIndiBookings = response;
             admin.displayAllIndividualBookings();
         })
     },
 
     displayAllIndividualBookings: function () {
+      try {
         let tableBody = document.getElementById("indi_body");
         tableBody.innerHTML = "";
         for (let row = 0; row < admin._allIndieBooking.length; row++) {
@@ -66,7 +70,10 @@ admin = {
                 }
                 tableRow.appendChild(tableData);
             }
-            tableBody.appendChild(tableRow);
+            let individualTable = document.getElementById("individual_table");
+            individualTable.appendChild(tableBody);
+        } catch (err) {
+            return;
         }
         let individualTable = document.getElementById("individual_table");
         individualTable.appendChild(tableBody);
@@ -75,11 +82,13 @@ admin = {
     getAllCompanyBookingsFromDatabase: function () {
         $.getJSON('/get-company-bookings', function (response) {
             admin._allCompanyBookings = response;
+            admin._backupCompanyBookings = response;
             admin.displayAllCompanyBookings();
         })
     },
 
     displayAllCompanyBookings: function () {
+      try {
         let tableBody = document.getElementById("company_body");
         tableBody.innerHTML = "";
         for (let row = 0; row < admin._allCompanyBookings.length; row++) {
@@ -142,85 +151,101 @@ admin = {
                 }
                 tableRow.appendChild(tableData);
             }
-            tableBody.appendChild(tableRow);
+            let companyTable = document.getElementById("company_table");
+            companyTable.appendChild(tableBody);
+        } catch (err) {
+            return;
         }
-        let companyTable = document.getElementById("company_table");
-        companyTable.appendChild(tableBody);
-
     },
 
     sortIndiBookings: function () {
-        let orderingColumns = [];
-        let category = "individuals";
-        orderingColumns.push(document.getElementById("indi_name"), document.getElementById("indi_table"), document.getElementById("indi_time"));
-        for (let column of orderingColumns) {
-            column.style.cursor = "pointer";
-            let orderBy = column.dataset.name;
-            column.addEventListener('click', function () {
-                if (admin._indiOrderDirection === "" || admin._indiOrderDirection === "DESC") {
-                    admin._indiOrderDirection = "ASC";
-                } else if (admin._indiOrderDirection === "ASC") {
-                    admin._indiOrderDirection = "DESC"
-                }
-                let jsonURL = '/order/' + orderBy + '/' + admin._indiOrderDirection + '/' + category;
-                $.getJSON(jsonURL, function (response) {
-                    admin._allIndieBooking = response;
-                    admin.displayAllIndividualBookings();
-                });
-            })
+        try {
+            let orderingColumns = [];
+            let category = "individuals";
+            orderingColumns.push(document.getElementById("indi_name"), document.getElementById("indi_table"), document.getElementById("indi_time"));
+            for (column of orderingColumns) {
+                column.style.cursor = "pointer";
+                let orderBy = column.dataset.name;
+                column.addEventListener('click', function () {
+                    if (admin._indiOrderDirection == "" || admin._indiOrderDirection == "DESC") {
+                        admin._indiOrderDirection = "ASC";
+                    } else if (admin._indiOrderDirection == "ASC") {
+                        admin._indiOrderDirection = "DESC"
+                    }
+                    let jsonURL = '/order/' + orderBy + '/' + admin._indiOrderDirection + '/' + category;
+                    $.getJSON(jsonURL, function (response) {
+                        admin._allIndiBookings = response;
+                        admin.displayAllIndividualBookings();
+                    });
+                })
+            }
+        } catch (err) {
+            return
         }
     },
 
     sortCompanyBookings: function () {
-        let orderingColumns = [];
-        let category = "company";
-        orderingColumns.push(document.getElementById("company_name"), document.getElementById("comp_table"), document.getElementById("company_time"));
-        for (let column of orderingColumns) {
-            column.style.cursor = "pointer";
-            let orderBy = column.dataset.name;
-            column.addEventListener('click', function () {
-                if (admin._companyOrderDirection === "" || admin._companyOrderDirection === "DESC") {
-                    admin._companyOrderDirection = "ASC";
-                } else if (admin._companyOrderDirection === "ASC") {
-                    admin._companyOrderDirection = "DESC"
-                }
-                let jsonURL = '/order/' + orderBy + '/' + admin._companyOrderDirection + '/' + category;
-                $.getJSON(jsonURL, function (response) {
-                    admin._allCompanyBookings = response;
-                    admin.displayAllCompanyBookings();
-                });
-            })
+        try {
+            let orderingColumns = [];
+            let category = "company";
+            orderingColumns.push(document.getElementById("company_name"), document.getElementById("comp_table"), document.getElementById("company_time"));
+            for (column of orderingColumns) {
+                column.style.cursor = "pointer";
+                let orderBy = column.dataset.name;
+                column.addEventListener('click', function () {
+                    if (admin._companyOrderDirection == "" || admin._companyOrderDirection == "DESC") {
+                        admin._companyOrderDirection = "ASC";
+                    } else if (admin._companyOrderDirection == "ASC") {
+                        admin._companyOrderDirection = "DESC"
+                    }
+                    let jsonURL = '/order/' + orderBy + '/' + admin._companyOrderDirection + '/' + category;
+                    $.getJSON(jsonURL, function (response) {
+                        admin._allCompanyBookings = response;
+                        admin.displayAllCompanyBookings();
+                    });
+                })
+            }
+        } catch (err) {
+            return;
         }
     },
 
-    addingEventListenerToMenuDropDown: function () {
+    addingEventListenerToMenuButtons: function () {
+        $(document).ready(function () {
+            $('li.active').removeClass('active');
+            $('a[href="' + location.pathname + '"]').closest('li').addClass('active');
+        });
         let menuInvite = document.getElementById("menu-invite");
         menuInvite.style.cursor = "pointer";
         let menuSaveBookings = document.getElementById("menu-save-bookings");
         menuSaveBookings.style.cursor = "not-allowed";
     },
 
-    search: function() {
-        admin._searchedIndiBooking = [];
-        admin._searchedCompBooking = [];
-        admin.getAllIndividualBookingsFromDatabase();
-        admin.getAllCompanyBookingsFromDatabase();
-        let searchButton = document.getElementById("searchButton");
+    search: function () {
+        let searchArea = document.getElementById("searchInput");
         let indiColumns = ["name", "email"];
         let compColumns = ["name", "email", "city", "street_address", "street_type"];
-        searchButton.addEventListener('click', function() {
+        searchArea.addEventListener('keyup', function () {
+            admin._searchedIndiBooking = [];
+            admin._searchedCompBooking = [];
             let searchedInfo = document.getElementById("searchInput").value;
-            document.getElementById("searchInput").value = "";
-            for (let i = 0; i < admin._allIndieBooking.length; i++) {
+            if (searchedInfo === "") {
+                admin.showAllData();
+                return;
+            }
+            if (event.key === "Backspace") {
+                admin._allIndiBookings = admin._backupIndiBookings;
+                admin._allCompanyBookings = admin._backupCompanyBookings;
+            }
+            for (let i = 0; i < admin._allIndiBookings.length; i++) {
                 for (let column of indiColumns) {
-                    if (admin._allIndieBooking[i][column].toLowerCase().includes(searchedInfo.toLowerCase())) {
-                        admin._searchedIndiBooking.push(admin._allIndieBooking[i]);
+                    if (admin._allIndiBookings[i][column].toLowerCase().includes(searchedInfo.toLowerCase())) {
+                        admin._searchedIndiBooking.push(admin._allIndiBookings[i]);
                         break;
                     }
                 }
             }
-            admin._allIndieBooking = admin._searchedIndiBooking;
-            admin._searchedIndiBooking = [];
+            admin._allIndiBookings = admin._searchedIndiBooking;
             admin.displayAllIndividualBookings();
             for (let i = 0; i < admin._allCompanyBookings.length; i++) {
                 for (let column of compColumns) {
@@ -231,56 +256,47 @@ admin = {
                 }
             }
             admin._allCompanyBookings = admin._searchedCompBooking;
-            admin._searchedCompBooking = [];
             admin.displayAllCompanyBookings();
 
         })
     },
 
-    showAllData: function() {
-        let showAllButton = document.getElementById("show_all");
-        showAllButton.addEventListener('click', function() {
-            admin.getAllIndividualBookingsFromDatabase();
-            admin.getAllCompanyBookingsFromDatabase();
-            admin.displayAllIndividualBookings();
-            admin.displayAllCompanyBookings();
-        })
+    showAllData: function () {
+        admin.getAllIndividualBookingsFromDatabase();
+        admin.getAllCompanyBookingsFromDatabase();
     },
 
-    getMaxAndRemainingTables: function() {
-        $.getJSON('/get-max-tables-data', function(response) {
+    getMaxAndRemainingTables: function () {
+        $.getJSON('/get-max-tables-data', function (response) {
             admin._maxTablesData = response;
             admin.displayMaxTablesData();
         });
         return admin._maxTablesData;
     },
 
-    displayMaxTablesData: function() {
-        let tableBody = document.getElementById("maxTablesTableBody");
-        if (tableBody.hasChildNodes()) {
-            tableBody.removeChild(tableBody.firstChild);
+    displayMaxTablesData: function () {
+        try {
+            document.getElementById("max-table-badge").innerHTML = admin._maxTablesData["max_tables"];
+            document.getElementById("empty-table-badge").innerHTML = admin._maxTablesData["remaining_tables"];
+        } catch (err) {
+            return;
         }
-        let tableRow = document.createElement("tr");
-        let columns = ["max_tables", "remaining_tables"];
-        for (let i = 0; i < columns.length; i++) {
-            let tableData = document.createElement("td");
-            let tempItem = document.createTextNode(admin._maxTablesData[columns[i]]);
-            tableData.appendChild(tempItem);
-            tableRow.appendChild(tableData);
-        }
-        tableBody.appendChild(tableRow);
     },
 
-    setMaxTables: function() {
+    setMaxTables: function () {
         let maxTablesButton = document.getElementById("maxTablesButton");
-        maxTablesButton.addEventListener('click', function() {
-            let maxNumberOfTables = document.getElementById("maxNumberOfTables").value;
+        try {
+            maxTablesButton.addEventListener('click', function () {
+                let maxNumberOfTables = document.getElementById("maxNumberOfTables").value;
                 $.post('/set-max-tables', {
                     maxTables: maxNumberOfTables
                 });
             document.getElementById("maxNumberOfTables").value = "";
             admin.getMaxAndRemainingTables();
-        })
+            })
+        } catch (err) {
+            return;
+        }
     },
 
     deleteModifyIndiButtons: function() {

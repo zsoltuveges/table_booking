@@ -1,0 +1,21 @@
+{% extends 'admin_layout.html' %}
+{% block content %}
+<div class="container">
+    <h1 class="display-4">Beállítások <i class="fas fa-cogs"></i></h1>
+    <hr>
+    <div class="row mt-4">
+        <div class="col">
+            <p>Maximális asztalszám beállítása</p>
+        </div>
+        <div id="setMaxTables" class="col">
+            <input type="text" id="maxNumberOfTables" class="form-control w-50">
+            <button class="btn btn-dark" id="maxTablesButton">Beállítás</button>
+        </div>
+        <div class="col">
+            <p>Maximálisan foglalható asztalok száma<span id="max-table-badge" class="badge badge-info ml-2">99</span></p>
+            <p>Üres asztalok száma<span id="empty-table-badge" class="badge badge-info ml-2"></span></p>
+        </div>
+    </div>
+    <hr>
+</div>
+{% endblock %}
