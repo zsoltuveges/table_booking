@@ -79,7 +79,7 @@ dom = {
     },
 
     handleRemainingTableOnIndex: function () {
-        let numberOfTables = parseInt(document.getElementById("numberOfRemainingTables").innerText);
+        let numberOfTables = parseInt(document.getElementById("numberOfRemainingTablesDiv").innerText);
         if (numberOfTables < 1) {
             let indexTableBookingFormBody = document.getElementById("indexTableBookingFormBody");
             indexTableBookingFormBody.innerHTML = "";

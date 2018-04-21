@@ -21,9 +21,9 @@
 </head>
 <body class="index-body">
 <div id="background-div"></div>
-<h1 class="welcome-text">Képregénybörze asztalfoglalás</h1>
 <div id="container">
     <div class="index-box">
+        <h1 id="welcome-text">Képregénybörze asztalfoglalás</h1>
         <div id="booking-information">
             <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#modifyDeleteModal"
                     data-whatever="@mdo">
@@ -37,9 +37,18 @@
                     Amennyiben asztalt szeretnél foglalni a kövekező börzére, azt alább megteheted.
                     Kérlek válaszd a megfelelő oldalt. Töltsd ki az adatokat, majd kattints a "Foglalás" gombra.
                 </p><br>
-                <p>Foglalható asztalok száma:</p>
-                <div id="numberOfRemainingTablesDiv">
-                    <p id="numberOfRemainingTables">{{ number_of_remaining_tables }}</p>
+                <div id="free-tables" class="row justify-content-center">
+                    <p class="col-3">Foglalható asztalok száma: </p>
+                    <div id="numberOfRemainingTablesDiv" class="col-1">
+                        {{ number_of_remaining_tables }}
+                    </div>
+                </div>
+                <div class="progress w-50 mx-auto">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                         style="width: {{ number_of_remaining_tables }}%"
+                         aria-valuenow="{{ number_of_remaining_tables }}" aria-valuemin="0"
+                         aria-valuemax="{{ max_tables }}">
+                    </div>
                 </div>
             </div>
         </div>
