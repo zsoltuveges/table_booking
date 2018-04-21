@@ -1,9 +1,18 @@
 @import "//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css";
 
-body {
-    background: url("https://awesomewallpaper.files.wordpress.com/2013/07/spiderman_by_joekerruk-d5ccywk.jpg");
-    background-attachment: fixed;
-    background-position: center;
+#background-div {
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    height: 100%;
+    background: url("https://wallpaper.wiki/wp-content/uploads/2017/05/wallpaper.wiki-Comic-Book-Images-Desktop-PIC-WPE0011081.jpg") fixed center;
+    -webkit-filter: blur(3px);
+    -moz-filter: blur(3px);
+    -o-filter: blur(3px);
+    -ms-filter: blur(3px);
+    filter: blur(3px);
+    z-index: -1;
 }
 
 #admin-body {
@@ -30,20 +39,29 @@ body {
 }
 
 #container {
-    padding: 3%;
     margin-left: 20%;
     margin-right: 20%;
     margin-top: 3%;
+    color: white;
+}
+
+.index-box {
+    padding: 3%;
+    margin-bottom: 3%;
     box-shadow: inset 0px 0px 15px 4px rgba(0, 0, 0, 0.75);
     text-align: center;
-    color: white;
-    background-color: #082d3a;
+    background-color: rgba(8, 45, 58, 0.9);
+    border-radius: 7px;
+}
+
+.card-body {
+
 }
 
 #left, #right {
     color: white;
     text-align: center;
-    background-color: #5e1010;
+    background-color: rgba(94, 16, 16, 0.7);
 !important;
 }
 
@@ -131,7 +149,8 @@ span {
 }
 
 #maxNumberOfTables {
-    display: table-caption; !important;
+    display: table-caption;
+!important;
 }
 
 .form-control {
@@ -141,6 +160,7 @@ span {
 #modify_booking_button, #delete_booking_button, #modify_comp_booking_button, #delete_comp_booking_button {
     visibility: visible;
 }
+
 #confirm_modify_button, #confirm_delete_button, #confirm_comp_modify_button, #confirm_comp_delete_button {
     visibility: hidden;
 }
