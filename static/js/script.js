@@ -3,6 +3,7 @@ dom = {
         dom.getIndividualBooking();
         dom.getCompanyBooking();
         dom.displayNumberOfRemainingTables();
+        dom.handleRemainingTableOnIndex();
     },
     getIndividualBooking: function() {
         let addNewIndividualBookingButton = document.getElementById('submitIndividualBooking');
@@ -74,6 +75,24 @@ dom = {
                     remainingTablesDiv.appendChild(paragraph);
                 })
             })
+        }
+    },
+
+    handleRemainingTableOnIndex: function () {
+        let numberOfTables = parseInt(document.getElementById("numberOfRemainingTables").innerText);
+        if (numberOfTables < 1) {
+            let indexTableBookingFormBody = document.getElementById("indexTableBookingFormBody");
+            indexTableBookingFormBody.innerHTML = "";
+            let sadDeadPool = document.createElement("img");
+            sadDeadPool.src = "http://i0.kym-cdn.com/photos/images/original/000/652/022/3d9.png";
+            sadDeadPool.classList.add("sad-DeadPool");
+            sadDeadPool.classList.add("mt-5");
+            let sadMessage = document.createElement("h3");
+            sadMessage.classList.add("mt-5");
+            sadMessage.classList.add("sad-message-no-tables");
+            sadMessage.innerText = "Sajnáljuk elfogytak az asztalok a következő eseményre."
+            indexTableBookingFormBody.appendChild(sadMessage);
+            indexTableBookingFormBody.appendChild(sadDeadPool);
         }
     }
 };
