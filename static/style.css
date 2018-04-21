@@ -29,6 +29,10 @@
         margin-left: 3% !important;
         margin-right: 3% !important;
     }
+
+    .individualInput, .CompanyInput {
+        width: 90% !important;
+    }
 }
 
 @media (max-width: 992px) {
@@ -54,8 +58,13 @@
     border-radius: 7px;
 }
 
-.card-body {
+.box-hr {
+    background-color: white;
+    width: 70%;
+}
 
+#company_details {
+    margin-bottom: 2%;
 }
 
 #left, #right {
@@ -115,7 +124,7 @@
 }
 
 .individualInput, .CompanyInput {
-    width: 80%;
+    width: 60%;
 }
 
 .modal-content {
