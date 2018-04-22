@@ -6,7 +6,7 @@
     right: 0px;
     width: 100%;
     height: 100%;
-    background: url("https://wallpaper.wiki/wp-content/uploads/2017/05/wallpaper.wiki-Comic-Book-Images-Desktop-PIC-WPE0011081.jpg") fixed center;
+    background: url("/static/img/background.jpg") fixed center;
     -webkit-filter: blur(3px);
     -moz-filter: blur(3px);
     -o-filter: blur(3px);
