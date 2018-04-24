@@ -108,7 +108,11 @@ dom = {
                 fetch(url)
                     .then(response => response.json())
                     .then(function(result) {
-                    cityInput.value = result["city"];
+                        try {
+                            cityInput.value = result["city"];
+                        } catch (TypeError) {
+                            cityInput.value = "Nincs ilyen irányítószűmú település";
+                        }
                 })
 
 
