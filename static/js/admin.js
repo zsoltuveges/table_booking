@@ -44,6 +44,9 @@ admin = {
                         tableData.appendChild(tempItem);
                     } else if (columns[i] === "booked_tables") {
                         let button = document.createElement("button");
+                        button.classList.add("btn");
+                        button.classList.add("btn-info");
+                        button.classList.add("modify-booking-button");
                         button.setAttribute("data-toggle", "modal");
                         button.setAttribute("data-target", "#admin-modification-modal");
                         button.addEventListener('click', function () {
@@ -113,6 +116,9 @@ admin = {
                         tableData.appendChild(tempItem);
                     } else if (columns[i] === "booked_tables") {
                         let button = document.createElement("button");
+                        button.classList.add("btn");
+                        button.classList.add("btn-info");
+                        button.classList.add("modify-booking-button");
                         button.setAttribute("data-toggle", "modal");
                         button.setAttribute("data-target", "#admin-comp-modification-modal");
                         button.addEventListener('click', function () {

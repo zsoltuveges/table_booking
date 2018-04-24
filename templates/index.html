@@ -20,24 +20,40 @@
     <title>Booking</title>
 </head>
 <body class="index-body">
-<h1 class="welcome-text">Képregénybörze asztalfoglalás</h1>
+<div id="background-div"></div>
 <div id="container">
-    <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#modifyDeleteModal"
-            data-whatever="@mdo">
-        Foglalás módosítása/törlése
-    </button>
-    <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#resendBookingCode">
-        Foglalási kód újraküldése
-    </button>
-    <div id="indexTableBookingFormBody">
-        <p>
-            Amennyiben asztalt szeretnél foglalni a kövekező börzére, azt alább megteheted.
-            Kérlek válaszd a megfelelő oldalt. Töltsd ki az adatokat, majd kattints a "Foglalás" gombra.
-        </p><br>
-        <p>Foglalható asztalok száma:</p>
-        <div id="numberOfRemainingTablesDiv">
-            <p id="numberOfRemainingTables">{{ number_of_remaining_tables }}</p>
+    <div class="index-box">
+        <h1 id="welcome-text">Képregénybörze asztalfoglalás</h1>
+        <div id="booking-information">
+            <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#modifyDeleteModal"
+                    data-whatever="@mdo">
+                Foglalás módosítása/törlése
+            </button>
+            <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#resendBookingCode">
+                Foglalási kód újraküldése
+            </button>
+            <div id="indexTableBookingFormBody">
+                <p>
+                    Amennyiben asztalt szeretnél foglalni a kövekező börzére, azt alább megteheted.
+                    Kérlek válaszd a megfelelő oldalt. Töltsd ki az adatokat, majd kattints a "Foglalás" gombra.
+                </p><br>
+                <div id="free-tables" class="row justify-content-center">
+                    <p class="col-3">Foglalható asztalok száma: </p>
+                    <div id="numberOfRemainingTablesDiv" class="col-1">
+                        {{ number_of_remaining_tables }}
+                    </div>
+                </div>
+                <div class="progress w-50 mx-auto">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                         style="width: {{ number_of_remaining_tables }}%"
+                         aria-valuenow="{{ number_of_remaining_tables }}" aria-valuemin="0"
+                         aria-valuemax="{{ max_tables }}">
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+    <div id="booking-form" class="index-box">
         <div class="col-md-6 col-md-offset-3">
             <div class="panel-heading">
                 <div class="row">
@@ -98,6 +114,7 @@
                     <h3 id="company_details">
                         Cégadatok
                     </h3>
+                    <hr class="box-hr">
                     <p>
                         <label for="zip_code">
                             Irányítószám
@@ -166,7 +183,6 @@
         </div>
     </div>
 </div>
-</div>
 
 
 <!--modify, delete modal-->
@@ -213,7 +229,7 @@
             </div>
             <div class="modal-body">
                 <p>Kérlek add meg az email címed amit a foglaláshoz használtál. Amennyiben az email címed szerepel
-                    az adatbátisunkban, vagyis rendelkezel érvényes foglalással, újra elküldjük a foglalási kódodat.</p>
+                    az adatbázisunkban, vagyis rendelkezel érvényes foglalással, újra elküldjük a foglalási kódodat.</p>
                 <form action="{{ url_for('resend_booking_code') }}" method="POST">
                     <div class="form-group">
                         <label for="booking_email" class="form-control-label">Email:</label>

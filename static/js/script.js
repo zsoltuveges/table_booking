@@ -79,10 +79,11 @@ dom = {
     },
 
     handleRemainingTableOnIndex: function () {
-        let numberOfTables = parseInt(document.getElementById("numberOfRemainingTables").innerText);
+        let numberOfTables = parseInt(document.getElementById("numberOfRemainingTablesDiv").innerText);
         if (numberOfTables < 1) {
             let indexTableBookingFormBody = document.getElementById("indexTableBookingFormBody");
             indexTableBookingFormBody.innerHTML = "";
+            document.getElementById("booking-form").remove();
             let sadDeadPool = document.createElement("img");
             sadDeadPool.src = "http://i0.kym-cdn.com/photos/images/original/000/652/022/3d9.png";
             sadDeadPool.classList.add("sad-DeadPool");

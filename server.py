@@ -64,9 +64,11 @@ def get_max_tables_data():
 @app.route('/')
 def index():
     number_of_remaining_tables = data_manager.get_max_tables()["remaining_tables"]
+    max_tables = data_manager.get_max_tables()["max_tables"]
     return render_template('index.html',
                            public_space_names=PUBLIC_SPACE_NAMES,
-                           number_of_remaining_tables=number_of_remaining_tables)
+                           number_of_remaining_tables=number_of_remaining_tables,
+                           max_tables=max_tables)
 
 
 @app.route('/registration/<token>', methods=['GET', 'POST'])
