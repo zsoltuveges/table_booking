@@ -111,12 +111,9 @@ dom = {
                         try {
                             cityInput.value = result["city"];
                         } catch (TypeError) {
-                            cityInput.value = "Nincs ilyen irányítószűmú település";
+                            cityInput.value = "Nincs ilyen irányítószámú település";
                         }
                 })
-
-
-
             }
         })
     }
