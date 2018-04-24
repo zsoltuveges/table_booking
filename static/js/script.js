@@ -4,6 +4,7 @@ dom = {
         dom.getCompanyBooking();
         dom.displayNumberOfRemainingTables();
         dom.handleRemainingTableOnIndex();
+        dom.autofillCity();
     },
     getIndividualBooking: function() {
         let addNewIndividualBookingButton = document.getElementById('submitIndividualBooking');
@@ -91,10 +92,30 @@ dom = {
             let sadMessage = document.createElement("h3");
             sadMessage.classList.add("mt-5");
             sadMessage.classList.add("sad-message-no-tables");
-            sadMessage.innerText = "Sajnáljuk elfogytak az asztalok a következő eseményre."
+            sadMessage.innerText = "Sajnáljuk elfogytak az asztalok a következő eseményre.";
             indexTableBookingFormBody.appendChild(sadMessage);
             indexTableBookingFormBody.appendChild(sadDeadPool);
         }
+    },
+
+    autofillCity: function() {
+        let zipCodeInput = document.getElementById("zip_code");
+        let cityInput = document.getElementById("city");
+        zipCodeInput.addEventListener('keyup', function() {
+            let zipCode = document.getElementById("zip_code").value;
+            if (zipCode.length === 4) {
+                let url = '/get-city/' + zipCode;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(function(result) {
+                        try {
+                            cityInput.value = result["city"];
+                        } catch (TypeError) {
+                            cityInput.value = "Nincs ilyen irányítószámú település";
+                        }
+                })
+            }
+        })
     }
 };
 

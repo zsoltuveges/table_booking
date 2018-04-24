@@ -207,6 +207,12 @@ def booking_settings():
     return render_template('admin_booking_settings.html', admin_name=admin_name)
 
 
+@app.route('/get-city/<zip_code>')
+def get_city(zip_code):
+    data_for_zip_code = data_manager.get_city(zip_code)
+    return jsonify(data_for_zip_code)
+
+
 if __name__ == '__main__':
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
     app.run(

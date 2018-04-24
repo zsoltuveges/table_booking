@@ -255,3 +255,12 @@ def get_max_tables(cursor):
                     SELECT * FROM table_number
                     """)
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_city(cursor, zip_code):
+    cursor.execute("""
+                    SELECT city FROM zip_codes
+                    WHERE zip_code = %(zip_code)s
+                    """, {"zip_code": int(zip_code)})
+    return cursor.fetchone()
