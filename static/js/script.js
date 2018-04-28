@@ -5,7 +5,25 @@ dom = {
         dom.displayNumberOfRemainingTables();
         dom.handleRemainingTableOnIndex();
         dom.autofillCity();
+        dom.checkIndiInputValues();
     },
+
+    checkIndiInputValues: function() {
+        let confirmButton = document.getElementById("submitIndividualBooking");
+        let indiInputs = document.getElementsByClassName("individualInput");
+        for(let input of indiInputs) {
+            input.addEventListener('keyup', function() {
+                let newName = document.getElementById('newIndividualName').value;
+                let newEmail = document.getElementById('newIndividualEmail').value;
+                let newPhoneNumber = document.getElementById('newIndividualPhoneNumber').value;
+                if (newName.length >= 5 && newEmail.length >= 5 && newEmail.includes("@")
+                    && newEmail.includes(".") && newPhoneNumber.length >= 8) {
+                    confirmButton.removeAttribute("disabled");
+                }
+            })
+        }
+    },
+
     getIndividualBooking: function() {
         let addNewIndividualBookingButton = document.getElementById('submitIndividualBooking');
         addNewIndividualBookingButton.addEventListener('click', function() {
