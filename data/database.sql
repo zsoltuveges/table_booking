@@ -49,7 +49,7 @@ CREATE TABLE public.company (
     street_type text NOT NULL,
     street_num integer NOT NULL,
     floor_door text,
-    vat_number integer NOT NULL,
+    vat_number bigint NOT NULL,
     date_time timestamp without time zone NOT NULL
 );
 
@@ -92,7 +92,8 @@ ALTER TABLE public.individuals OWNER TO tamas2;
 --
 
 CREATE TABLE public.table_number (
-    remaining_tables integer NOT NULL
+    remaining_tables integer NOT NULL,
+    max_tables integer NOT NULL
 );
 
 
@@ -196,39 +197,43 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 -- Data for Name: company; Type: TABLE DATA; Schema: public; Owner: tamas2
 --
 
+INSERT INTO public.company VALUES (12, '8u0yw4', 'Mördok Mátyás és társa ügyvédi iroda', 'tompa22@gmail.com', '666666666', 1, 7857, 'New York', 'Pokol konyhája', 'tér', 666, '6. emelet 66. ajtó', 568986, '2018-03-02 09:54:58.710134');
 INSERT INTO public.company VALUES (11, 'Jqrnhs', 'Wayne Corporation', 'money_cant_buy_love@wayne_corp.com', '5526587845', 5, 7895, 'Gotham', 'Main', 'utca', 1, '1. floor 1. door', 25498854, '2018-03-02 09:46:40.280004');
-INSERT INTO public.company VALUES (12, '8u0yw4', 'Mördok Mátyás és társa ügyvédi iroda', 'fenegyerek@ahol.kom', '666666666', 1, 7857, 'New York', 'Pokol konyhája', 'tér', 666, '6. emelet 66. ajtó', 568986, '2018-03-02 09:54:58.710134');
+INSERT INTO public.company VALUES (17, 'gdp1rP', 'végem neve', 'cégem@email.ja', '+36307788992', 1, 8745, 'Kerecseny', 'Kossuth', 'körtér', 3, '', 12345678954, '2018-04-28 13:06:17.401821');
 
 
 --
 -- Name: company_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tamas2
 --
 
-SELECT pg_catalog.setval('public.company_id_seq', 12, true);
+SELECT pg_catalog.setval('public.company_id_seq', 17, true);
 
 
 --
 -- Data for Name: individuals; Type: TABLE DATA; Schema: public; Owner: tamas2
 --
 
-INSERT INTO public.individuals VALUES (73, 'IYlp6W', 'Banner Bence', 'hulk@dzsimel.kom', '125487985', 3, '2018-03-02 09:42:13.756584');
-INSERT INTO public.individuals VALUES (74, 'RIz2Nl', 'Parkoló Péter', 'pokember@friiimel.huu', '15898959', 4, '2018-03-02 09:44:09.708934');
-INSERT INTO public.individuals VALUES (75, 'jTtniR', 'Erős Antal', 'vasember@stark_enterprise.com', '4579989559', 5, '2018-03-02 09:57:08.485774');
-INSERT INTO public.individuals VALUES (76, 'nSWe64', 'Sáv Lujza', 'lois_lane@daily_mail.kom', '154989258', 1, '2018-03-02 09:59:42.394891');
-INSERT INTO public.individuals VALUES (77, 'vck0yH', 'Terray László', 'laszlo.terray@codecool.com', '1111111', 3, '2018-03-02 10:45:17.126852');
+INSERT INTO public.individuals VALUES (123, 'cfjCzX', 'magánszemély', 'ert@gtri.hu', '457798852', 1, '2018-04-30 11:16:24.330866');
+INSERT INTO public.individuals VALUES (77, 'vck0yH', 'Banner Bence', 'hulk@dzsimel.kommmtttt', '125487985', 3, '2018-03-02 10:45:17.126852');
+INSERT INTO public.individuals VALUES (112, '01BQDi', 'Banner Bence', 'hulk@dzsimel.kommmhhhhhhh', '125487985', 3, '2018-04-10 20:41:31.142953');
+INSERT INTO public.individuals VALUES (54543, '111111', 'Banner Bence', 'hulk@dzsimel.kommmggggg', '125487985', 3, '2018-04-10 20:41:31.142953');
+INSERT INTO public.individuals VALUES (74, 'RIz2Nl', 'Banner Bence', 'hulk@dzsimel.komhhhh', '125487985', 3, '2018-03-02 09:44:09.708934');
+INSERT INTO public.individuals VALUES (75, 'jTtniR', 'Banner Bence', 'email@email.kom', '125487985', 3, '2018-03-02 09:57:08.485774');
+INSERT INTO public.individuals VALUES (76, 'nSWe64', 'Banner Bence', 'pokemer@peter.parker.comm', '125487985', 3, '2018-03-02 09:59:42.394891');
 
 
 --
 -- Name: individuals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tamas2
 --
 
-SELECT pg_catalog.setval('public.individuals_id_seq', 77, true);
+SELECT pg_catalog.setval('public.individuals_id_seq', 123, true);
 
 
 --
 -- Data for Name: table_number; Type: TABLE DATA; Schema: public; Owner: tamas2
 --
 
+INSERT INTO public.table_number VALUES (119, 150);
 
 
 --

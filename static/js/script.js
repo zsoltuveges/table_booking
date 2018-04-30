@@ -20,6 +20,8 @@ dom = {
                 if (newName.length >= 5 && newEmail.length >= 5 && newEmail.includes("@")
                     && newEmail.includes(".") && newPhoneNumber.length >= 8) {
                     confirmButton.removeAttribute("disabled");
+                } else {
+                    confirmButton.setAttribute("disabled", "disabled")
                 }
             })
         }
@@ -64,6 +66,8 @@ dom = {
                     && zipCode.length === 4 && city.length > 0 && streetAddress.length > 0
                     && streetNumber.length > 0 && vatNumber.length > 0) {
                     confirmButton.removeAttribute("disabled");
+                } else {
+                    confirmButton.setAttribute("disabled", "disabled")
                 }
             })
         }
