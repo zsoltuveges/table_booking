@@ -8,6 +8,7 @@ admin = {
     _backupIndiBookings: "",
     _backupCompanyBookings: "",
     _maxTablesData: {},
+    _time: "",
 
     init: function () {
         this.showAllData();
@@ -40,7 +41,11 @@ admin = {
                     let tableData = document.createElement("td");
                     let tempItem;
                     if (columns[i] === "date_time") {
-                        tempItem = document.createTextNode(admin._allIndiBookings[row][columns[i]]);
+                        let dateTime = new Date(admin._allIndiBookings[row][columns[i]]);
+                        admin._time = dateTime;
+                        let correctMonth = dateTime.getMonth() + 1;
+                        tempItem = document.createTextNode(dateTime.getUTCFullYear() + "-" + correctMonth + "-" + dateTime.getDate()
+                        + " | " + dateTime.getUTCHours() + ":" + dateTime.getMinutes());
                         tableData.appendChild(tempItem);
                     } else if (columns[i] === "booked_tables") {
                         let button = document.createElement("button");
@@ -111,8 +116,13 @@ admin = {
                 ];
                 for (let i = 0; i < columns.length; i++) {
                     var tableData = document.createElement("td");
+                    let tempItem;
                     if (columns[i] === "date_time") {
-                        tempItem = document.createTextNode(admin._allCompanyBookings[row][columns[i]]);
+                        let dateTime = new Date(admin._allIndiBookings[row][columns[i]]);
+                        admin._time = dateTime;
+                        let correctMonth = dateTime.getMonth() + 1;
+                        tempItem = document.createTextNode(dateTime.getUTCFullYear() + "-" + correctMonth + "-" + dateTime.getDate()
+                        + " | " + dateTime.getUTCHours() + ":" + dateTime.getMinutes());
                         tableData.appendChild(tempItem);
                     } else if (columns[i] === "booked_tables") {
                         let button = document.createElement("button");
