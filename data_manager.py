@@ -168,11 +168,7 @@ def modify_delete_individual_booking(cursor, booking_data):
         old_number_of_tables_from_this_booking = cursor.fetchone()["booked_tables"]
         table_diff = old_number_of_tables_from_this_booking - number_of_updated_tables
         new_remaining_tables = remaining_tables + table_diff
-        cursor.execute("""
-                        UPDATE table_number
-                        SET remaining_tables = %(new_remaining_tables)s
-                        """, {"new_remaining_tables": new_remaining_tables})
-
+        update_remaining_tables(new_remaining_tables)
         cursor.execute("""
                         UPDATE individuals
                         SET name = %(name)s, email = %(email)s, phone_number = %(phone_number)s,
@@ -203,11 +199,7 @@ def modify_delete_company_booking(cursor, booking_data):
         old_number_of_tables_from_this_booking = cursor.fetchone()["booked_tables"]
         table_diff = old_number_of_tables_from_this_booking - number_of_updated_tables
         new_remaining_tables = remaining_tables + table_diff
-        cursor.execute("""
-                                UPDATE table_number
-                                SET remaining_tables = %(new_remaining_tables)s
-                                """, {"new_remaining_tables": new_remaining_tables})
-
+        update_remaining_tables(new_remaining_tables)
         cursor.execute("""
                         UPDATE company
                         SET name = %(newCompanyName)s, email = %(newCompanyEmail)s, phone_number = %(newCompanyPhoneNumber)s,
@@ -216,6 +208,14 @@ def modify_delete_company_booking(cursor, booking_data):
                             street_num = %(street_num)s, floor_door = %(floor_door)s, vat_number = %(vat_number)s
                         WHERE booking_id = %(booking_number)s AND email = %(newCompanyEmail)s
                         """, booking_data)
+
+
+@connection.connection_handler
+def update_remaining_tables(cursor, new_remaining_tables):
+    cursor.execute("""
+                    UPDATE table_number
+                    SET remaining_tables = %(new_remaining_tables)s
+                    """, {"new_remaining_tables": new_remaining_tables})
 
 
 @connection.connection_handler
