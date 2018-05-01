@@ -8,7 +8,6 @@ admin = {
     _backupIndiBookings: "",
     _backupCompanyBookings: "",
     _maxTablesData: {},
-    _cucc: null,
 
     init: function () {
         this.showAllData();
