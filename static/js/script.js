@@ -1,27 +1,47 @@
 dom = {
+    _numberOfRemainingTables: null,
+
     init: function () {
+        dom.getNumberOfRemainingTables();
         dom.getIndividualBooking();
         dom.getCompanyBooking();
         dom.displayNumberOfRemainingTables();
         dom.handleRemainingTableOnIndex();
         dom.autofillCity();
-        dom.checkIndiInputValues();
-        dom.checkCompanyInputValues();
+    },
+
+    getNumberOfRemainingTables: function() {
+        fetch('/get-max-tables-data')
+            .then(response => response.json())
+            .then(function(result) {
+                dom._numberOfRemainingTables = result["remaining_tables"];
+                dom.checkIndiInputValues();
+                dom.checkCompanyInputValues();
+            })
     },
 
     checkIndiInputValues: function() {
-        let confirmButton = document.getElementById("submitIndividualBooking");
         let indiInputs = document.getElementsByClassName("individualInput");
+        let tableNumberSelects = document.getElementsByClassName("indiNumberOfTablesSelects");
         for(let input of indiInputs) {
-            input.addEventListener('keyup', function() {
-                let newName = document.getElementById('newIndividualName').value;
-                let newEmail = document.getElementById('newIndividualEmail').value;
-                let newPhoneNumber = document.getElementById('newIndividualPhoneNumber').value;
-                if (newName.length >= 5 && newEmail.length >= 5 && newEmail.includes("@")
-                    && newEmail.includes(".") && newPhoneNumber.length >= 8) {
-                    confirmButton.removeAttribute("disabled");
-                }
-            })
+            input.addEventListener('keyup', dom.actualCheck)
+        }
+        let select = document.getElementById("newIndividualTableNumber");
+        select.addEventListener('click', dom.actualCheck)
+    },
+
+    actualCheck: function() {
+        let confirmButton = document.getElementById("submitIndividualBooking");
+        let newName = document.getElementById('newIndividualName').value;
+        let newEmail = document.getElementById('newIndividualEmail').value;
+        let newPhoneNumber = document.getElementById('newIndividualPhoneNumber').value;
+        let numberOfBookedTables = parseInt(document.getElementById("newIndividualTableNumber").value);
+        if (newName.length >= 5 && newEmail.length >= 5 && newEmail.includes("@")
+            && newEmail.includes(".") && newPhoneNumber.length >= 8
+            && parseInt(dom._numberOfRemainingTables) >= numberOfBookedTables) {
+            confirmButton.removeAttribute("disabled");
+        } else {
+            confirmButton.setAttribute("disabled", "disabled")
         }
     },
 
