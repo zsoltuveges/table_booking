@@ -8,7 +8,6 @@ admin = {
     _backupIndiBookings: "",
     _backupCompanyBookings: "",
     _maxTablesData: {},
-    _time: "",
 
     init: function () {
         this.showAllData();
@@ -42,7 +41,6 @@ admin = {
                     let tempItem;
                     if (columns[i] === "date_time") {
                         let dateTime = new Date(admin._allIndiBookings[row][columns[i]]);
-                        admin._time = dateTime;
                         let correctMonth = dateTime.getMonth() + 1;
                         tempItem = document.createTextNode(dateTime.getUTCFullYear() + "-" + correctMonth + "-" + dateTime.getDate()
                         + " | " + dateTime.getUTCHours() + ":" + dateTime.getMinutes());
@@ -295,6 +293,8 @@ admin = {
         try {
             document.getElementById("max-table-badge").innerHTML = admin._maxTablesData["max_tables"];
             document.getElementById("empty-table-badge").innerHTML = admin._maxTablesData["remaining_tables"];
+            let bookedTables = admin._maxTablesData["max_tables"] - admin._maxTablesData["remaining_tables"];
+            document.getElementById("booked-table-badge").innerHTML = bookedTables;
         } catch (err) {
             return;
         }
@@ -304,10 +304,15 @@ admin = {
         let maxTablesButton = document.getElementById("maxTablesButton");
         try {
             maxTablesButton.addEventListener('click', function () {
-                let maxNumberOfTables = document.getElementById("maxNumberOfTables").value;
-                $.post('/set-max-tables', {
-                    maxTables: maxNumberOfTables
-                });
+                let maxNumberOfTables = parseInt(document.getElementById("maxNumberOfTables").value);
+                let currentNumberOfBookedTables = parseInt(admin._maxTablesData["max_tables"]) - parseInt(admin._maxTablesData["remaining_tables"]);
+                if (maxNumberOfTables < currentNumberOfBookedTables) {
+                    alert("Több foglalt asztal van jelenleg, mint amekkora maximumot be szeretnél állítani")
+                } else {
+                    $.post('/set-max-tables', {
+                        maxTables: maxNumberOfTables
+                    });
+                }
                 document.getElementById("maxNumberOfTables").value = "";
                 admin.getMaxAndRemainingTables();
             })

@@ -135,7 +135,8 @@ def modify_delete_booking():
     mod_del_target = request.form.to_dict()
     booking_data = data_manager.return_booking_data(mod_del_target)
     return render_template('handle_booking.html',
-                           booking_data=booking_data)
+                           booking_data=booking_data,
+                           public_space_names=PUBLIC_SPACE_NAMES)
 
 
 @app.route('/save-edited-booking', methods=['POST'])

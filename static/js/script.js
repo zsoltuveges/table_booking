@@ -1,27 +1,46 @@
 dom = {
+    _numberOfRemainingTables: null,
+
     init: function () {
+        dom.getNumberOfRemainingTables();
         dom.getIndividualBooking();
         dom.getCompanyBooking();
         dom.displayNumberOfRemainingTables();
         dom.handleRemainingTableOnIndex();
         dom.autofillCity();
-        dom.checkIndiInputValues();
-        dom.checkCompanyInputValues();
+    },
+
+    getNumberOfRemainingTables: function() {
+        fetch('/get-max-tables-data')
+            .then(response => response.json())
+            .then(function(result) {
+                dom._numberOfRemainingTables = result["remaining_tables"];
+                dom.checkIndiInputValues();
+                dom.checkCompanyInputValues();
+            })
     },
 
     checkIndiInputValues: function() {
-        let confirmButton = document.getElementById("submitIndividualBooking");
         let indiInputs = document.getElementsByClassName("individualInput");
         for(let input of indiInputs) {
-            input.addEventListener('keyup', function() {
-                let newName = document.getElementById('newIndividualName').value;
-                let newEmail = document.getElementById('newIndividualEmail').value;
-                let newPhoneNumber = document.getElementById('newIndividualPhoneNumber').value;
-                if (newName.length >= 5 && newEmail.length >= 5 && newEmail.includes("@")
-                    && newEmail.includes(".") && newPhoneNumber.length >= 8) {
-                    confirmButton.removeAttribute("disabled");
-                }
-            })
+            input.addEventListener('keyup', dom.actualCheckIndiInput)
+        }
+        let select = document.getElementById("newIndividualTableNumber");
+        select.addEventListener('click', dom.actualCheckIndiInput)
+    },
+
+    actualCheckIndiInput: function() {
+        let confirmButton = document.getElementById("submitIndividualBooking");
+        let newName = document.getElementById('newIndividualName').value;
+        let newEmail = document.getElementById('newIndividualEmail').value;
+        let newPhoneNumber = document.getElementById('newIndividualPhoneNumber').value;
+        let numberOfBookedTables = parseInt(document.getElementById("newIndividualTableNumber").value);
+        if (newName.length >= 5 && newEmail.length >= 5 && newEmail.includes("@")
+            && newEmail.includes(".") && newPhoneNumber.length >= 8
+            && parseInt(dom._numberOfRemainingTables) >= numberOfBookedTables) {
+            confirmButton.removeAttribute("disabled");
+        } else {
+            confirmButton.setAttribute("disabled", "disabled")
         }
     },
 
@@ -46,28 +65,35 @@ dom = {
     },
 
     checkCompanyInputValues: function() {
-        let confirmButton = document.getElementById("submitCompanyBooking");
         let companyInputs = document.getElementsByClassName("CompanyInput");
+        let select = document.getElementById("company_table_number");
         for(let input of companyInputs) {
-            input.addEventListener('keyup', function() {
-                let newName = document.getElementById('newCompanyName').value;
-                let newEmail = document.getElementById('newCompanyEmail').value;
-                let newPhoneNumber = document.getElementById('newCompanyPhoneNumber').value;
+            input.addEventListener('keyup', dom.actualCheckCompInput)
+        }
+        select.addEventListener('click', dom.actualCheckIndiInput)
+    },
 
-                let zipCode = document.getElementById('zip_code').value;
-                let city = document.getElementById('city').value;
-                let streetAddress = document.getElementById('street_address').value;
-                let streetNumber = document.getElementById('street_num').value;
-                let vatNumber = document.getElementById('vat_number').value;
-                if (newName.length >= 5 && newEmail.length >= 5 && newEmail.includes("@")
-                    && newEmail.includes(".") && newPhoneNumber.length >= 8
-                    && zipCode.length === 4 && city.length > 0 && streetAddress.length > 0
-                    && streetNumber.length > 0 && vatNumber.length > 0) {
-                    confirmButton.removeAttribute("disabled");
-                }
-            })
+    actualCheckCompInput: function() {
+        let confirmButton = document.getElementById("submitCompanyBooking");
+        let newName = document.getElementById('newCompanyName').value;
+        let newEmail = document.getElementById('newCompanyEmail').value;
+        let newPhoneNumber = document.getElementById('newCompanyPhoneNumber').value;
+
+        let zipCode = document.getElementById('zip_code').value;
+        let city = document.getElementById('city').value;
+        let streetAddress = document.getElementById('street_address').value;
+        let streetNumber = document.getElementById('street_num').value;
+        let vatNumber = document.getElementById('vat_number').value;
+        if (newName.length >= 5 && newEmail.length >= 5 && newEmail.includes("@")
+            && newEmail.includes(".") && newPhoneNumber.length >= 8
+            && zipCode.length === 4 && city.length > 0 && streetAddress.length > 0
+            && streetNumber.length > 0 && vatNumber.length > 0) {
+            confirmButton.removeAttribute("disabled");
+        } else {
+            confirmButton.setAttribute("disabled", "disabled")
         }
     },
+
     getCompanyBooking: function() {
         let addNewCompanyBookingButton = document.getElementById('submitCompanyBooking');
         addNewCompanyBookingButton.addEventListener('click', function() {
