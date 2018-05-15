@@ -40,6 +40,12 @@
         margin-left: 10% !important;
         margin-right: 10% !important;
     }
+
+    #notification_number {
+        top: 200px !important;
+        left: 30px !important;
+        max-width: 25px !important;
+    }
 }
 
 #container {
@@ -201,4 +207,23 @@ span {
 
 .modify-booking-button {
     width: 45px !important;
+}
+
+.fa-bell {
+    color: white;
+}
+
+#notification_number {
+    top: 3px;
+    right: 435px;
+    position: absolute;
+    background-color: red;
+    border: 2px solid white;
+    border-radius: 12px;
+    box-shadow: 1px 1px 1px black;
+    color: white;
+    min-width: 25px;
+    font-size: smaller;
+    padding: 1px 1px 1px 1px;
+    text-align: center;
 }
