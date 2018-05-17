@@ -214,6 +214,17 @@ def get_city(zip_code):
     return jsonify(data_for_zip_code)
 
 
+@app.route('/admin/modified-table-bookings')
+def modified_table_bookings():
+    admin_name = session["username"]
+    return render_template('modified_bookings.html', admin_name=admin_name, modified=True)
+
+@app.route('/admin/get-modified-bookings')
+def get_unseen_modified_bookings():
+    modified_bookings = data_manager.get_unseen_modified_bookings()
+    return jsonify(modified_bookings)
+
+
 if __name__ == '__main__':
     app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
     app.run(
