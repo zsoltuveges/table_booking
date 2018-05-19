@@ -17,7 +17,7 @@ admin = {
     },
 
     getAllIndividualBookingsFromDatabase: function () {
-        $.getJSON('/admin/get-modified-bookings', function (response) {
+        $.getJSON('/admin/get-indi-modified-bookings', function (response) {
             admin._allIndiBookings = response;
             admin._backupIndiBookings = response;
             admin.displayAllIndividualBookings();
@@ -80,7 +80,7 @@ admin = {
     },
 
     getAllCompanyBookingsFromDatabase: function () {
-        $.getJSON('/admin/get-modified-bookings', function (response) {
+        $.getJSON('/admin/get-company-modified-bookings', function (response) {
             admin._allCompanyBookings = response;
             admin._backupCompanyBookings = response;
             admin.displayAllCompanyBookings();
@@ -93,6 +93,8 @@ admin = {
             tableBody.innerHTML = "";
             for (let row = 0; row < admin._allCompanyBookings.length; row++) {
                 var tableRow = document.createElement("tr");
+                tableRow.classList.add(admin._allCompanyBookings[row]["id"]);
+                console.log(admin._allCompanyBookings);
                 let columns = [
                     "name",
                     "email",
@@ -105,25 +107,33 @@ admin = {
                     "street_num",
                     "floor_door",
                     "vat_number",
-                    "date_time"
+                    "date_time",
+                    "modified_time",
+                    "seen"
                 ];
                 for (let i = 0; i < columns.length; i++) {
                     var tableData = document.createElement("td");
                     let tempItem;
-                    if (columns[i] === "date_time") {
-                        let dateTime = new Date(admin._allIndiBookings[row][columns[i]]);
+                    if (columns[i] === "date_time" || columns[i] === "modified_time") {
+                        let dateTime = new Date(admin._allCompanyBookings[row][columns[i]]);
                         admin._time = dateTime;
                         let correctMonth = dateTime.getMonth() + 1;
                         tempItem = document.createTextNode(dateTime.getUTCFullYear() + "-" + correctMonth + "-" + dateTime.getDate()
                             + " | " + dateTime.getUTCHours() + ":" + dateTime.getMinutes());
                         tableData.appendChild(tempItem);
+                    } else if (columns[i] === "seen") {
+                        tempItem = document.createElement("i");
+                        tempItem.classList.add("far");
+                        tempItem.classList.add("fa-check-circle");
+                        tempItem.classList.add("fa-2x");
+                        tempItem.classList.add("unseen");
+                        this.addingUnSeenCircleEventListener(tempItem);
+                        tableData.appendChild(tempItem)
                     } else if (columns[i] === "booked_tables") {
-                        let button = document.createElement("button");
+                        let button = document.createElement("div");
                         button.classList.add("btn");
                         button.classList.add("btn-info");
                         button.classList.add("modify-booking-button");
-                        button.setAttribute("data-toggle", "modal");
-                        button.setAttribute("data-target", "#admin-comp-modification-modal");
                         button.addEventListener('click', function () {
                             let nameModify = document.getElementById("comp_name");
                             nameModify.value = admin._allCompanyBookings[row].name;
@@ -164,6 +174,7 @@ admin = {
                 companyTable.appendChild(tableBody);
             }
         } catch (err) {
+            console.log(err);
             return;
         }
     },
@@ -234,6 +245,22 @@ admin = {
     showAllData: function () {
         admin.getAllIndividualBookingsFromDatabase();
         admin.getAllCompanyBookingsFromDatabase();
+    },
+
+    addingUnSeenCircleEventListener: function (tempItem) {
+        tempItem.addEventListener("click", function () {
+            tempItem.classList.remove("unseen");
+            tempItem.classList.add("seen");
+            let modifiedCompanyBody = document.getElementById("modified_company_body").children;
+            for (let row of modifiedCompanyBody) {
+                if (row.getElementsByClassName("fa-check-circle")[0].classList.contains("seen")) {
+                    let seenRowId = row.className;
+                    $.post('/admin-change-modified-to-seen', {
+                        seenRowId: seenRowId
+                    });
+                }
+            }
+        });
     }
 };
 

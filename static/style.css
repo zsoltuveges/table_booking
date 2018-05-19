@@ -227,3 +227,12 @@ span {
     padding: 1px 1px 1px 1px;
     text-align: center;
 }
+
+.unseen {
+    color: #89191b;
+    cursor: pointer;
+}
+
+.seen {
+    color: #3A7734;
+}

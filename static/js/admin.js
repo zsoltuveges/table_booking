@@ -416,6 +416,7 @@ admin = {
             deleteButton.style.visibility = "visible";
         })
     },
+
     setModifyDeleteCompButtonsVisibility: function () {
         let compDeleteButton = document.getElementById("delete_comp_booking_button");
         let compModifyButton = document.getElementById("modify_comp_booking_button");

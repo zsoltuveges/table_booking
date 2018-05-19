@@ -113,9 +113,11 @@ def logout():
 @login_module.login_required
 def admin_page(admin_name):
     search = True
+    notification_number = data_manager.get_number_of_unseen_modified_bookings()
     return render_template('admin.html',
                            search=search,
-                           admin_name=admin_name)
+                           admin_name=admin_name,
+                           notification_number=notification_number["count"])
 
 
 @app.route('/mod-del-by-admin', methods=['POST'])
@@ -123,7 +125,10 @@ def mod_del_by_admin():
     data = request.form.to_dict()
     if "company" in data:
         data_manager.mod_del_comp_by_admin(data)
+        booking_id = data_manager.get_booking_id_by_id(data["id"], "company")
+        data_manager.get_previous_bookings_and_save_to_modified_table(booking_id["booking_id"], "company")
     else:
+        booking_id = data_manager.get_booking_id_by_id(data["id"], "individuals")
         data_manager.mod_del_indi_by_admin(data)
     return "Done"
 
@@ -217,12 +222,32 @@ def get_city(zip_code):
 @app.route('/admin/modified-table-bookings')
 def modified_table_bookings():
     admin_name = session["username"]
-    return render_template('modified_bookings.html', admin_name=admin_name, modified=True)
+    notification_number = data_manager.get_number_of_unseen_modified_bookings()
+    return render_template('modified_bookings.html', admin_name=admin_name, modified=True, notification_number=notification_number["count"])
 
-@app.route('/admin/get-modified-bookings')
-def get_unseen_modified_bookings():
-    modified_bookings = data_manager.get_unseen_modified_bookings()
-    return jsonify(modified_bookings)
+
+@app.route('/admin/get-indi-modified-bookings')
+def get_indi_modified_bookings():
+    indi_modified_bookings = data_manager.get_indi_modified_bookings()
+    return jsonify(indi_modified_bookings)
+
+
+@app.route('/admin/get-company-modified-bookings')
+def get_company_modified_bookings():
+    company_modified_bookings = data_manager.get_company_modified_bookings()
+    return jsonify(company_modified_bookings)
+
+
+@app.route('/save/modified-bookings/<booking_category>/<booking_id>')
+def save_modified_bookings(booking_category, booking_id):
+    data_manager.get_previous_bookings_and_save_to_modified_table(booking_id, booking_category)
+
+
+@app.route('/admin-change-modified-to-seen', methods=["POST"])
+def change_seen():
+    seenRowId = request.form.to_dict()
+    data_manager.change_status_seen(seenRowId["seenRowId"])
+    return "Changed the status"
 
 
 if __name__ == '__main__':

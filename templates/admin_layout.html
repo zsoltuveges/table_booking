@@ -56,7 +56,7 @@
         <a href="{{ url_for('modified_table_bookings') }}">
             <i class="fas fa-bell fa-2x mr-3"></i>
             <div id="notification_number">
-                1
+                {{ notification_number }}
             </div>
         </a>
         {% if search is defined %}
