@@ -367,17 +367,15 @@ def save_previous_booking(cursor, booking):
         })
     else:
         cursor.execute("""
-            INSERT INTO modified_datas (booking_id, name, email, phone_number, booked_tables, date_time, modified_time, seen)
-            VALUES (%(booking_id)s, %(name)s, %(email)s, %(phone_number)s, %(booked_tables)d, %(date_time)s, now(), %(seen)s)
+            INSERT INTO modified_datas (modified_individuals_id, name, email, phone_number, booked_tables, date_time, modified_time, seen)
+            VALUES (%(booking_id)s, %(name)s, %(email)s, %(phone_number)s, %(booked_tables)s, %(date_time)s, now(), FALSE)
         """, {
             "booking_id": booking["booking_id"],
             "name": booking["name"],
             "email": booking["email"],
             "phone_number": booking["phone_number"],
             "booked_tables": booking["booked_tables"],
-            "date_time": booking["date_time"],
-            "modified_time": booking["modified_time"],
-            "seen": "false"
+            "date_time": booking["date_time"]
         })
 
 

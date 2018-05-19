@@ -30,7 +30,8 @@ admin = {
             tableBody.innerHTML = "";
             for (let row = 0; row < admin._allIndiBookings.length; row++) {
                 var tableRow = document.createElement("tr");
-                let columns = ["name", "email", "phone_number", "booked_tables", "date_time"];
+                tableRow.classList.add(admin._allIndiBookings[row]["id"]);
+                let columns = ["name", "email", "phone_number", "booked_tables", "date_time", "modified_time", "seen"];
                 for (let i = 0; i < columns.length; i++) {
                     let tableData = document.createElement("td");
                     let tempItem;
@@ -40,13 +41,19 @@ admin = {
                         tempItem = document.createTextNode(dateTime.getUTCFullYear() + "-" + correctMonth + "-" + dateTime.getDate()
                             + " | " + dateTime.getUTCHours() + ":" + dateTime.getMinutes());
                         tableData.appendChild(tempItem);
+                    } else if (columns[i] === "seen") {
+                        tempItem = document.createElement("i");
+                        tempItem.classList.add("far");
+                        tempItem.classList.add("fa-check-circle");
+                        tempItem.classList.add("fa-2x");
+                        tempItem.classList.add("unseen");
+                        this.addingUnSeenCircleEventListener(tempItem, "indi");
+                        tableData.appendChild(tempItem)
                     } else if (columns[i] === "booked_tables") {
                         let button = document.createElement("button");
                         button.classList.add("btn");
                         button.classList.add("btn-info");
                         button.classList.add("modify-booking-button");
-                        button.setAttribute("data-toggle", "modal");
-                        button.setAttribute("data-target", "#admin-modification-modal");
                         button.addEventListener('click', function () {
                             let nameModify = document.getElementById("name");
                             nameModify.value = admin._allIndiBookings[row].name;
@@ -94,7 +101,6 @@ admin = {
             for (let row = 0; row < admin._allCompanyBookings.length; row++) {
                 var tableRow = document.createElement("tr");
                 tableRow.classList.add(admin._allCompanyBookings[row]["id"]);
-                console.log(admin._allCompanyBookings);
                 let columns = [
                     "name",
                     "email",
@@ -127,10 +133,10 @@ admin = {
                         tempItem.classList.add("fa-check-circle");
                         tempItem.classList.add("fa-2x");
                         tempItem.classList.add("unseen");
-                        this.addingUnSeenCircleEventListener(tempItem);
+                        this.addingUnSeenCircleEventListener(tempItem, "company");
                         tableData.appendChild(tempItem)
                     } else if (columns[i] === "booked_tables") {
-                        let button = document.createElement("div");
+                        let button = document.createElement("button");
                         button.classList.add("btn");
                         button.classList.add("btn-info");
                         button.classList.add("modify-booking-button");
@@ -247,17 +253,29 @@ admin = {
         admin.getAllCompanyBookingsFromDatabase();
     },
 
-    addingUnSeenCircleEventListener: function (tempItem) {
+    addingUnSeenCircleEventListener: function (tempItem, category) {
         tempItem.addEventListener("click", function () {
             tempItem.classList.remove("unseen");
             tempItem.classList.add("seen");
-            let modifiedCompanyBody = document.getElementById("modified_company_body").children;
-            for (let row of modifiedCompanyBody) {
-                if (row.getElementsByClassName("fa-check-circle")[0].classList.contains("seen")) {
-                    let seenRowId = row.className;
-                    $.post('/admin-change-modified-to-seen', {
-                        seenRowId: seenRowId
-                    });
+            if (category === "company") {
+                let modifiedCompanyBody = document.getElementById("modified_company_body").children;
+                for (let row of modifiedCompanyBody) {
+                    if (row.getElementsByClassName("fa-check-circle")[0].classList.contains("seen")) {
+                        let seenRowId = row.className;
+                        $.post('/admin-change-modified-to-seen', {
+                            seenRowId: seenRowId
+                        });
+                    }
+                }
+            } else {
+                let modifiedIndiBody = document.getElementById("modified_indi_body").children;
+                for (let row of modifiedIndiBody) {
+                    if (row.getElementsByClassName("fa-check-circle")[0].classList.contains("seen")) {
+                        let seenRowId = row.className;
+                        $.post('/admin-change-modified-to-seen', {
+                            seenRowId: seenRowId
+                        });
+                    }
                 }
             }
         });

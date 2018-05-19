@@ -130,6 +130,7 @@ def mod_del_by_admin():
     else:
         booking_id = data_manager.get_booking_id_by_id(data["id"], "individuals")
         data_manager.mod_del_indi_by_admin(data)
+        data_manager.get_previous_bookings_and_save_to_modified_table(booking_id["booking_id"], "indi")
     return "Done"
 
 
