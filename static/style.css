@@ -245,11 +245,13 @@ span {
     background-color: #343a40;
     height: 25rem;
     width: 20rem;
+    top: 30px;
     left: -325%;
     position: absolute;
     opacity: 0;
     border: 1px solid;
     border-radius: 7px;
+    transition: all .2s linear;
 }
 
 #notification_dropdown_title {
