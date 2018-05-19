@@ -1,5 +1,9 @@
 @import "//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css";
 
+a:hover {
+    text-decoration: none;
+}
+
 #background-div {
     position: fixed;
     left: 0px;
@@ -238,12 +242,48 @@ span {
 }
 
 #notification_dropdown {
-    background-color: #cdcdcd;
+    background-color: #343a40;
     height: 25rem;
     width: 20rem;
     left: -325%;
     position: absolute;
     opacity: 0;
+    border: 1px solid;
+    border-radius: 7px;
+}
+
+#notification_dropdown_title {
+    width: 100%;
+    color: white;
+    padding: 5px 10px 8px 10px;
+    background-color: #343a40;
+    border-radius: 7px;
+    text-align: center;
+    border-bottom: 1px solid;
+    margin-bottom: 10px;
+}
+
+.notification_null {
+    text-align: center;
+    color: #14c514;
+    margin-top: 50px;
+}
+
+.notification_row {
+    color: #ffffff;
+    width: 100%;
+    height: 70px;
+    background: #343a40;
+    border: 1px solid white;
+    border-radius: 7px;
+    border-left: 0;
+    border-right: 0;
+    padding: 20px 7px 0 7px;
+}
+
+.notification_row:hover {
+    background-color: #18a2b9;
+    color: white;
 }
 
 .unseen {
@@ -262,3 +302,9 @@ span {
 .visibility_null {
     opacity: 0;
 }
+
+.fa-exclamation {
+    color: #ff0002;
+}
+
+
