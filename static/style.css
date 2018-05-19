@@ -232,8 +232,18 @@ span {
     text-align: center;
 }
 
-#notification_href {
+#notification_bell {
     text-decoration: none;
+    cursor: pointer;
+}
+
+#notification_dropdown {
+    background-color: #cdcdcd;
+    height: 25rem;
+    width: 20rem;
+    left: -325%;
+    position: absolute;
+    opacity: 0;
 }
 
 .unseen {

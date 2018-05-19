@@ -16,6 +16,7 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/admin_layout.js') }}" defer></script>
     {% if modified is defined %}
         <script src="{{ url_for('static', filename='js/modified_bookings.js') }}" defer></script>
     {% else %}
@@ -54,7 +55,7 @@
             </li>
         </ul>
         <div id="notification_div">
-            <a id="notification_href" href="{{ url_for('modified_table_bookings') }}">
+            <div id="notification_bell">
                 <i class="fas fa-bell fa-2x mr-3"></i>
                 {% if notification_number == 0 %}
                     <div id="notification_number" class="visibility_null">
@@ -65,7 +66,10 @@
                         {{ notification_number }}
                     </div>
                 {% endif %}
-            </a>
+            </div>
+        <div id="notification_dropdown">
+
+        </div>
         </div>
         {% if search is defined %}
             <div class="form-inline my-2 my-lg-0">
