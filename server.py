@@ -150,11 +150,14 @@ def save_edited_booking():
     """Sends the edited booking to database for saving,
     or deleting the booking."""
     edited_data = request.form.to_dict()
+    print(edited_data)
     if "city" in edited_data:
         data_manager.modify_delete_company_booking(edited_data)
+        data_manager.get_previous_bookings_and_save_to_modified_table(edited_data["booking_number"], "company")
         return redirect(url_for('index'))
     else:
         data_manager.modify_delete_individual_booking(edited_data)
+        data_manager.get_previous_bookings_and_save_to_modified_table(edited_data["booking_number"], "indi")
         return redirect(url_for('index'))
 
 
