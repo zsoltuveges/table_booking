@@ -16,7 +16,12 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="{{ url_for('static', filename='js/admin.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/admin_layout.js') }}" defer></script>
+    {% if modified is defined %}
+        <script src="{{ url_for('static', filename='js/modified_bookings.js') }}" defer></script>
+    {% else %}
+        <script src="{{ url_for('static', filename='js/admin.js') }}" defer></script>
+    {% endif %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css"
           integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous"
           defer>
@@ -49,6 +54,37 @@
                 <span id="menu-save-bookings" class="nav-link disabled">Foglalások mentése</span>
             </li>
         </ul>
+        <div id="notification_div">
+            <div id="notification_bell">
+                <i class="fas fa-bell fa-2x mr-3"></i>
+                {% if notification_number == 0 %}
+                    <div id="notification_number" class="visibility_null">
+                        {{ notification_number }}
+                    </div>
+                {% else %}
+                    <div id="notification_number">
+                        {{ notification_number }}
+                    </div>
+                {% endif %}
+            </div>
+            <div id="notification_dropdown">
+                <div id="notification_dropdown_title">
+                    Értesítések
+                </div>
+                {% if notification_number == 0 %}
+                    <div class="notification_null">
+                        <p>Nincsennek értesítések</p>
+                        <i class="fas fa-check fa-3x"></i>
+                    </div>
+                {% else %}
+                    <a href="{{ url_for('modified_table_bookings') }}">
+                        <div class="notification_row">
+                            <p><i class="fas fa-exclamation mr-2"></i>Történtek módosítások a foglalásokban</p>
+                        </div>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
         {% if search is defined %}
             <div class="form-inline my-2 my-lg-0">
                 <input id="searchInput" class="form-control mr-sm-4" type="search" placeholder="&#xf002; Keresés"
@@ -124,7 +160,7 @@
                         <label for="table_number" class="form-control-label">Asztalszám:</label>
                         <select name="table_number" id="table_number">
                             {% for i in range(1, 16) %}
-                                <option value="{{i}}">{{ i }}</option>
+                                <option value="{{ i }}">{{ i }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -132,10 +168,18 @@
                         <input type="hidden" id="booking_id">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="modify_booking_button" class="btn btn-info" data-toggle="modal">Módosít</button>
-                        <button type="button" id="confirm_modify_button" data-dismiss="modal" class="btn btn-danger" data-toggle="modal">Biztos módosítod?</button>
-                        <button type="button" id="delete_booking_button" class="btn btn-info" data-toggle="modal">Töröl</button>
-                        <button type="button" id="confirm_delete_button" data-dismiss="modal" class="btn btn-danger" data-toggle="modal">Biztos törlöd?</button>
+                        <button type="button" id="modify_booking_button" class="btn btn-info" data-toggle="modal">
+                            Módosít
+                        </button>
+                        <button type="button" id="confirm_modify_button" data-dismiss="modal" class="btn btn-danger"
+                                data-toggle="modal">Biztos módosítod?
+                        </button>
+                        <button type="button" id="delete_booking_button" class="btn btn-info" data-toggle="modal">
+                            Töröl
+                        </button>
+                        <button type="button" id="confirm_delete_button" data-dismiss="modal" class="btn btn-danger"
+                                data-toggle="modal">Biztos törlöd?
+                        </button>
                     </div>
                 </form>
             </div>
@@ -199,7 +243,7 @@
                         <label for="comp_table_number" class="form-control-label">Asztalszám:</label>
                         <select name="comp_table_number" id="comp_table_number">
                             {% for i in range(1, 16) %}
-                                <option value="{{i}}">{{ i }}</option>
+                                <option value="{{ i }}">{{ i }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -207,10 +251,18 @@
                         <input type="hidden" id="comp_booking_id">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="modify_comp_booking_button" class="btn btn-info" data-toggle="modal">Módosít</button>
-                        <button type="button" id="confirm_comp_modify_button" data-dismiss="modal" class="btn btn-danger" data-toggle="modal">Biztos módosítod?</button>
-                        <button type="button" id="delete_comp_booking_button" class="btn btn-info" data-toggle="modal">Töröl</button>
-                        <button type="button" id="confirm_comp_delete_button" data-dismiss="modal" class="btn btn-danger" data-toggle="modal">Biztos törlöd?</button>
+                        <button type="button" id="modify_comp_booking_button" class="btn btn-info" data-toggle="modal">
+                            Módosít
+                        </button>
+                        <button type="button" id="confirm_comp_modify_button" data-dismiss="modal"
+                                class="btn btn-danger" data-toggle="modal">Biztos módosítod?
+                        </button>
+                        <button type="button" id="delete_comp_booking_button" class="btn btn-info" data-toggle="modal">
+                            Töröl
+                        </button>
+                        <button type="button" id="confirm_comp_delete_button" data-dismiss="modal"
+                                class="btn btn-danger" data-toggle="modal">Biztos törlöd?
+                        </button>
                     </div>
                 </form>
             </div>

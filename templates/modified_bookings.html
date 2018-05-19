@@ -1,0 +1,66 @@
+{% extends 'admin_layout.html' %}
+{% block content %}
+    <div class="container-fluid">
+        <h1 class="display-4">Módosított foglalások</h1>
+        <div class="table-body p-0">
+            <div class="bg-light round">
+                <h3 class="table_headers p-4 mb-0">Magán foglalások <i class="fas fa-user text-info"></i></h3>
+            </div>
+            <div class="panel-body">
+                <table class="table" id="individual_table">
+                    <thead>
+                    <tr class="table_header">
+                        <th id="indi_name" data-name="name" scope="col">Név <i class="fas fa-sort float-sm-right"></i>
+                        </th>
+                        <th id="indi_email" scope="col">Email</th>
+                        <th id="indi_phone" scope="col">Telefonszám</th>
+                        <th id="indi_table" data-name="booked_tables" scope="col">Foglalt asztalok száma <i
+                                class="fas fa-sort float-sm-right"></i></th>
+                        <th id="indi_time" data-name="date_time" scope="col">Foglalás időpontja <i
+                                class="fas fa-sort float-sm-right"></i></th>
+                        <th id="indi_phone" scope="col">Módosítás dátuma</th>
+                        <th id="indi_phone" scope="col"><i class="far fa-2x fa-check-circle"></i></th>
+                    </tr>
+                    </thead>
+                    <tbody id="modified_indi_body">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="table-body p-0 mt-4">
+            <div class="bg-light round">
+                <h3 class="table_headers p-4 mb-0">Cég foglalások <i class="fas fa-building text-info"></i></h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-sm" id="company_table">
+                    <thead>
+                    <tr class="table_header">
+                        <th id="company_name" data-name="name" scope="col">Cégnév <i
+                                class="fas fa-sort float-sm-right"></i>
+                        </th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Telefonszám</th>
+                        <th id="comp_table" data-name="booked_tables" scope="col">Foglalt asztalok száma <i
+                                class="fas fa-sort float-sm-right"></i></th>
+                        <th scope="col">Irányítószám</th>
+                        <th scope="col">Város</th>
+                        <th scope="col">Cím</th>
+                        <th scope="col">Közterület</th>
+                        <th scope="col">Házszám</th>
+                        <th scope="col">Emelet, ajtó</th>
+                        <th scope="col">Adószám</th>
+                        <th id="company_time" data-name="date_time" scope="col">Foglalás dátuma <i
+                                class="fas fa-sort float-sm-right"></i></th>
+                        <th scope="col">Módosítás dátuma</th>
+                        <th scope="col"><i class="far fa-2x fa-check-circle"></i></th>
+                    </tr>
+                    </thead>
+                    <tbody id="modified_company_body">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

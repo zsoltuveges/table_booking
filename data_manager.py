@@ -1,5 +1,6 @@
 import connection
 import util
+from datetime import datetime
 
 
 def booking_code_generator(new_booking):
@@ -62,8 +63,8 @@ def add_to_individuals(cursor, new_booking):
     remaining_tables = cursor.fetchone()["remaining_tables"]
     if remaining_tables >= new_booking_number_of_tables:
         cursor.execute("""
-                        INSERT INTO individuals (booking_id, name, email, phone_number, booked_tables, date_time)
-                        VALUES (%(booking_id)s, %(name)s, %(email)s, %(phone_number)s, %(table_number)s, now());
+                        INSERT INTO individuals (booking_id, name, email, phone_number, booked_tables, date_time, modified_time)
+                        VALUES (%(booking_id)s, %(name)s, %(email)s, %(phone_number)s, %(table_number)s, now(), now());
                         """, new_booking)
         new_remaining_tables = remaining_tables - new_booking_number_of_tables
         cursor.execute("""
@@ -83,10 +84,10 @@ def add_to_company(cursor, new_booking):
         cursor.execute("""
                             INSERT INTO company (booking_id, name, email, phone_number,
                             booked_tables, zip_code, city, street_address, street_type, street_num,
-                            floor_door, vat_number, date_time)
+                            floor_door, vat_number, date_time, modified_time)
                             VALUES (%(booking_id)s, %(name)s, %(email)s, %(phoneNumber)s,
                             %(tableNumber)s, %(zipCode)s, %(city)s, %(streetAddress)s, %(streetType)s,
-                            %(streetNumber)s, %(floorDoor)s, %(vatNumber)s, now());
+                            %(streetNumber)s, %(floorDoor)s, %(vatNumber)s, now(), now());
                             """, new_booking)
         new_remaining_tables = remaining_tables - new_booking_number_of_tables
         cursor.execute("""
@@ -123,7 +124,7 @@ def mod_del_indi_by_admin(cursor, booking_data):
         cursor.execute("""
                         UPDATE individuals
                         SET name = %(name)s, phone_number = %(phoneNumber)s, email = %(email)s, 
-                        booked_tables = %(tableNumber)s
+                        booked_tables = %(tableNumber)s, modified_time = now()
                         WHERE id = %(id)s
                         """, booking_data)
 
@@ -141,7 +142,7 @@ def mod_del_comp_by_admin(cursor, booking_data):
                         SET name = %(name)s, email = %(email)s, phone_number = %(phoneNumber)s,
                             booked_tables = %(tableNumber)s, zip_code = %(zipCode)s, city = %(city)s,
                             street_address = %(streetAddress)s, street_num = %(streetNum)s, 
-                            floor_door = %(floorDoor)s, vat_number = %(vatNumber)s
+                            floor_door = %(floorDoor)s, vat_number = %(vatNumber)s, modified_time = now()
                         WHERE id = %(id)s
                         """, booking_data)
 
@@ -172,7 +173,7 @@ def modify_delete_individual_booking(cursor, booking_data):
         cursor.execute("""
                         UPDATE individuals
                         SET name = %(name)s, email = %(email)s, phone_number = %(phone_number)s,
-                        booked_tables = %(table_number)s
+                        booked_tables = %(table_number)s, modified_time = now()
                         WHERE booking_id = %(booking_number)s AND email = %(email)s
                         """, booking_data)
 
@@ -302,3 +303,105 @@ def get_city(cursor, zip_code):
                     WHERE zip_code = %(zip_code)s
                     """, {"zip_code": int(zip_code)})
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_number_of_unseen_modified_bookings(cursor):
+    cursor.execute("""
+        SELECT COUNT(id) FROM modified_datas WHERE seen = FALSE;
+    """)
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_indi_modified_bookings(cursor):
+    cursor.execute("""
+            SELECT * FROM modified_datas WHERE modified_company_id IS NULL AND seen = FALSE;
+                  """)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_company_modified_bookings(cursor):
+    cursor.execute("""
+           SELECT * FROM modified_datas WHERE modified_individuals_id IS NULL AND seen = FALSE;
+               """)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_previous_bookings_and_save_to_modified_table(cursor, booking_id, booking_category):
+    if booking_category == "indi":
+        cursor.execute("""
+                SELECT * FROM individuals WHERE booking_id = %(booking_id)s
+                """, {"booking_id": booking_id})
+    else:
+        cursor.execute("""
+                SELECT * FROM company WHERE booking_id = %(booking_id)s
+                """, {"booking_id": booking_id})
+    result = cursor.fetchone()
+    print(result)
+    save_previous_booking(result)
+
+
+@connection.connection_handler
+def save_previous_booking(cursor, booking):
+    if "city" in booking:
+        cursor.execute("""
+            INSERT INTO modified_datas (modified_company_id, name, email, phone_number, booked_tables, zip_code, city, street_address, street_type, street_num, floor_door, vat_number, date_time, modified_time, seen)
+            VALUES (%(booking_id)s, %(name)s, %(email)s, %(phone_number)s, %(booked_tables)s, %(zip_code)s, %(city)s, %(street_address)s, %(street_type)s, %(street_num)s, %(floor_door)s, %(vat_number)s, %(date_time)s, now(), FALSE)
+        """, {
+            "booking_id": booking["booking_id"],
+            "name": booking["name"],
+            "email": booking["email"],
+            "phone_number": booking["phone_number"],
+            "booked_tables": booking["booked_tables"],
+            "zip_code": booking["zip_code"],
+            "city": booking["city"],
+            "street_address": booking["street_address"],
+            "street_type": booking["street_type"],
+            "street_num": booking["street_num"],
+            "floor_door": booking["floor_door"],
+            "vat_number": booking["vat_number"],
+            "date_time": booking["date_time"]
+        })
+    else:
+        cursor.execute("""
+            INSERT INTO modified_datas (modified_individuals_id, name, email, phone_number, booked_tables, date_time, modified_time, seen)
+            VALUES (%(booking_id)s, %(name)s, %(email)s, %(phone_number)s, %(booked_tables)s, %(date_time)s, now(), FALSE)
+        """, {
+            "booking_id": booking["booking_id"],
+            "name": booking["name"],
+            "email": booking["email"],
+            "phone_number": booking["phone_number"],
+            "booked_tables": booking["booked_tables"],
+            "date_time": booking["date_time"]
+        })
+
+
+@connection.connection_handler
+def get_booking_id_by_id(cursor, id, category):
+    if category == 'company':
+        cursor.execute("""
+                SELECT booking_id FROM company WHERE id = %(id)s;
+        """, {
+            "category": category,
+            "id": id
+        })
+    else:
+        cursor.execute("""
+                SELECT booking_id FROM individuals WHERE id = %(id)s;
+        """, {
+            "category": category,
+            "id": id
+        })
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def change_status_seen(cursor, id):
+    cursor.execute("""
+        UPDATE modified_datas SET seen = TRUE WHERE id = %(id)s;
+    """, {
+        "id": id
+    })

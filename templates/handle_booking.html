@@ -24,7 +24,7 @@
         <h1 id="welcome-text">Foglalás módosítás / törlés</h1>
         <form action="{{ url_for('save_edited_booking') }}" method="POST">
             {% if booking_data.zip_code %}
-                <div class="card-deck mb-3 text-center">
+                <div class="card-deck mb-3">
                     <div id="left" class="card mb-4">
                         <div class="card-body">
                             <label for="newCompanyName">Cégnév</label><br>
@@ -117,17 +117,17 @@
                 </div>
                 </div>
             {% else %}
-                <div class="card-deck mb-3 text-center">
+                <div class="card-deck mb-3">
                     <div id="left" class="card mb-4">
                         <div class="card-body">
                             <label for="name">Név</label>
-                            <input type="text" name="name" id="name" class="form-control"
+                            <input type="text" name="name" id="name" class="form-control individualInput"
                                    value="{{ booking_data.name }}">
                             <label for="email">Email</label>
-                            <input type="text" name="email" id="email" class="form-control"
+                            <input type="text" name="email" id="email" class="form-control individualInput"
                                    value="{{ booking_data.email }}">
                             <label for="phone_number">Telefonszám</label>
-                            <input type="text" name="phone_number" id="phone_number" class="form-control"
+                            <input type="text" name="phone_number" id="phone_number" class="form-control individualInput"
                                    value="{{ booking_data.phone_number }}">
                             <label for="table_number">Asztalszám</label><br>
                             <select name="table_number" id="table_number">

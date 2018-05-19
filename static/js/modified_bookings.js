@@ -11,18 +11,13 @@ admin = {
 
     init: function () {
         this.showAllData();
-        this.getMaxAndRemainingTables();
-        this.setMaxTables();
         this.sortIndiBookings();
         this.sortCompanyBookings();
         this.addingEventListenerToMenuButtons();
-        this.search();
-        this.deleteModifyIndiButtons();
-        this.deleteModifyCompButtons();
     },
 
     getAllIndividualBookingsFromDatabase: function () {
-        $.getJSON('/get-individual-bookings', function (response) {
+        $.getJSON('/admin/get-indi-modified-bookings', function (response) {
             admin._allIndiBookings = response;
             admin._backupIndiBookings = response;
             admin.displayAllIndividualBookings();
@@ -31,11 +26,12 @@ admin = {
 
     displayAllIndividualBookings: function () {
         try {
-            let tableBody = document.getElementById("indi_body");
+            let tableBody = document.getElementById("modified_indi_body");
             tableBody.innerHTML = "";
             for (let row = 0; row < admin._allIndiBookings.length; row++) {
                 var tableRow = document.createElement("tr");
-                let columns = ["name", "email", "phone_number", "booked_tables", "date_time"];
+                tableRow.classList.add(admin._allIndiBookings[row]["id"]);
+                let columns = ["name", "email", "phone_number", "booked_tables", "date_time", "modified_time", "seen"];
                 for (let i = 0; i < columns.length; i++) {
                     let tableData = document.createElement("td");
                     let tempItem;
@@ -43,15 +39,21 @@ admin = {
                         let dateTime = new Date(admin._allIndiBookings[row][columns[i]]);
                         let correctMonth = dateTime.getMonth() + 1;
                         tempItem = document.createTextNode(dateTime.getUTCFullYear() + "-" + correctMonth + "-" + dateTime.getDate()
-                        + " | " + dateTime.getUTCHours() + ":" + dateTime.getMinutes());
+                            + " | " + dateTime.getUTCHours() + ":" + dateTime.getMinutes());
                         tableData.appendChild(tempItem);
+                    } else if (columns[i] === "seen") {
+                        tempItem = document.createElement("i");
+                        tempItem.classList.add("far");
+                        tempItem.classList.add("fa-check-circle");
+                        tempItem.classList.add("fa-2x");
+                        tempItem.classList.add("unseen");
+                        this.addingUnSeenCircleEventListener(tempItem, "indi");
+                        tableData.appendChild(tempItem)
                     } else if (columns[i] === "booked_tables") {
                         let button = document.createElement("button");
                         button.classList.add("btn");
                         button.classList.add("btn-info");
                         button.classList.add("modify-booking-button");
-                        button.setAttribute("data-toggle", "modal");
-                        button.setAttribute("data-target", "#admin-modification-modal");
                         button.addEventListener('click', function () {
                             let nameModify = document.getElementById("name");
                             nameModify.value = admin._allIndiBookings[row].name;
@@ -85,7 +87,7 @@ admin = {
     },
 
     getAllCompanyBookingsFromDatabase: function () {
-        $.getJSON('/get-company-bookings', function (response) {
+        $.getJSON('/admin/get-company-modified-bookings', function (response) {
             admin._allCompanyBookings = response;
             admin._backupCompanyBookings = response;
             admin.displayAllCompanyBookings();
@@ -94,10 +96,11 @@ admin = {
 
     displayAllCompanyBookings: function () {
         try {
-            let tableBody = document.getElementById("company_body");
+            let tableBody = document.getElementById("modified_company_body");
             tableBody.innerHTML = "";
             for (let row = 0; row < admin._allCompanyBookings.length; row++) {
                 var tableRow = document.createElement("tr");
+                tableRow.classList.add(admin._allCompanyBookings[row]["id"]);
                 let columns = [
                     "name",
                     "email",
@@ -110,25 +113,33 @@ admin = {
                     "street_num",
                     "floor_door",
                     "vat_number",
-                    "date_time"
+                    "date_time",
+                    "modified_time",
+                    "seen"
                 ];
                 for (let i = 0; i < columns.length; i++) {
                     var tableData = document.createElement("td");
                     let tempItem;
-                    if (columns[i] === "date_time") {
-                        let dateTime = new Date(admin._allIndiBookings[row][columns[i]]);
+                    if (columns[i] === "date_time" || columns[i] === "modified_time") {
+                        let dateTime = new Date(admin._allCompanyBookings[row][columns[i]]);
                         admin._time = dateTime;
                         let correctMonth = dateTime.getMonth() + 1;
                         tempItem = document.createTextNode(dateTime.getUTCFullYear() + "-" + correctMonth + "-" + dateTime.getDate()
-                        + " | " + dateTime.getUTCHours() + ":" + dateTime.getMinutes());
+                            + " | " + dateTime.getUTCHours() + ":" + dateTime.getMinutes());
                         tableData.appendChild(tempItem);
+                    } else if (columns[i] === "seen") {
+                        tempItem = document.createElement("i");
+                        tempItem.classList.add("far");
+                        tempItem.classList.add("fa-check-circle");
+                        tempItem.classList.add("fa-2x");
+                        tempItem.classList.add("unseen");
+                        this.addingUnSeenCircleEventListener(tempItem, "company");
+                        tableData.appendChild(tempItem)
                     } else if (columns[i] === "booked_tables") {
                         let button = document.createElement("button");
                         button.classList.add("btn");
                         button.classList.add("btn-info");
                         button.classList.add("modify-booking-button");
-                        button.setAttribute("data-toggle", "modal");
-                        button.setAttribute("data-target", "#admin-comp-modification-modal");
                         button.addEventListener('click', function () {
                             let nameModify = document.getElementById("comp_name");
                             nameModify.value = admin._allCompanyBookings[row].name;
@@ -169,6 +180,7 @@ admin = {
                 companyTable.appendChild(tableBody);
             }
         } catch (err) {
+            console.log(err);
             return;
         }
     },
@@ -236,214 +248,37 @@ admin = {
         menuSaveBookings.style.cursor = "not-allowed";
     },
 
-    search: function () {
-        let searchArea = document.getElementById("searchInput");
-        let indiColumns = ["name", "email"];
-        let compColumns = ["name", "email", "city", "street_address", "street_type"];
-        searchArea.addEventListener('keyup', function () {
-            admin._searchedIndiBooking = [];
-            admin._searchedCompBooking = [];
-            let searchedInfo = document.getElementById("searchInput").value;
-            if (searchedInfo === "") {
-                admin.showAllData();
-                return;
-            }
-            if (event.key === "Backspace") {
-                admin._allIndiBookings = admin._backupIndiBookings;
-                admin._allCompanyBookings = admin._backupCompanyBookings;
-            }
-            for (let i = 0; i < admin._allIndiBookings.length; i++) {
-                for (let column of indiColumns) {
-                    if (admin._allIndiBookings[i][column].toLowerCase().includes(searchedInfo.toLowerCase())) {
-                        admin._searchedIndiBooking.push(admin._allIndiBookings[i]);
-                        break;
-                    }
-                }
-            }
-            admin._allIndiBookings = admin._searchedIndiBooking;
-            admin.displayAllIndividualBookings();
-            for (let i = 0; i < admin._allCompanyBookings.length; i++) {
-                for (let column of compColumns) {
-                    if (admin._allCompanyBookings[i][column].toLowerCase().includes(searchedInfo.toLowerCase())) {
-                        admin._searchedCompBooking.push(admin._allCompanyBookings[i]);
-                        break;
-                    }
-                }
-            }
-            admin._allCompanyBookings = admin._searchedCompBooking;
-            admin.displayAllCompanyBookings();
-
-        })
-    },
-
     showAllData: function () {
         admin.getAllIndividualBookingsFromDatabase();
         admin.getAllCompanyBookingsFromDatabase();
     },
 
-    getMaxAndRemainingTables: function () {
-        $.getJSON('/get-max-tables-data', function (response) {
-            admin._maxTablesData = response;
-            admin.displayMaxTablesData();
-        });
-        return admin._maxTablesData;
-    },
-
-    displayMaxTablesData: function () {
-        try {
-            document.getElementById("max-table-badge").innerHTML = admin._maxTablesData["max_tables"];
-            document.getElementById("empty-table-badge").innerHTML = admin._maxTablesData["remaining_tables"];
-            let bookedTables = admin._maxTablesData["max_tables"] - admin._maxTablesData["remaining_tables"];
-            document.getElementById("booked-table-badge").innerHTML = bookedTables;
-        } catch (err) {
-            return;
-        }
-    },
-
-    setMaxTables: function () {
-        let maxTablesButton = document.getElementById("maxTablesButton");
-        try {
-            maxTablesButton.addEventListener('click', function () {
-                let maxNumberOfTables = parseInt(document.getElementById("maxNumberOfTables").value);
-                let currentNumberOfBookedTables = parseInt(admin._maxTablesData["max_tables"]) - parseInt(admin._maxTablesData["remaining_tables"]);
-                if (maxNumberOfTables < currentNumberOfBookedTables) {
-                    alert("Több foglalt asztal van jelenleg, mint amekkora maximumot be szeretnél állítani")
-                } else {
-                    $.post('/set-max-tables', {
-                        maxTables: maxNumberOfTables
-                    });
+    addingUnSeenCircleEventListener: function (tempItem, category) {
+        tempItem.addEventListener("click", function () {
+            tempItem.classList.remove("unseen");
+            tempItem.classList.add("seen");
+            if (category === "company") {
+                let modifiedCompanyBody = document.getElementById("modified_company_body").children;
+                for (let row of modifiedCompanyBody) {
+                    if (row.getElementsByClassName("fa-check-circle")[0].classList.contains("seen")) {
+                        let seenRowId = row.className;
+                        $.post('/admin-change-modified-to-seen', {
+                            seenRowId: seenRowId
+                        });
+                    }
                 }
-                document.getElementById("maxNumberOfTables").value = "";
-                admin.getMaxAndRemainingTables();
-            })
-        } catch (err) {
-            return;
-        }
-    },
-
-    deleteModifyIndiButtons: function () {
-        let confirmDeleteButton = document.getElementById("confirm_delete_button");
-        let confirmModifyButton = document.getElementById("confirm_modify_button");
-        confirmDeleteButton.addEventListener('click', function () {
-            let bookingId = document.getElementById("booking_id").value;
-            $.post('/mod-del-by-admin', {
-                id: bookingId,
-                delete_booking: "delete"
-            });
-            admin.getAllIndividualBookingsFromDatabase();
+            } else {
+                let modifiedIndiBody = document.getElementById("modified_indi_body").children;
+                for (let row of modifiedIndiBody) {
+                    if (row.getElementsByClassName("fa-check-circle")[0].classList.contains("seen")) {
+                        let seenRowId = row.className;
+                        $.post('/admin-change-modified-to-seen', {
+                            seenRowId: seenRowId
+                        });
+                    }
+                }
+            }
         });
-        confirmModifyButton.addEventListener('click', function () {
-            let bookingId = document.getElementById("booking_id").value;
-            let name = document.getElementById("name").value;
-            let phoneNumber = document.getElementById("phone_number").value;
-            let email = document.getElementById("email").value;
-            let tableNumber = document.getElementById("table_number").value;
-            $.post('/mod-del-by-admin', {
-                id: bookingId,
-                name: name,
-                phoneNumber: phoneNumber,
-                email: email,
-                tableNumber: tableNumber
-            });
-            admin.getAllIndividualBookingsFromDatabase();
-        });
-    },
-
-    deleteModifyCompButtons: function () {
-        let confirmDeleteButton = document.getElementById("confirm_comp_delete_button");
-        let confirmModifyButton = document.getElementById("confirm_comp_modify_button");
-        confirmDeleteButton.addEventListener('click', function () {
-            let bookingId = document.getElementById("comp_booking_id").value;
-            $.post('/mod-del-by-admin', {
-                id: bookingId,
-                delete_booking: "delete",
-                company: "company"
-            });
-            admin.getAllCompanyBookingsFromDatabase();
-        });
-        confirmModifyButton.addEventListener('click', function () {
-            let bookingId = document.getElementById("comp_booking_id").value;
-            let name = document.getElementById("comp_name").value;
-            let phoneNumber = document.getElementById("comp_phone_number").value;
-            let email = document.getElementById("comp_email").value;
-            let tableNumber = document.getElementById("comp_table_number").value;
-            let city = document.getElementById("comp_city").value;
-            let streetAddress = document.getElementById("comp_street_address").value;
-            let streetNum = document.getElementById("comp_street_num").value;
-            let floorDoor = document.getElementById("comp_floor_door").value;
-            let vatNumber = document.getElementById("comp_vat_number").value;
-            let zipCode = document.getElementById("comp_zip_code").value;
-            $.post('/mod-del-by-admin', {
-                id: bookingId,
-                name: name,
-                phoneNumber: phoneNumber,
-                email: email,
-                tableNumber: tableNumber,
-                city: city,
-                streetAddress: streetAddress,
-                streetNum: streetNum,
-                floorDoor: floorDoor,
-                vatNumber: vatNumber,
-                zipCode: zipCode,
-                company: "company"
-            });
-            admin.getAllCompanyBookingsFromDatabase();
-        });
-    },
-
-    setModifyDeleteIndiButtonsVisibility: function () {
-        let deleteButton = document.getElementById("delete_booking_button");
-        let modifyButton = document.getElementById("modify_booking_button");
-        let confirmModifyButton = document.getElementById("confirm_modify_button");
-        let confirmDeleteButton = document.getElementById("confirm_delete_button");
-        let modDelModalCloseButton = document.getElementById("mod-del-modal-close-button");
-        modifyButton.addEventListener('click', function () {
-            modifyButton.style.visibility = 'hidden';
-            confirmModifyButton.style.visibility = "visible";
-            confirmDeleteButton.style.visibility = "hidden";
-            deleteButton.style.visibility = "visible";
-        });
-        deleteButton.addEventListener('click', function () {
-            deleteButton.style.visibility = "hidden";
-            confirmDeleteButton.style.visibility = "visible";
-            confirmModifyButton.style.visibility = "hidden";
-            modifyButton.style.visibility = "visible";
-        });
-        modDelModalCloseButton.addEventListener('click', function () {
-            modifyButton.style.visibility = 'visible';
-            confirmModifyButton.style.visibility = "hidden";
-            confirmDeleteButton.style.visibility = "hidden";
-            deleteButton.style.visibility = "visible";
-        })
-    },
-
-    setModifyDeleteCompButtonsVisibility: function () {
-        let compDeleteButton = document.getElementById("delete_comp_booking_button");
-        let compModifyButton = document.getElementById("modify_comp_booking_button");
-        let compConfirmModifyButton = document.getElementById("confirm_comp_modify_button");
-        let compConfirmDeleteButton = document.getElementById("confirm_comp_delete_button");
-        let modDelModalCloseButton = document.getElementById("mod-del-modal-close-button_comp");
-
-        compModifyButton.addEventListener('click', function () {
-            compModifyButton.style.visibility = 'hidden';
-            compConfirmModifyButton.style.visibility = "visible";
-            compConfirmDeleteButton.style.visibility = "hidden";
-            compDeleteButton.style.visibility = "visible";
-        });
-
-        compDeleteButton.addEventListener('click', function () {
-            compDeleteButton.style.visibility = "hidden";
-            compConfirmDeleteButton.style.visibility = "visible";
-            compConfirmModifyButton.style.visibility = "hidden";
-            compModifyButton.style.visibility = "visible";
-        });
-
-        modDelModalCloseButton.addEventListener('click', function () {
-            compModifyButton.style.visibility = 'visible';
-            compConfirmModifyButton.style.visibility = "hidden";
-            compConfirmDeleteButton.style.visibility = "hidden";
-            compDeleteButton.style.visibility = "visible";
-        })
     }
 };
 
