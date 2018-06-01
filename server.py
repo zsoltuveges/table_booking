@@ -213,7 +213,8 @@ def order_admin_page(orderby, direction, category):
 @app.route('/admin/booking-settings')
 def booking_settings():
     admin_name = session["username"]
-    return render_template('admin_booking_settings.html', admin_name=admin_name)
+    notification_number = data_manager.get_number_of_unseen_modified_bookings()
+    return render_template('admin_booking_settings.html', admin_name=admin_name, notification_number=notification_number["count"])
 
 
 @app.route('/get-city/<zip_code>')
