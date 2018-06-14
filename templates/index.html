@@ -46,9 +46,9 @@
                 </div>
                 <div class="progress w-50 mx-auto">
                     <div class="progress-bar" role="progressbar"
-                         style="width: {{ number_of_remaining_tables }}%"
-                         aria-valuenow="{{ number_of_remaining_tables }}" aria-valuemin="0"
-                         aria-valuemax="{{ max_tables }}">
+                         style="width: {{ 100 - (number_of_remaining_tables / max_tables * 100) }}%"
+                         aria-valuenow="{{ 100 - (number_of_remaining_tables / max_tables * 100) }}" aria-valuemin="0"
+                         aria-valuemax={{ max_tables }}>
                     </div>
                 </div>
             </div>
