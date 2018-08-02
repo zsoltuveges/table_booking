@@ -145,16 +145,16 @@ admin = {
                             cityModify.value = admin._allCompanyBookings[row].city;
                             let addressModify = document.getElementById("comp_street_address");
                             addressModify.value = admin._allCompanyBookings[row].street_address;
+                            let streetTypeModify = document.getElementById("comp_street_type");
+                            streetTypeModify.value = admin._allCompanyBookings[row].street_type;
                             let streetNumModify = document.getElementById("comp_street_num");
                             streetNumModify.value = admin._allCompanyBookings[row].street_num;
                             let floorDoorModify = document.getElementById("comp_floor_door");
                             floorDoorModify.value = admin._allCompanyBookings[row].floor_door;
                             let vatNumberModify = document.getElementById("comp_vat_number");
                             vatNumberModify.value = admin._allCompanyBookings[row].vat_number;
-                            let bookingId = document.getElementById("comp_booking_id");
-                            bookingId.value = admin._allCompanyBookings[row].booking_id;
-                            let id = document.getElementById("comp_id");
-                            id.value = admin._allCompanyBookings[row].id;
+                            let bookingNumber = document.getElementById("comp_booking_number");
+                            bookingNumber.value = admin._allCompanyBookings[row].booking_id;
                             admin.setModifyDeleteCompButtonsVisibility();
                         });
 
@@ -361,38 +361,39 @@ admin = {
         let confirmModifyButton = document.getElementById("confirm_comp_modify_button");
         confirmDeleteButton.addEventListener('click', function () {
             let bookingNumber = document.getElementById("comp_booking_number").value;
-            $.post('/handle_modified_booking', {
+            $.post('/handle-modified-booking', {
                 booking_number: bookingNumber,
-                delete_booking: "delete",
-                company: "company"
+                change: "delete",
             });
             admin.getAllCompanyBookingsFromDatabase();
         });
         confirmModifyButton.addEventListener('click', function () {
-            let bookingId = document.getElementById("comp_booking_id").value;
+            let bookingNumber = document.getElementById("comp_booking_number").value;
             let name = document.getElementById("comp_name").value;
             let phoneNumber = document.getElementById("comp_phone_number").value;
             let email = document.getElementById("comp_email").value;
             let tableNumber = document.getElementById("comp_table_number").value;
             let city = document.getElementById("comp_city").value;
             let streetAddress = document.getElementById("comp_street_address").value;
+            let streetType = document.getElementById("comp_street_type").value;
             let streetNum = document.getElementById("comp_street_num").value;
             let floorDoor = document.getElementById("comp_floor_door").value;
             let vatNumber = document.getElementById("comp_vat_number").value;
             let zipCode = document.getElementById("comp_zip_code").value;
-            $.post('/handle_modified_booking', {
-                id: bookingId,
-                name: name,
-                phoneNumber: phoneNumber,
-                email: email,
-                tableNumber: tableNumber,
+            $.post('/handle-modified-booking', {
+                booking_number: bookingNumber,
+                newCompanyName: name,
+                newCompanyPhoneNumber: phoneNumber,
+                newCompanyEmail: email,
+                company_table_number: tableNumber,
                 city: city,
-                streetAddress: streetAddress,
-                streetNum: streetNum,
-                floorDoor: floorDoor,
-                vatNumber: vatNumber,
-                zipCode: zipCode,
-                company: "company"
+                street_address: streetAddress,
+                street_type: streetType,
+                street_num: streetNum,
+                floor_door: floorDoor,
+                vat_number: vatNumber,
+                zip_code: zipCode,
+                change: "modify"
             });
             admin.getAllCompanyBookingsFromDatabase();
         });
