@@ -54,19 +54,6 @@ admin = {
                         button.classList.add("btn");
                         button.classList.add("btn-info");
                         button.classList.add("modify-booking-button");
-                        button.addEventListener('click', function () {
-                            let nameModify = document.getElementById("name");
-                            nameModify.value = admin._allIndiBookings[row].name;
-                            let phoneModify = document.getElementById("phone_number");
-                            phoneModify.value = admin._allIndiBookings[row].phone_number;
-                            let emailModify = document.getElementById("email");
-                            emailModify.value = admin._allIndiBookings[row].email;
-                            let tableNumbersModify = document.getElementById("table_number");
-                            tableNumbersModify.value = admin._allIndiBookings[row].booked_tables;
-                            let bookingId = document.getElementById("booking_id");
-                            bookingId.value = admin._allIndiBookings[row].id;
-                            admin.setModifyDeleteIndiButtonsVisibility();
-                        });
 
                         let buttonContent = document.createTextNode(admin._allIndiBookings[row][columns[i]]);
                         button.appendChild(buttonContent);
@@ -140,31 +127,6 @@ admin = {
                         button.classList.add("btn");
                         button.classList.add("btn-info");
                         button.classList.add("modify-booking-button");
-                        button.addEventListener('click', function () {
-                            let nameModify = document.getElementById("comp_name");
-                            nameModify.value = admin._allCompanyBookings[row].name;
-                            let phoneModify = document.getElementById("comp_phone_number");
-                            phoneModify.value = admin._allCompanyBookings[row].phone_number;
-                            let emailModify = document.getElementById("comp_email");
-                            emailModify.value = admin._allCompanyBookings[row].email;
-                            let tableNumbersModify = document.getElementById("comp_table_number");
-                            tableNumbersModify.value = admin._allCompanyBookings[row].booked_tables;
-                            let zipCodeModify = document.getElementById("comp_zip_code");
-                            zipCodeModify.value = admin._allCompanyBookings[row].zip_code;
-                            let cityModify = document.getElementById("comp_city");
-                            cityModify.value = admin._allCompanyBookings[row].city;
-                            let addressModify = document.getElementById("comp_street_address");
-                            addressModify.value = admin._allCompanyBookings[row].street_address;
-                            let streetNumModify = document.getElementById("comp_street_num");
-                            streetNumModify.value = admin._allCompanyBookings[row].street_num;
-                            let floorDoorModify = document.getElementById("comp_floor_door");
-                            floorDoorModify.value = admin._allCompanyBookings[row].floor_door;
-                            let vatNumberModify = document.getElementById("comp_vat_number");
-                            vatNumberModify.value = admin._allCompanyBookings[row].vat_number;
-                            let bookingId = document.getElementById("comp_booking_id");
-                            bookingId.value = admin._allCompanyBookings[row].id;
-                            admin.setModifyDeleteCompButtonsVisibility();
-                        });
 
                         let buttonContent = document.createTextNode(admin._allCompanyBookings[row][columns[i]]);
                         button.appendChild(buttonContent);
