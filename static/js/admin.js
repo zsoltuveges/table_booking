@@ -104,12 +104,7 @@ admin = {
                     "email",
                     "phone_number",
                     "booked_tables",
-                    "zip_code",
                     "city",
-                    "street_address",
-                    "street_type",
-                    "street_num",
-                    "floor_door",
                     "vat_number",
                     "date_time"
                 ];
@@ -123,6 +118,14 @@ admin = {
                         tempItem = document.createTextNode(dateTime.getUTCFullYear() + "-" + correctMonth + "-" + dateTime.getDate()
                             + " | " + dateTime.getUTCHours() + ":" + dateTime.getMinutes());
                         tableData.appendChild(tempItem);
+                    } else if (columns[i] === "city") {
+                        let addressDetails = ["city", "street_address", "street_type", "street_num", "floor_door", "zip_code"];
+                        for (let j = 0; j < addressDetails.length; j++) {
+                            let addressRow = document.createElement("tr");
+                            let content = document.createTextNode(admin._allCompanyBookings[row][addressDetails[j]]);
+                            addressRow.appendChild(content);
+                            tableData.appendChild(addressRow);
+                        }
                     } else if (columns[i] === "booked_tables") {
                         let button = document.createElement("button");
                         button.classList.add("btn");
