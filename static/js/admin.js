@@ -361,9 +361,13 @@ admin = {
         let confirmModifyButton = document.getElementById("confirm_comp_modify_button");
         confirmDeleteButton.addEventListener('click', function () {
             let bookingNumber = document.getElementById("comp_booking_number").value;
+            let email = document.getElementById("comp_email").value;
+            let city = document.getElementById("comp_city").value;
             $.post('/handle-modified-booking', {
                 booking_number: bookingNumber,
-                change: "delete",
+                newCompanyEmail: email,
+                city: city,
+                change: "delete"
             });
             admin.getAllCompanyBookingsFromDatabase();
         });
