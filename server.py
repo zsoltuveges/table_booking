@@ -27,7 +27,8 @@ def send_bookig_code(booking_data):
         "Képregénybörze asztalfoglalás visszaigazoló",
         sender="kepregenyborze.asztalfoglalas@gmail.com",
         recipients=[booking_data["email"]])
-    msg.body = "Kedves " + booking_data["name"] + "!\n" + "Köszönjük a foglalásod! A foglalási kódod: " + booking_data["booking_id"] + "\nEnnek segítségével módosíthatod vagy törölheted a foglalásod."
+    msg.body = "Kedves " + booking_data["name"] + "!\n" + "Köszönjük a foglalásod! A foglalási kódod: " + booking_data[
+        "booking_id"] + "\nEnnek segítségével módosíthatod vagy törölheted a foglalásod."
     mail.send(msg)
     return "Sent"
 
@@ -145,19 +146,14 @@ def modify_delete_booking():
                            public_space_names=PUBLIC_SPACE_NAMES)
 
 
-@app.route('/save-edited-booking', methods=['POST'])
-def save_edited_booking():
-    """Sends the edited booking to database for saving,
-    or deleting the booking."""
+@app.route('/handle_modified_booking', methods=['POST'])
+def handle_modified_booking():
     edited_data = request.form.to_dict()
-    if "city" in edited_data:
-        data_manager.modify_delete_company_booking(edited_data)
-        data_manager.get_previous_bookings_and_save_to_modified_table(edited_data["booking_number"], "company")
-        return redirect(url_for('index'))
+    if edited_data["change"] == 'modify':
+        util.modify_booking(edited_data)
     else:
-        data_manager.modify_delete_individual_booking(edited_data)
-        data_manager.get_previous_bookings_and_save_to_modified_table(edited_data["booking_number"], "indi")
-        return redirect(url_for('index'))
+        util.delete_booking(edited_data)
+    return redirect(url_for('index'))
 
 
 @app.route('/new-booking', methods=['POST'])
@@ -214,7 +210,8 @@ def order_admin_page(orderby, direction, category):
 def booking_settings():
     admin_name = session["username"]
     notification_number = data_manager.get_number_of_unseen_modified_bookings()
-    return render_template('admin_booking_settings.html', admin_name=admin_name, notification_number=notification_number["count"])
+    return render_template('admin_booking_settings.html', admin_name=admin_name,
+                           notification_number=notification_number["count"])
 
 
 @app.route('/get-city/<zip_code>')
@@ -227,7 +224,8 @@ def get_city(zip_code):
 def modified_table_bookings():
     admin_name = session["username"]
     notification_number = data_manager.get_number_of_unseen_modified_bookings()
-    return render_template('modified_bookings.html', admin_name=admin_name, modified=True, notification_number=notification_number["count"])
+    return render_template('modified_bookings.html', admin_name=admin_name, modified=True,
+                           notification_number=notification_number["count"])
 
 
 @app.route('/admin/get-indi-modified-bookings')
