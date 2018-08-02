@@ -43,7 +43,7 @@ admin = {
                         let dateTime = new Date(admin._allIndiBookings[row][columns[i]]);
                         let correctMonth = dateTime.getMonth() + 1;
                         tempItem = document.createTextNode(dateTime.getUTCFullYear() + "-" + correctMonth + "-" + dateTime.getDate()
-                        + " | " + dateTime.getUTCHours() + ":" + dateTime.getMinutes());
+                            + " | " + dateTime.getUTCHours() + ":" + dateTime.getMinutes());
                         tableData.appendChild(tempItem);
                     } else if (columns[i] === "booked_tables") {
                         let button = document.createElement("button");
@@ -61,8 +61,6 @@ admin = {
                             emailModify.value = admin._allIndiBookings[row].email;
                             let tableNumbersModify = document.getElementById("table_number");
                             tableNumbersModify.value = admin._allIndiBookings[row].booked_tables;
-                            // let bookingId = document.getElementById("booking_id");
-                            // bookingId.value = admin._allIndiBookings[row].id;
                             let bookingNumber = document.getElementById("booking_number");
                             bookingNumber.value = admin._allIndiBookings[row].booking_id;
                             admin.setModifyDeleteIndiButtonsVisibility();
@@ -123,7 +121,7 @@ admin = {
                         admin._time = dateTime;
                         let correctMonth = dateTime.getMonth() + 1;
                         tempItem = document.createTextNode(dateTime.getUTCFullYear() + "-" + correctMonth + "-" + dateTime.getDate()
-                        + " | " + dateTime.getUTCHours() + ":" + dateTime.getMinutes());
+                            + " | " + dateTime.getUTCHours() + ":" + dateTime.getMinutes());
                         tableData.appendChild(tempItem);
                     } else if (columns[i] === "booked_tables") {
                         let button = document.createElement("button");
@@ -329,10 +327,13 @@ admin = {
     deleteModifyIndiButtons: function () {
         let confirmDeleteButton = document.getElementById("confirm_delete_button");
         let confirmModifyButton = document.getElementById("confirm_modify_button");
+
         confirmDeleteButton.addEventListener('click', function () {
             let bookingNumber = document.getElementById("booking_number").value;
+            let email = document.getElementById("email").value;
             $.post('/handle-modified-booking', {
                 booking_number: bookingNumber,
+                email: email,
                 change: "delete"
             });
             admin.getAllIndividualBookingsFromDatabase();
