@@ -129,6 +129,46 @@ def modify_individual_booking(cursor, booking_data):
 
 
 @connection.connection_handler
+def modify_company_booking(cursor, booking_data):
+    cursor.execute("""
+                        UPDATE company
+                        SET name = %(newCompanyName)s, 
+                            email = %(newCompanyEmail)s, 
+                            phone_number = %(newCompanyPhoneNumber)s,
+                            booked_tables = %(company_table_number)s, 
+                            zip_code = %(zip_code)s, 
+                            city = %(city)s,
+                            street_address = %(street_address)s, 
+                            street_type = %(street_type)s,
+                            street_num = %(street_num)s, 
+                            floor_door = %(floor_door)s,
+                            vat_number = %(vat_number)s, 
+                            modified_time = now()
+                        WHERE booking_id = %(booking_number)s AND email = %(newCompanyEmail)s
+                        """, booking_data)
+    update_remaining_tables(get_remaining_table_number(get_sum_of_booked_tables()))
+
+
+@connection.connection_handler
+def delete_company_booking(cursor, booking_data):
+    print(booking_data)
+    cursor.execute("""
+                        DELETE FROM company
+                        WHERE booking_id = %(booking_number)s AND email = %(newCompanyEmail)s
+                        """, booking_data)
+    update_remaining_tables(get_remaining_table_number(get_sum_of_booked_tables()))
+
+
+@connection.connection_handler
+def delete_individual_booking(cursor, booking_data):
+    cursor.execute("""
+                        DELETE FROM individuals
+                        WHERE booking_id = %(booking_number)s AND email = %(email)s
+                        """, booking_data)
+    update_remaining_tables(get_remaining_table_number(get_sum_of_booked_tables()))
+
+
+@connection.connection_handler
 def get_sum_of_booked_tables(cursor):
     cursor.execute("""
                         SELECT SUM(booked_tables) FROM individuals;
@@ -139,15 +179,6 @@ def get_sum_of_booked_tables(cursor):
                         """)
     sum_of_company_booked_tables = cursor.fetchone()["sum"]
     return sum(filter(None, [sum_of_company_booked_tables, sum_of_individual_booked_tables]))
-
-
-@connection.connection_handler
-def delete_individual_booking(cursor, booking_data):
-    cursor.execute("""
-                        DELETE FROM individuals
-                        WHERE booking_id = %(booking_number)s AND email = %(email)s
-                        """, booking_data)
-    update_remaining_tables(get_remaining_table_number(get_sum_of_booked_tables()))
 
 
 @connection.connection_handler
