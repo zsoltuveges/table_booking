@@ -121,29 +121,12 @@ def admin_page(admin_name):
                            notification_number=notification_number["count"])
 
 
-# @app.route('/mod-del-by-admin', methods=['POST'])
-# def mod_del_by_admin():
-#     data = request.form.to_dict()
-#     if "company" in data:
-#         data_manager.modify_company_booking(data)
-#         booking_id = data_manager.get_booking_id_by_id(data["id"], "company")
-#         data_manager.get_previous_bookings_and_save_to_modified_table(booking_id["booking_id"], "company")
-#     else:
-#         booking_id = data_manager.get_booking_id_by_id(data["id"], "individuals")
-#         print(data)
-#         data_manager.modify_individual_booking(data)
-#         data_manager.get_previous_bookings_and_save_to_modified_table(booking_id["booking_id"], "indi")
-#     return "Done"
-
-
 @app.route('/modify-delete-booking', methods=["GET", "POST"])
 def modify_delete_booking():
     """Collects the data of the previous booking from database,
     and displays it for modification"""
     mod_del_target = request.form.to_dict()
-    print(mod_del_target)
     booking_data = data_manager.return_booking_data(mod_del_target)
-    print(booking_data)
     return render_template('handle_booking.html',
                            booking_data=booking_data,
                            public_space_names=PUBLIC_SPACE_NAMES)
@@ -152,7 +135,6 @@ def modify_delete_booking():
 @app.route('/handle-modified-booking', methods=['POST'])
 def handle_modified_booking():
     edited_data = request.form.to_dict()
-    print(edited_data)
     if edited_data["change"] == 'modify':
         util.modify_booking(edited_data)
     else:
