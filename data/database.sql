@@ -15,7 +15,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: company_id_seq; Type: SEQUENCE; Schema: public; Owner: tamas2
+-- Name: company_id_seq; Type: SEQUENCE; Schema: public; Owner: bende
 --
 
 CREATE SEQUENCE public.company_id_seq
@@ -26,14 +26,14 @@ CREATE SEQUENCE public.company_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.company_id_seq OWNER TO tamas2;
+ALTER TABLE public.company_id_seq OWNER TO bende;
 
 SET default_tablespace = '';
 
 SET default_with_oids = false;
 
 --
--- Name: company; Type: TABLE; Schema: public; Owner: tamas2
+-- Name: company; Type: TABLE; Schema: public; Owner: bende
 --
 
 CREATE TABLE public.company (
@@ -54,10 +54,10 @@ CREATE TABLE public.company (
 );
 
 
-ALTER TABLE public.company OWNER TO tamas2;
+ALTER TABLE public.company OWNER TO bende;
 
 --
--- Name: individuals_id_seq; Type: SEQUENCE; Schema: public; Owner: tamas2
+-- Name: individuals_id_seq; Type: SEQUENCE; Schema: public; Owner: bende
 --
 
 CREATE SEQUENCE public.individuals_id_seq
@@ -68,10 +68,10 @@ CREATE SEQUENCE public.individuals_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.individuals_id_seq OWNER TO tamas2;
+ALTER TABLE public.individuals_id_seq OWNER TO bende;
 
 --
--- Name: individuals; Type: TABLE; Schema: public; Owner: tamas2
+-- Name: individuals; Type: TABLE; Schema: public; Owner: bende
 --
 
 CREATE TABLE public.individuals (
@@ -85,10 +85,10 @@ CREATE TABLE public.individuals (
 );
 
 
-ALTER TABLE public.individuals OWNER TO tamas2;
+ALTER TABLE public.individuals OWNER TO bende;
 
 --
--- Name: table_number; Type: TABLE; Schema: public; Owner: tamas2
+-- Name: table_number; Type: TABLE; Schema: public; Owner: bende
 --
 
 CREATE TABLE public.table_number (
@@ -96,10 +96,10 @@ CREATE TABLE public.table_number (
 );
 
 
-ALTER TABLE public.table_number OWNER TO tamas2;
+ALTER TABLE public.table_number OWNER TO bende;
 
 --
--- Name: tokens; Type: TABLE; Schema: public; Owner: tamas2
+-- Name: tokens; Type: TABLE; Schema: public; Owner: bende
 --
 
 CREATE TABLE public.tokens (
@@ -108,10 +108,10 @@ CREATE TABLE public.tokens (
 );
 
 
-ALTER TABLE public.tokens OWNER TO tamas2;
+ALTER TABLE public.tokens OWNER TO bende;
 
 --
--- Name: tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: tamas2
+-- Name: tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: bende
 --
 
 CREATE SEQUENCE public.tokens_id_seq
@@ -122,17 +122,17 @@ CREATE SEQUENCE public.tokens_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.tokens_id_seq OWNER TO tamas2;
+ALTER TABLE public.tokens_id_seq OWNER TO bende;
 
 --
--- Name: tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tamas2
+-- Name: tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bende
 --
 
 ALTER SEQUENCE public.tokens_id_seq OWNED BY public.tokens.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: tamas2
+-- Name: users; Type: TABLE; Schema: public; Owner: bende
 --
 
 CREATE TABLE public.users (
@@ -142,10 +142,10 @@ CREATE TABLE public.users (
 );
 
 
-ALTER TABLE public.users OWNER TO tamas2;
+ALTER TABLE public.users OWNER TO bende;
 
 --
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: tamas2
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: bende
 --
 
 CREATE SEQUENCE public.users_id_seq
@@ -156,17 +156,17 @@ CREATE SEQUENCE public.users_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.users_id_seq OWNER TO tamas2;
+ALTER TABLE public.users_id_seq OWNER TO bende;
 
 --
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tamas2
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: bende
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- Name: zip_codes; Type: TABLE; Schema: public; Owner: tamas2
+-- Name: zip_codes; Type: TABLE; Schema: public; Owner: bende
 --
 
 CREATE TABLE public.zip_codes (
@@ -176,24 +176,24 @@ CREATE TABLE public.zip_codes (
 );
 
 
-ALTER TABLE public.zip_codes OWNER TO tamas2;
+ALTER TABLE public.zip_codes OWNER TO bende;
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: tamas2
+-- Name: id; Type: DEFAULT; Schema: public; Owner: bende
 --
 
 ALTER TABLE ONLY public.tokens ALTER COLUMN id SET DEFAULT nextval('public.tokens_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: tamas2
+-- Name: id; Type: DEFAULT; Schema: public; Owner: bende
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
--- Data for Name: company; Type: TABLE DATA; Schema: public; Owner: tamas2
+-- Data for Name: company; Type: TABLE DATA; Schema: public; Owner: bende
 --
 
 INSERT INTO public.company VALUES (11, 'Jqrnhs', 'Wayne Corporation', 'money_cant_buy_love@wayne_corp.com', '5526587845', 5, 7895, 'Gotham', 'Main', 'utca', 1, '1. floor 1. door', 25498854, '2018-03-02 09:46:40.280004');
@@ -201,14 +201,14 @@ INSERT INTO public.company VALUES (12, '8u0yw4', 'Mördok Mátyás és társa ü
 
 
 --
--- Name: company_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tamas2
+-- Name: company_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bende
 --
 
 SELECT pg_catalog.setval('public.company_id_seq', 12, true);
 
 
 --
--- Data for Name: individuals; Type: TABLE DATA; Schema: public; Owner: tamas2
+-- Data for Name: individuals; Type: TABLE DATA; Schema: public; Owner: bende
 --
 
 INSERT INTO public.individuals VALUES (73, 'IYlp6W', 'Banner Bence', 'hulk@dzsimel.kom', '125487985', 3, '2018-03-02 09:42:13.756584');
@@ -219,20 +219,20 @@ INSERT INTO public.individuals VALUES (77, 'vck0yH', 'Terray László', 'laszlo.
 
 
 --
--- Name: individuals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tamas2
+-- Name: individuals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bende
 --
 
 SELECT pg_catalog.setval('public.individuals_id_seq', 77, true);
 
 
 --
--- Data for Name: table_number; Type: TABLE DATA; Schema: public; Owner: tamas2
+-- Data for Name: table_number; Type: TABLE DATA; Schema: public; Owner: bende
 --
 
 
 
 --
--- Data for Name: tokens; Type: TABLE DATA; Schema: public; Owner: tamas2
+-- Data for Name: tokens; Type: TABLE DATA; Schema: public; Owner: bende
 --
 
 INSERT INTO public.tokens VALUES ('nqPtG9M4eYTZNhm', 5);
@@ -242,14 +242,14 @@ INSERT INTO public.tokens VALUES ('GpESKjV0cxwquZF', 8);
 
 
 --
--- Name: tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tamas2
+-- Name: tokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bende
 --
 
 SELECT pg_catalog.setval('public.tokens_id_seq', 8, true);
 
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: tamas2
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: bende
 --
 
 INSERT INTO public.users VALUES (1, 'username', '$2b$12$sOPRyL8lk5/YqmDPyJKeje9aPd7Muw/sZBSN782AyPrilmXpZvzr2');
@@ -261,14 +261,14 @@ INSERT INTO public.users VALUES (6, 'madafaka', '$2b$12$jgWaiS9ZS6uZsaTtxaCYMueK
 
 
 --
--- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: tamas2
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bende
 --
 
 SELECT pg_catalog.setval('public.users_id_seq', 6, true);
 
 
 --
--- Data for Name: zip_codes; Type: TABLE DATA; Schema: public; Owner: tamas2
+-- Data for Name: zip_codes; Type: TABLE DATA; Schema: public; Owner: bende
 --
 
 INSERT INTO public.zip_codes VALUES (1011, 'Budapest I.', 'Budapest');
@@ -3258,7 +3258,7 @@ INSERT INTO public.zip_codes VALUES (9985, 'Felsőszölnök', 'Vas');
 
 
 --
--- Name: tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: tamas2
+-- Name: tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: bende
 --
 
 ALTER TABLE ONLY public.tokens
@@ -3266,7 +3266,7 @@ ALTER TABLE ONLY public.tokens
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: tamas2
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: bende
 --
 
 ALTER TABLE ONLY public.users
@@ -3274,28 +3274,28 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: tokens_id_uindex; Type: INDEX; Schema: public; Owner: tamas2
+-- Name: tokens_id_uindex; Type: INDEX; Schema: public; Owner: bende
 --
 
 CREATE UNIQUE INDEX tokens_id_uindex ON public.tokens USING btree (id);
 
 
 --
--- Name: tokens_token_uindex; Type: INDEX; Schema: public; Owner: tamas2
+-- Name: tokens_token_uindex; Type: INDEX; Schema: public; Owner: bende
 --
 
 CREATE UNIQUE INDEX tokens_token_uindex ON public.tokens USING btree (token);
 
 
 --
--- Name: users_id_uindex; Type: INDEX; Schema: public; Owner: tamas2
+-- Name: users_id_uindex; Type: INDEX; Schema: public; Owner: bende
 --
 
 CREATE UNIQUE INDEX users_id_uindex ON public.users USING btree (id);
 
 
 --
--- Name: users_username_uindex; Type: INDEX; Schema: public; Owner: tamas2
+-- Name: users_username_uindex; Type: INDEX; Schema: public; Owner: bende
 --
 
 CREATE UNIQUE INDEX users_username_uindex ON public.users USING btree (username);

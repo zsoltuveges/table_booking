@@ -29,13 +29,13 @@ admin = {
         })
     },
 
-    displayAllIndividualBookings: function () {
+        displayAllIndividualBookings: function () {
         try {
             let tableBody = document.getElementById("indi_body");
             tableBody.innerHTML = "";
             for (let row = 0; row < admin._allIndiBookings.length; row++) {
                 var tableRow = document.createElement("tr");
-                let columns = ["name", "email", "phone_number", "booked_tables", "date_time"];
+                let columns = ["name", "email", "phone_number", "booked_tables", "date_time", "is_it_payed"];
                 for (let i = 0; i < columns.length; i++) {
                     let tableData = document.createElement("td");
                     let tempItem;
@@ -69,6 +69,21 @@ admin = {
                         let buttonContent = document.createTextNode(admin._allIndiBookings[row][columns[i]]);
                         button.appendChild(buttonContent);
                         tableData.appendChild(button);
+                    } else if (columns[i] === "is_it_payed") {
+
+                        let label = document.createElement("label");
+                        let input = document.createElement("input");
+                        let span = document.createElement("span");
+                        label.setAttribute("class", "switch");
+                        input.setAttribute("type", "checkbox");
+                        //TODO: check if is_it_payed true in the database, than set checked according to that.
+                        // if (admin._allIndiBookings[row].is_it_payed === true) {
+                        //     input.setAttribute("checked", true);
+                        // }
+                        span.setAttribute("class", "slider round");
+                        label.appendChild(input);
+                        label.appendChild(span);
+                        tableData.appendChild(label);
                     } else {
                         tempItem = document.createTextNode(admin._allIndiBookings[row][columns[i]]);
                         tableData.appendChild(tempItem);

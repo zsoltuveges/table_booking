@@ -7,6 +7,7 @@ import util
 import os
 
 app = Flask(__name__)
+app.secret_key = 'uniqSecretKey'
 
 app.config.update(
     DEBUG=True,
@@ -255,7 +256,6 @@ def change_seen():
 
 
 if __name__ == '__main__':
-    app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
     app.run(
         debug=True,
         port=5000
