@@ -35,7 +35,7 @@ admin = {
             tableBody.innerHTML = "";
             for (let row = 0; row < admin._allIndiBookings.length; row++) {
                 var tableRow = document.createElement("tr");
-                let columns = ["name", "email", "phone_number", "booked_tables", "date_time"];
+                let columns = ["booking_id", "name", "email", "phone_number", "booked_tables", "date_time"];
                 for (let i = 0; i < columns.length; i++) {
                     let tableData = document.createElement("td");
                     let tempItem;
@@ -61,8 +61,10 @@ admin = {
                             emailModify.value = admin._allIndiBookings[row].email;
                             let tableNumbersModify = document.getElementById("table_number");
                             tableNumbersModify.value = admin._allIndiBookings[row].booked_tables;
-                            let bookingId = document.getElementById("booking_id");
-                            bookingId.value = admin._allIndiBookings[row].id;
+                            // let bookingId = document.getElementById("booking_id");
+                            // bookingId.value = admin._allIndiBookings[row].id;
+                            let bookingNumber = document.getElementById("booking_number");
+                            bookingNumber.value = admin._allIndiBookings[row].booking_id;
                             admin.setModifyDeleteIndiButtonsVisibility();
                         });
 
@@ -99,6 +101,7 @@ admin = {
             for (let row = 0; row < admin._allCompanyBookings.length; row++) {
                 var tableRow = document.createElement("tr");
                 let columns = [
+                    "booking_id",
                     "name",
                     "email",
                     "phone_number",
@@ -151,7 +154,9 @@ admin = {
                             let vatNumberModify = document.getElementById("comp_vat_number");
                             vatNumberModify.value = admin._allCompanyBookings[row].vat_number;
                             let bookingId = document.getElementById("comp_booking_id");
-                            bookingId.value = admin._allCompanyBookings[row].id;
+                            bookingId.value = admin._allCompanyBookings[row].booking_id;
+                            let id = document.getElementById("comp_id");
+                            id.value = admin._allCompanyBookings[row].id;
                             admin.setModifyDeleteCompButtonsVisibility();
                         });
 
@@ -325,25 +330,26 @@ admin = {
         let confirmDeleteButton = document.getElementById("confirm_delete_button");
         let confirmModifyButton = document.getElementById("confirm_modify_button");
         confirmDeleteButton.addEventListener('click', function () {
-            let bookingId = document.getElementById("booking_id").value;
-            $.post('/mod-del-by-admin', {
-                id: bookingId,
-                delete_booking: "delete"
+            let bookingNumber = document.getElementById("booking_number").value;
+            $.post('/handle-modified-booking', {
+                booking_number: bookingNumber,
+                change: "delete"
             });
             admin.getAllIndividualBookingsFromDatabase();
         });
         confirmModifyButton.addEventListener('click', function () {
-            let bookingId = document.getElementById("booking_id").value;
+            let bookingNumber = document.getElementById("booking_number").value;
             let name = document.getElementById("name").value;
             let phoneNumber = document.getElementById("phone_number").value;
             let email = document.getElementById("email").value;
             let tableNumber = document.getElementById("table_number").value;
-            $.post('/mod-del-by-admin', {
-                id: bookingId,
+            $.post('/handle-modified-booking', {
+                booking_number: bookingNumber,
                 name: name,
-                phoneNumber: phoneNumber,
+                phone_number: phoneNumber,
                 email: email,
-                tableNumber: tableNumber
+                table_number: tableNumber,
+                change: "modify"
             });
             admin.getAllIndividualBookingsFromDatabase();
         });
@@ -353,9 +359,9 @@ admin = {
         let confirmDeleteButton = document.getElementById("confirm_comp_delete_button");
         let confirmModifyButton = document.getElementById("confirm_comp_modify_button");
         confirmDeleteButton.addEventListener('click', function () {
-            let bookingId = document.getElementById("comp_booking_id").value;
-            $.post('/mod-del-by-admin', {
-                id: bookingId,
+            let bookingNumber = document.getElementById("comp_booking_number").value;
+            $.post('/handle_modified_booking', {
+                booking_number: bookingNumber,
                 delete_booking: "delete",
                 company: "company"
             });
@@ -373,7 +379,7 @@ admin = {
             let floorDoor = document.getElementById("comp_floor_door").value;
             let vatNumber = document.getElementById("comp_vat_number").value;
             let zipCode = document.getElementById("comp_zip_code").value;
-            $.post('/mod-del-by-admin', {
+            $.post('/handle_modified_booking', {
                 id: bookingId,
                 name: name,
                 phoneNumber: phoneNumber,

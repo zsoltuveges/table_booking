@@ -151,7 +151,6 @@ def modify_company_booking(cursor, booking_data):
 
 @connection.connection_handler
 def delete_company_booking(cursor, booking_data):
-    print(booking_data)
     cursor.execute("""
                         DELETE FROM company
                         WHERE booking_id = %(booking_number)s AND email = %(newCompanyEmail)s
@@ -310,7 +309,6 @@ def get_previous_bookings_and_save_to_modified_table(cursor, booking_id, booking
                 SELECT * FROM company WHERE booking_id = %(booking_id)s
                 """, {"booking_id": booking_id})
     result = cursor.fetchone()
-    print(result)
     save_previous_booking(result)
 
 

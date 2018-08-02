@@ -77,7 +77,7 @@
                         <i class="fas fa-check fa-3x"></i>
                     </div>
                 {% else %}
-                    <a href="{{ url_for('modified_table_bookings') }}">
+                    <a href="{{ url_for('handle_modified_booking') }}">
                         <div class="notification_row">
                             <p><i class="fas fa-exclamation mr-2"></i>Történtek módosítások a foglalásokban</p>
                         </div>
@@ -167,6 +167,9 @@
                     <div>
                         <input type="hidden" id="booking_id">
                     </div>
+                    <div>
+                        <input type="hidden" id="booking_number">
+                    </div>
                     <div class="modal-footer">
                         <button type="button" id="modify_booking_button" class="btn btn-info" data-toggle="modal">
                             Módosít
@@ -201,7 +204,7 @@
                 </button>
             </div>
             <div class="modal-body bg-light text-dark">
-                <form action="{{ url_for('modify_delete_booking') }}" method="POST">
+                <form action="{{ url_for('handle_modified_booking') }}" method="POST">
                     <div class="form-group">
                         <label for="comp_name" class="form-control-label">Név:</label>
                         <input type="text" class="form-control" id="comp_name" name="comp_name">
@@ -249,6 +252,9 @@
                     </div>
                     <div>
                         <input type="hidden" id="comp_booking_id">
+                    </div>
+                    <div>
+                        <input type="hidden" id="comp_booking_number">
                     </div>
                     <div class="modal-footer">
                         <button type="button" id="modify_comp_booking_button" class="btn btn-info" data-toggle="modal">
