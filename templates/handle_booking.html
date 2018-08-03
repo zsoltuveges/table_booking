@@ -22,7 +22,7 @@
 <div id="container">
     <div class="index-box">
         <h1 id="welcome-text">Foglalás módosítás / törlés</h1>
-        <form action="{{ url_for('save_edited_booking') }}" method="POST">
+        <form action="{{ url_for('handle_modified_booking') }}" method="POST">
             {% if booking_data.zip_code %}
                 <div class="card-deck mb-3">
                     <div id="left" class="card mb-4">
@@ -167,7 +167,7 @@
                 <div class="modal-body">
                     <div class="modal-footer">
                         <button type="button" class="btn btn-card" data-dismiss="modal">Mégsem</button>
-                        <button type="submit" class="btn btn-card" name="delete" value="delete">Törlés</button>
+                        <button type="submit" class="btn btn-card" name="change" value="delete">Törlés</button>
                     </div>
                 </div>
             </div>
@@ -189,7 +189,7 @@
                 <div class="modal-body">
                     <div class="modal-footer">
                         <button type="button" class="btn btn-card" data-dismiss="modal">Mégsem</button>
-                        <button type="submit" class="btn btn-card" name="modify" value="modify">Módosítás
+                        <button type="submit" class="btn btn-card" name="change" value="modify">Módosítás
                         </button>
                     </div>
                 </div>

@@ -1,10 +1,14 @@
 import connection
 import util
-from datetime import datetime
 
 
 def booking_code_generator(new_booking):
     return util.booking_id_added_to_new_booking(new_booking)
+
+
+def get_remaining_table_number(all_booked_table_number):
+    max_table = get_max_tables()["max_tables"]
+    return max_table - all_booked_table_number
 
 
 @connection.connection_handler
@@ -91,124 +95,89 @@ def add_to_company(cursor, new_booking):
                             """, new_booking)
         new_remaining_tables = remaining_tables - new_booking_number_of_tables
         cursor.execute("""
-                                UPDATE table_number
-                                SET remaining_tables = %(new_remaining_tables)s
-                                """, {"new_remaining_tables": new_remaining_tables})
+                        UPDATE table_number
+                        SET remaining_tables = %(new_remaining_tables)s
+                        """, {"new_remaining_tables": new_remaining_tables})
 
 
 @connection.connection_handler
 def return_booking_data(cursor, booking_data):
     cursor.execute("""
-                    SELECT * FROM individuals
-                    WHERE booking_id = %(booking_number)s AND email = %(booking_email)s;
-                    """, booking_data)
+                        SELECT * FROM individuals
+                        WHERE booking_id = %(booking_number)s AND email = %(booking_email)s;
+                        """, booking_data)
     data = cursor.fetchone()
     if data:
         return data
     else:
         cursor.execute("""
-                            SELECT * FROM company
-                            WHERE booking_id = %(booking_number)s AND email = %(booking_email)s;
-                            """, booking_data)
+                        SELECT * FROM company
+                        WHERE booking_id = %(booking_number)s AND email = %(booking_email)s;
+                        """, booking_data)
         return cursor.fetchone()
 
 
 @connection.connection_handler
-def mod_del_indi_by_admin(cursor, booking_data):
-    if "delete_booking" in booking_data:
-        cursor.execute("""
-                        DELETE FROM individuals
-                        WHERE id = %(id)s
-                        """, booking_data)
-    else:
-        cursor.execute("""
-                        UPDATE individuals
-                        SET name = %(name)s, phone_number = %(phoneNumber)s, email = %(email)s, 
-                        booked_tables = %(tableNumber)s, modified_time = now()
-                        WHERE id = %(id)s
-                        """, booking_data)
-
-
-@connection.connection_handler
-def mod_del_comp_by_admin(cursor, booking_data):
-    if "delete_booking" in booking_data:
-        cursor.execute("""
-                        DELETE FROM company
-                        WHERE id = %(id)s
-                        """, booking_data)
-    else:
-        cursor.execute("""
-                        UPDATE company
-                        SET name = %(name)s, email = %(email)s, phone_number = %(phoneNumber)s,
-                            booked_tables = %(tableNumber)s, zip_code = %(zipCode)s, city = %(city)s,
-                            street_address = %(streetAddress)s, street_num = %(streetNum)s, 
-                            floor_door = %(floorDoor)s, vat_number = %(vatNumber)s, modified_time = now()
-                        WHERE id = %(id)s
-                        """, booking_data)
-
-
-@connection.connection_handler
-def modify_delete_individual_booking(cursor, booking_data):
-    number_of_updated_tables = int(booking_data["table_number"])
-    remaining_tables = get_max_tables()["remaining_tables"]
-    if "delete" in booking_data:
-        cursor.execute("""
-                        DELETE FROM individuals
-                        WHERE booking_id = %(booking_number)s AND email = %(email)s
-                        """, booking_data)
-        new_remaining_tables = remaining_tables + number_of_updated_tables
-        cursor.execute("""
-                        UPDATE table_number
-                        SET remaining_tables = %(new_remaining_tables)s
-                        """, {"new_remaining_tables": new_remaining_tables})
-    else:
-        cursor.execute("""
-                        SELECT booked_tables FROM individuals
-                        WHERE booking_id = %(booking_number)s
-                        """, booking_data)
-        old_number_of_tables_from_this_booking = cursor.fetchone()["booked_tables"]
-        table_diff = old_number_of_tables_from_this_booking - number_of_updated_tables
-        new_remaining_tables = remaining_tables + table_diff
-        update_remaining_tables(new_remaining_tables)
-        cursor.execute("""
+def modify_individual_booking(cursor, booking_data):
+    cursor.execute("""
                         UPDATE individuals
                         SET name = %(name)s, email = %(email)s, phone_number = %(phone_number)s,
                         booked_tables = %(table_number)s, modified_time = now()
                         WHERE booking_id = %(booking_number)s AND email = %(email)s
                         """, booking_data)
+    update_remaining_tables(get_remaining_table_number(get_sum_of_booked_tables()))
 
 
 @connection.connection_handler
-def modify_delete_company_booking(cursor, booking_data):
-    number_of_updated_tables = int(booking_data["company_table_number"])
-    remaining_tables = get_max_tables()["remaining_tables"]
-    if "delete" in booking_data:
-        cursor.execute("""
+def modify_company_booking(cursor, booking_data):
+    cursor.execute("""
+                        UPDATE company
+                        SET name = %(newCompanyName)s, 
+                            email = %(newCompanyEmail)s, 
+                            phone_number = %(newCompanyPhoneNumber)s,
+                            booked_tables = %(company_table_number)s, 
+                            zip_code = %(zip_code)s, 
+                            city = %(city)s,
+                            street_address = %(street_address)s, 
+                            street_type = %(street_type)s,
+                            street_num = %(street_num)s, 
+                            floor_door = %(floor_door)s,
+                            vat_number = %(vat_number)s, 
+                            modified_time = now()
+                        WHERE booking_id = %(booking_number)s AND email = %(newCompanyEmail)s
+                        """, booking_data)
+    update_remaining_tables(get_remaining_table_number(get_sum_of_booked_tables()))
+
+
+@connection.connection_handler
+def delete_company_booking(cursor, booking_data):
+    cursor.execute("""
                         DELETE FROM company
                         WHERE booking_id = %(booking_number)s AND email = %(newCompanyEmail)s
                         """, booking_data)
-        new_remaining_tables = remaining_tables + number_of_updated_tables
-        cursor.execute("""
-                                UPDATE table_number
-                                SET remaining_tables = %(new_remaining_tables)s
-                                """, {"new_remaining_tables": new_remaining_tables})
-    else:
-        cursor.execute("""
-                                SELECT booked_tables FROM company
-                                WHERE booking_id = %(booking_number)s
-                                """, booking_data)
-        old_number_of_tables_from_this_booking = cursor.fetchone()["booked_tables"]
-        table_diff = old_number_of_tables_from_this_booking - number_of_updated_tables
-        new_remaining_tables = remaining_tables + table_diff
-        update_remaining_tables(new_remaining_tables)
-        cursor.execute("""
-                        UPDATE company
-                        SET name = %(newCompanyName)s, email = %(newCompanyEmail)s, phone_number = %(newCompanyPhoneNumber)s,
-                            booked_tables = %(company_table_number)s, zip_code = %(zip_code)s, city = %(city)s,
-                            street_address = %(street_address)s, street_type = %(street_type)s,
-                            street_num = %(street_num)s, floor_door = %(floor_door)s, vat_number = %(vat_number)s
-                        WHERE booking_id = %(booking_number)s AND email = %(newCompanyEmail)s
+    update_remaining_tables(get_remaining_table_number(get_sum_of_booked_tables()))
+
+
+@connection.connection_handler
+def delete_individual_booking(cursor, booking_data):
+    cursor.execute("""
+                        DELETE FROM individuals
+                        WHERE booking_id = %(booking_number)s AND email = %(email)s
                         """, booking_data)
+    update_remaining_tables(get_remaining_table_number(get_sum_of_booked_tables()))
+
+
+@connection.connection_handler
+def get_sum_of_booked_tables(cursor):
+    cursor.execute("""
+                        SELECT SUM(booked_tables) FROM individuals;
+                        """)
+    sum_of_individual_booked_tables = cursor.fetchone()["sum"]
+    cursor.execute("""
+                        SELECT SUM(booked_tables) FROM company;
+                        """)
+    sum_of_company_booked_tables = cursor.fetchone()["sum"]
+    return sum(filter(None, [sum_of_company_booked_tables, sum_of_individual_booked_tables]))
 
 
 @connection.connection_handler
@@ -340,7 +309,6 @@ def get_previous_bookings_and_save_to_modified_table(cursor, booking_id, booking
                 SELECT * FROM company WHERE booking_id = %(booking_id)s
                 """, {"booking_id": booking_id})
     result = cursor.fetchone()
-    print(result)
     save_previous_booking(result)
 
 
